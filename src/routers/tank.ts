@@ -23,3 +23,23 @@ TankRouter.get('/', async (req, res) => {
       break;
   }
 });
+
+TankRouter.get('/:tankId', async (req, res) => {
+  const tank_id = req.params['tankId'];
+  const response = await tankService.getTankById(tank_id);
+
+  switch (response.error) {
+    case RESPONSE_MESSAGE.NO_ERROR:
+      res.send(response.data);
+      break;
+    case RESPONSE_MESSAGE.NOT_FOUND:
+      res.status(404).send(RESPONSE_MESSAGE.NOT_FOUND);
+      break;
+    case RESPONSE_MESSAGE.INTERNAL:
+      res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
+      break;
+    default:
+      res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
+      break;
+  }
+});

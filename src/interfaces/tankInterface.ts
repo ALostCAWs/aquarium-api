@@ -1,5 +1,5 @@
 export interface Tank {
-  id: string,
+  tank_id: string,
   gallons: number,
-  isCycled: boolean
+  is_cycled: boolean
 }
