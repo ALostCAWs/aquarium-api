@@ -1,5 +1,4 @@
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { DynamoDBDocumentClient, ScanCommand } from '@aws-sdk/lib-dynamodb';
+import { ScanCommand } from '@aws-sdk/lib-dynamodb';
 import { Tank } from '../interfaces/tankInterface';
 import { TABLE } from '../constants/table';
 import { RESPONSE_MESSAGE } from '../constants/responseMessage';
