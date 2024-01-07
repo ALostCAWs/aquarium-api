@@ -3,16 +3,14 @@ import { DynamoDBDocumentClient, ScanCommand } from '@aws-sdk/lib-dynamodb';
 import { Tank } from '../interfaces/tankInterface';
 import { TABLE } from '../constants/table';
 import { RESPONSE_MESSAGE } from '../constants/responseMessage';
+import Service from './service';
 
 interface TankResponse {
   data: Tank | Tank[] | undefined,
   error: string
 }
 
-class TankService {
-  client: DynamoDBClient;
-  docClient: DynamoDBDocumentClient;
-
+class TankService extends Service {
   async getAllTanks(): Promise<TankResponse> {
     const command = new ScanCommand({
       "TableName": TABLE.TANK
@@ -41,11 +39,6 @@ class TankService {
         error: RESPONSE_MESSAGE.INTERNAL
       };
     }
-  }
-
-  constructor() {
-    this.client = new DynamoDBClient({});
-    this.docClient = DynamoDBDocumentClient.from(this.client);
   }
 }
 
