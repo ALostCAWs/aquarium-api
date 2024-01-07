@@ -1,5 +1,4 @@
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { DynamoDBDocumentClient, ScanCommand } from '@aws-sdk/lib-dynamodb';
+import { ScanCommand, GetCommand } from '@aws-sdk/lib-dynamodb';
 import { Tank } from '../interfaces/tankInterface';
 import { TABLE } from '../constants/table';
 import { RESPONSE_MESSAGE } from '../constants/responseMessage';
@@ -17,16 +16,16 @@ class TankService extends Service {
     });
 
     try {
-      const data = await this.docClient.send(command);
+      const response = await this.docClient.send(command);
 
-      if (data.Items?.length === 0) {
+      if (response.Items?.length === 0) {
         return {
           data: undefined,
           error: RESPONSE_MESSAGE.NO_ITEMS_FOUND
         };
       }
 
-      let tanks = data.Items as Tank[];
+      const tanks = response.Items as Tank[];
 
       return {
         data: tanks,
@@ -38,6 +37,39 @@ class TankService extends Service {
         data: undefined,
         error: RESPONSE_MESSAGE.INTERNAL
       };
+    }
+  }
+
+  async getTankById(tank_id: string): Promise<TankResponse> {
+    const command = new GetCommand({
+      "TableName": TABLE.TANK,
+      "Key": {
+        "id": tank_id
+      }
+    });
+
+    try {
+      const response = await this.docClient.send(command);
+
+      if (!response.Item) {
+        return {
+          data: undefined,
+          error: RESPONSE_MESSAGE.NOT_FOUND
+        };
+      }
+
+      const tank = response.Item as Tank;
+
+      return {
+        data: tank,
+        error: RESPONSE_MESSAGE.NO_ERROR
+      }
+    } catch (e) {
+      console.error(`failed to get tank with Id ${tank_id}`);
+      return {
+        data: undefined,
+        error: RESPONSE_MESSAGE.INTERNAL
+      }
     }
   }
 }
