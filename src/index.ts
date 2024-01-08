@@ -2,7 +2,7 @@
 import express, { Express } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import { TankRouter } from './routers/tank';
+import { TankRouter } from './routers/tankRouter';
 import { DynamoDBClient, ListTablesCommand } from '@aws-sdk/client-dynamodb';
 
 dotenv.config();
