@@ -9,7 +9,7 @@ const tankService = new TankService();
 TankRouter.get('/', async (req, res) => {
   const response = await tankService.getAllTanks();
 
-  switch (response.error) {
+  switch (response.message) {
     case RESPONSE_MESSAGE.NO_ERROR:
       res.status(200).send(response.data);
       break;
@@ -29,7 +29,7 @@ TankRouter.get('/:tank_id', async (req, res) => {
   const tank_id = req.params['tank_id'];
   const response = await tankService.getTankById(tank_id);
 
-  switch (response.error) {
+  switch (response.message) {
     case RESPONSE_MESSAGE.NO_ERROR:
       res.status(200).send(response.data);
       break;
@@ -59,15 +59,35 @@ TankRouter.post('/', async (req, res) => {
 
   const response = await tankService.createTank(tank);
 
-  switch (response.error) {
+  switch (response.message) {
     case RESPONSE_MESSAGE.NO_ERROR:
-      res.status(201).send(response);
+      res.status(201).send(response.data);
       break;
     case RESPONSE_MESSAGE.INTERNAL:
       res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
       break;
     default:
       res.status(500).send(RESPONSE_MESSAGE.INTERNAL)
+      break;
+  }
+});
+
+TankRouter.put('/', async (req, res) => {
+  const tank: Tank = req.body;
+  const response = await tankService.putTank(tank);
+
+  switch (response.message) {
+    case RESPONSE_MESSAGE.NO_ERROR:
+      res.status(200).send(response.data);
+      break;
+    case (RESPONSE_MESSAGE.NOT_FOUND):
+      res.status(201).send(response.data);
+      break;
+    case RESPONSE_MESSAGE.INTERNAL:
+      res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
+      break;
+    default:
+      res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
       break;
   }
 });

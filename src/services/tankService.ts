@@ -7,11 +7,11 @@ import { RESPONSE_MESSAGE } from '../constants/responseMessage';
 
 interface GetTankResponse {
   data: Tank | Tank[] | undefined,
-  error: string
+  message: string
 }
-interface CreateTankResponse {
+interface PutTankResponse {
   data: PutCommandOutput | undefined,
-  error: string
+  message: string
 }
 interface UpdateTankResponse {
   data: UpdateCommandOutput | undefined,
@@ -33,7 +33,7 @@ class TankService {
       if (response.Items?.length === 0) {
         return {
           data: undefined,
-          error: RESPONSE_MESSAGE.NO_ITEMS_FOUND
+          message: RESPONSE_MESSAGE.NO_ITEMS_FOUND
         };
       }
 
@@ -41,13 +41,13 @@ class TankService {
 
       return {
         data: tanks,
-        error: RESPONSE_MESSAGE.NO_ERROR
+        message: RESPONSE_MESSAGE.NO_ERROR
       };
     } catch (e) {
       console.error(`failed to get tanks: ${e}`);
       return {
         data: undefined,
-        error: RESPONSE_MESSAGE.INTERNAL
+        message: RESPONSE_MESSAGE.INTERNAL
       };
     }
   }
@@ -66,7 +66,7 @@ class TankService {
       if (!response.Item) {
         return {
           data: undefined,
-          error: RESPONSE_MESSAGE.NOT_FOUND
+          message: RESPONSE_MESSAGE.NOT_FOUND
         };
       }
 
@@ -74,18 +74,18 @@ class TankService {
 
       return {
         data: tank,
-        error: RESPONSE_MESSAGE.NO_ERROR
+        message: RESPONSE_MESSAGE.NO_ERROR
       }
     } catch (e) {
       console.error(`failed to get tank with Id ${tank_id}`);
       return {
         data: undefined,
-        error: RESPONSE_MESSAGE.INTERNAL
+        message: RESPONSE_MESSAGE.INTERNAL
       }
     }
   }
 
-  async createTank(tank: Tank): Promise<CreateTankResponse> {
+  async createTank(tank: Tank): Promise<PutTankResponse> {
     const tank_id = uuidv4();
     tank.id = tank_id;
 
@@ -99,20 +99,56 @@ class TankService {
 
       return {
         data: response,
-        error: RESPONSE_MESSAGE.NO_ERROR
+        message: RESPONSE_MESSAGE.NO_ERROR
       }
     } catch (e) {
       console.error(`failed to create tank: ${e}`);
 
       return {
         data: undefined,
-        error: RESPONSE_MESSAGE.INTERNAL
+        message: RESPONSE_MESSAGE.INTERNAL
+      }
+    }
+  }
+
+  async putTank(tank: Tank): Promise<PutTankResponse> {
+    const tank_id = tank.id;
+    const getReq = await this.getTankById(tank_id);
+    const exists = getReq.message === RESPONSE_MESSAGE.NO_ERROR ? true : false;
+
+    const command = new PutCommand({
+      "TableName": TABLE.TANK,
+      "Item": tank
+    });
+
+    try {
+      const response = await this.docClient.send(command);
+
+      if (!exists) {
+        response.$metadata.httpStatusCode = 201;
+
+        return {
+          data: response,
+          message: RESPONSE_MESSAGE.NOT_FOUND
+        }
+      }
+
+      return {
+        data: response,
+        message: RESPONSE_MESSAGE.NO_ERROR
+      }
+    } catch (e) {
+      console.error(`failed to update tank: ${e}`);
+
+      return {
+        data: undefined,
+        message: RESPONSE_MESSAGE.INTERNAL
       }
     }
   }
 
   /*async updateTank(tank: Tank): Promise<UpdateTankResponse> {
-
+    const command = new
   }*/
 
   constructor() {
