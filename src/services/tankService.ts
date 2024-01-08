@@ -1,4 +1,4 @@
-import { DynamoDBDocumentClient, ScanCommand, GetCommand, PutCommand, PutCommandOutput, UpdateCommand, UpdateCommandOutput } from '@aws-sdk/lib-dynamodb';
+import { DynamoDBDocumentClient, ScanCommand, GetCommand, PutCommand, PutCommandOutput, UpdateCommand, UpdateCommandOutput, DeleteCommand, DeleteCommandOutput } from '@aws-sdk/lib-dynamodb';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { v4 as uuidv4 } from 'uuid';
 import { Tank } from '../interfaces/tankInterface';
@@ -15,7 +15,12 @@ interface PutTankResponse {
 }
 interface UpdateTankResponse {
   data: UpdateCommandOutput | undefined,
-  error: string
+  message: string
+}
+
+interface DeleteTankResponse {
+  data: DeleteCommandOutput | undefined,
+  message: string
 }
 
 class TankService {
@@ -112,10 +117,6 @@ class TankService {
   }
 
   async putTank(tank: Tank): Promise<PutTankResponse> {
-    const tank_id = tank.id;
-    const getReq = await this.getTankById(tank_id);
-    const exists = getReq.message === RESPONSE_MESSAGE.NO_ERROR ? true : false;
-
     const command = new PutCommand({
       "TableName": TABLE.TANK,
       "Item": tank
@@ -124,7 +125,7 @@ class TankService {
     try {
       const response = await this.docClient.send(command);
 
-      if (!exists) {
+      if (!this.checkExists(tank.id)) {
         response.$metadata.httpStatusCode = 201;
 
         return {
@@ -150,6 +151,44 @@ class TankService {
   /*async updateTank(tank: Tank): Promise<UpdateTankResponse> {
     const command = new
   }*/
+
+  async deleteTank(tank_id: string): Promise<DeleteTankResponse> {
+    if (!this.checkExists(tank_id)) {
+      return {
+        data: undefined,
+        message: RESPONSE_MESSAGE.NOT_FOUND
+      }
+    }
+
+    const command = new DeleteCommand({
+      "TableName": TABLE.TANK,
+      "Key": {
+        "id": tank_id
+      }
+    });
+
+    try {
+      const response = await this.docClient.send(command);
+
+      return {
+        data: response,
+        message: RESPONSE_MESSAGE.NO_ERROR
+      }
+    } catch (e) {
+      console.error(`failed to delete tank with Id ${tank_id}: ${e}`);
+
+      return {
+        data: undefined,
+        message: RESPONSE_MESSAGE.INTERNAL
+      }
+    }
+  }
+
+  async checkExists(tank_id: string): Promise<boolean> {
+    const getReq = await this.getTankById(tank_id);
+    const exists = getReq.message === RESPONSE_MESSAGE.NO_ERROR ? true : false;
+    return exists;
+  }
 
   constructor() {
     this.client = new DynamoDBClient({});
