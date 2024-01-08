@@ -26,11 +26,3 @@ export enum LIVESTOCK_DIFFICULTY {
   MODERATE = 'moderate',
   HARD = 'hard'
 }
-
-export enum PLANT_LIGHT {
-  LOW = 'low',
-  LOW_MODERATE = 'low-moderate',
-  MODERATE = 'moderate',
-  MODERATE_HIGH = 'moderate-high',
-  HIGH = 'high',
-}
