@@ -185,8 +185,8 @@ class TankService {
   }
 
   async checkExists(tank_id: string): Promise<boolean> {
-    const getReq = await this.getTankById(tank_id);
-    const exists = getReq.message === RESPONSE_MESSAGE.NO_ERROR ? true : false;
+    const response = await this.getTankById(tank_id);
+    const exists = response.message === RESPONSE_MESSAGE.NO_ERROR ? true : false;
     return exists;
   }
 
