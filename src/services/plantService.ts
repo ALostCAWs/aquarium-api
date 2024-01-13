@@ -124,7 +124,26 @@ class PlantService {
     }
   }
   // Create species ( require existing genus )
-  async createPlantSpecies() {
+  async createPlantSpecies(plantSpecies: PlantSpecies): Promise<PutPlantResponse> {
+    const command = new PutCommand({
+      "TableName": TABLE.PLANT,
+      "Item": plantSpecies
+    });
+
+    try {
+      const response = await this.docClient.send(command);
+
+      return {
+        data: response,
+        message: RESPONSE_MESSAGE.NO_ERROR
+      };
+    } catch (e) {
+      console.error(`failed to create plant species ${plantSpecies.species} in genus ${plantSpecies.genus}: ${e}`);
+      return {
+        data: undefined,
+        message: RESPONSE_MESSAGE.INTERNAL
+      };
+    }
   }
   // Update species ( require existing genus )
   async updatePlantSpecies() {

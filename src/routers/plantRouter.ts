@@ -2,6 +2,8 @@ import { Router } from 'express';
 import PlantService from '../services/plantService';
 import { PlantGenus, PlantSpecies } from '../interfaces/plantInterface';
 import { RESPONSE_MESSAGE } from '../constants/responseMessageEnum';
+import { PLANT_DIFFICULTY, PLANT_LIGHT } from '../constants/plantEnum';
+import { checkValidSpeciesToCreate } from '../functions/validatePlant';
 
 export const PlantRouter = Router();
 const plantService = new PlantService();
@@ -49,34 +51,57 @@ PlantRouter.get('/:genus/:species', async (req, res) => {
   }
 });
 
+// TODO:
+// Make it required for difficulty / light / feed type / etc ( attrs w/ enums ) to only be the values specified in those enums
 PlantRouter.post('/', async (req, res) => {
-  const plant_genus: string = req.body.genus;
-  const plant_species: string = req.body.species;
-  const CO2: boolean = req.body.CO2;
-  const difficulty: string = req.body.difficulty;
-  const commonName: string = req.body.commonName;
-  const light: string = req.body.light;
+  const genus: string = req.body.genus || '';
+  const species: string = req.body.species || '';
+  const CO2: boolean = req.body.CO2 || false;
+  const difficulty: string = req.body.difficulty || PLANT_DIFFICULTY.UNSPECIFIED;
+  const commonName: string = req.body.commonName || '';
+  const light: string = req.body.light || PLANT_LIGHT.UNSPECIFIED;
 
-  const genusExists = await plantService.checkSpeciesExists(plant_genus, plant_species);
-  if (!genusExists) {
-    console.error(`failed to create species ${plant_species}: genus ${plant_genus} ${RESPONSE_MESSAGE.NOT_FOUND}`);
-    res.status(404).send(RESPONSE_MESSAGE.NOT_FOUND);
+  const plantSpecies: PlantSpecies = {
+    genus: genus,
+    species: species,
+    CO2: CO2,
+    difficulty: difficulty,
+    commonName: commonName,
+    light: light
   }
 
-  const speciesExists = await plantService.checkSpeciesExists(plant_genus, plant_species);
-  if (speciesExists) {
-    console.error(`failed to create plant ${plant_genus} ${plant_species}: already exists`);
-    res.status(400).send(RESPONSE_MESSAGE.ALREADY_EXISTS);
+  const requestValidity = await checkValidSpeciesToCreate(plantSpecies);
+
+  if (!requestValidity.valid) {
+    let statusCode: number;
+    switch (requestValidity.message) {
+      case RESPONSE_MESSAGE.NOT_FOUND:
+        statusCode = 404;
+        break;
+      case RESPONSE_MESSAGE.ALREADY_EXISTS:
+      case RESPONSE_MESSAGE.INVALID:
+        statusCode = 400;
+        break;
+      default:
+        statusCode = 400;
+    }
+
+    res.status(statusCode).send(requestValidity.message);
   }
 
-  if (genusExists && !speciesExists) {
-    const plant: PlantSpecies = {
-      genus: plant_genus,
-      species: plant_species,
-      CO2: CO2,
-      difficulty: difficulty,
-      commonName: commonName,
-      light: light
+  if (requestValidity.valid) {
+    const response = await plantService.createPlantSpecies(plantSpecies);
+
+    switch (response.message) {
+      case RESPONSE_MESSAGE.NO_ERROR:
+        res.status(200).send(response.data);
+        break;
+      case RESPONSE_MESSAGE.INTERNAL:
+        res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
+        break;
+      default:
+        res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
+        break;
     }
   }
 });
