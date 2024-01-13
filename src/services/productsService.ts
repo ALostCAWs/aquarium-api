@@ -154,7 +154,7 @@ class ProductService {
     }
   }
 
-  async checkExists(product_name: string): Promise<boolean> {
+  async checkProductExists(product_name: string): Promise<boolean> {
     const response = await this.getProductByName(product_name);
     const exists = response.message === RESPONSE_MESSAGE.NO_ERROR ? true : false;
     return exists;

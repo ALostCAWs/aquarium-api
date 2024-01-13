@@ -78,7 +78,7 @@ ProductRouter.put('/', async (req, res) => {
     type: product_type
   }
 
-  const successCode = await productService.checkExists(product_name) ? 200 : 201;
+  const successCode = await productService.checkProductExists(product_name) ? 200 : 201;
 
   const response = await productService.putProduct(product);
 
@@ -98,7 +98,7 @@ ProductRouter.put('/', async (req, res) => {
 ProductRouter.delete('/:product_name', async (req, res) => {
   const product_name = req.params['product_name'];
 
-  const exists = await productService.checkExists(product_name);
+  const exists = await productService.checkProductExists(product_name);
   if (!exists) {
     res.status(404).send(RESPONSE_MESSAGE.NOT_FOUND);
   }
