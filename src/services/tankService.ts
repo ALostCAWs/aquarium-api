@@ -3,7 +3,7 @@ import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { v4 as uuidv4 } from 'uuid';
 import { Tank } from '../interfaces/tankInterface';
 import { TABLE } from '../constants/table';
-import { RESPONSE_MESSAGE } from '../constants/responseMessage';
+import { RESPONSE_MESSAGE } from '../constants/responseMessageEnum';
 
 interface GetTankResponse {
   data: Tank | Tank[] | undefined,

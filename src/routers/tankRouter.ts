@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import TankService from '../services/tankService';
 import { Tank } from '../interfaces/tankInterface';
-import { RESPONSE_MESSAGE } from '../constants/responseMessage';
+import { RESPONSE_MESSAGE } from '../constants/responseMessageEnum';
 
 export const TankRouter = Router();
 const tankService = new TankService();

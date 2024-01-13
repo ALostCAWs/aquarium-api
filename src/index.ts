@@ -5,6 +5,7 @@ import cors from 'cors';
 import { DynamoDBClient, ListTablesCommand } from '@aws-sdk/client-dynamodb';
 import { TankRouter } from './routers/tankRouter';
 import { ProductRouter } from './routers/productRouter';
+import { PlantRouter } from './routers/plantRouter';
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ const client = new DynamoDBClient({});
 // ROUTERS
 app.use('/tanks', TankRouter);
 app.use('/products', ProductRouter);
+app.use('/plants', PlantRouter);
 
 app.get('/', async (req, res) => {
   const command = new ListTablesCommand({});

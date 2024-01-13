@@ -15,3 +15,8 @@ export interface PlantSpecies {
   difficulty: string,
   light: string
 }
+
+export interface Plant {
+  genus_info: PlantGenus,
+  species_info: PlantSpecies
+}
