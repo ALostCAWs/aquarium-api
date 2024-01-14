@@ -115,7 +115,16 @@ class ProductService {
     });
 
     try {
+      const exists = await this.checkProductExists(product.name);
       const response = await this.docClient.send(command);
+
+      if (!exists) {
+        response.$metadata.httpStatusCode = 201;
+        return {
+          data: response,
+          message: RESPONSE_MESSAGE.NOT_FOUND
+        };
+      }
 
       return {
         data: response,

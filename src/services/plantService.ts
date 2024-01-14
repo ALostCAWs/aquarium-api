@@ -24,6 +24,7 @@ class PlantService {
   docClient: DynamoDBDocumentClient;
 
   // Get all genera
+  // Requires secondary index ?
   async getAllPlantGenera() {
   }
 
@@ -97,8 +98,7 @@ class PlantService {
     }
   }
 
-  // Create genus ( cannot change species from it being genus )
-  async createPlantGenus(plantGenus: PlantGenus) {
+  async createPlantGenus(plantGenus: PlantGenus): Promise<PutPlantResponse> {
     const command = new PutCommand({
       "TableName": TABLE.PLANT,
       "Item": plantGenus
@@ -118,10 +118,38 @@ class PlantService {
       };
     }
   }
-  // Update genus ( cannot change species from it being genus )
-  async updatePlantGenus() {
+
+  async putPlantGenus(plantGenus: PlantGenus): Promise<PutPlantResponse> {
+    const command = new PutCommand({
+      "TableName": TABLE.PLANT,
+      "Item": plantGenus
+    });
+
+    try {
+      const exists = await this.checkGenusExists(plantGenus.genus);
+      const response = await this.docClient.send(command);
+
+      if (!exists) {
+        response.$metadata.httpStatusCode = 201;
+        return {
+          data: response,
+          message: RESPONSE_MESSAGE.NOT_FOUND
+        };
+      }
+
+      return {
+        data: response,
+        message: RESPONSE_MESSAGE.NO_ERROR
+      };
+    } catch (e) {
+      console.error(`failed to update genus ${plantGenus.genus}: ${e}`);
+      return {
+        data: undefined,
+        message: RESPONSE_MESSAGE.INTERNAL
+      };
+    }
   }
-  // Delete genus ( disallow deletion if there are species in the genus )
+
   async deletePlantGenus(genus: string): Promise<DeletePlantResponse> {
     const command = new DeleteCommand({
       "TableName": TABLE.PLANT,
@@ -181,7 +209,6 @@ class PlantService {
     }
   }
 
-  // Create species ( require existing genus )
   async createPlantSpecies(plantSpecies: PlantSpecies): Promise<PutPlantResponse> {
     const command = new PutCommand({
       "TableName": TABLE.PLANT,
@@ -205,10 +232,37 @@ class PlantService {
   }
 
   // Update species ( require existing genus )
-  async updatePlantSpecies() {
+  async putPlantSpecies(plantSpecies: PlantSpecies): Promise<PutPlantResponse> {
+    const command = new PutCommand({
+      "TableName": TABLE.PLANT,
+      "Item": plantSpecies
+    });
+
+    try {
+      const response = await this.docClient.send(command);
+
+      if (!this.checkSpeciesExists(plantSpecies.genus, plantSpecies.species)) {
+        response.$metadata.httpStatusCode = 201;
+        return {
+          data: response,
+          message: RESPONSE_MESSAGE.NOT_FOUND
+        };
+      }
+
+      return {
+        data: response,
+        message: RESPONSE_MESSAGE.NO_ERROR
+      };
+    } catch (e) {
+      console.error(`failed to update plant species ${plantSpecies.genus} ${plantSpecies.species}: ${e}`);
+      return {
+        data: undefined,
+        message: RESPONSE_MESSAGE.INTERNAL
+      };
+    }
   }
 
-  async deletePlantSpecies(genus: string, species: string) {
+  async deletePlantSpecies(genus: string, species: string): Promise<DeletePlantResponse> {
     const command = new DeleteCommand({
       "TableName": TABLE.PLANT,
       "Key": {

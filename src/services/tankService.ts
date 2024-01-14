@@ -123,11 +123,11 @@ class TankService {
     });
 
     try {
+      const exists = await this.checkTankExists(tank.id);
       const response = await this.docClient.send(command);
 
-      if (!this.checkTankExists(tank.id)) {
+      if (!exists) {
         response.$metadata.httpStatusCode = 201;
-
         return {
           data: response,
           message: RESPONSE_MESSAGE.NOT_FOUND
