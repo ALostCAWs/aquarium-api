@@ -1,9 +1,8 @@
-import { DynamoDBDocumentClient, ScanCommand, GetCommand, PutCommand, PutCommandOutput, UpdateCommand, UpdateCommandOutput, DeleteCommand, DeleteCommandOutput } from '@aws-sdk/lib-dynamodb';
-import { DynamoDBClient, QueryCommand } from '@aws-sdk/client-dynamodb';
+import { DynamoDBDocumentClient, ScanCommand, GetCommand, PutCommand, PutCommandOutput, UpdateCommand, UpdateCommandOutput, DeleteCommand, DeleteCommandOutput, QueryCommand } from '@aws-sdk/lib-dynamodb';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { TABLE } from '../constants/table';
 import { RESPONSE_MESSAGE } from '../constants/responseMessageEnum';
 import { PlantGenus, PlantSpecies } from '../interfaces/plantInterface';
-import { spec } from 'node:test/reporters';
 
 interface GetPlantResponse {
   data: PlantGenus | PlantSpecies | PlantGenus[] | PlantSpecies[] | undefined;
@@ -28,11 +27,11 @@ class PlantService {
   async getAllPlantGenera() {
   }
 
-  async getPlantGenusByGenus(plant_genus: string): Promise<GetPlantResponse> {
+  async getPlantGenusByGenus(genus: string): Promise<GetPlantResponse> {
     const command = new GetCommand({
       "TableName": TABLE.PLANT,
       "Key": {
-        "genus": plant_genus,
+        "genus": genus,
         "species": "genus"
       }
     });
@@ -54,48 +53,106 @@ class PlantService {
         message: RESPONSE_MESSAGE.NO_ERROR
       };
     } catch (e) {
-      console.error(`failed to get plant genus ${plant_genus}: ${e}`);
+      console.error(`failed to get plant genus ${genus}: ${e}`);
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
       };
     }
   }
-  // Create genus ( cannot change species from it being genus )
-  async createPlantGenus() {
-  }
-  // Update genus ( cannot change species from it being genus )
-  async updatePlantGenus() {
-  }
-  // Delete genus ( disallow deletion if there are species in the genus )
-  async deletePlantGenus() {
-  }
 
-  async checkGenusExists(plant_genus: string): Promise<boolean> {
-    const response = await this.getPlantGenusByGenus(plant_genus);
-    const exists = response.message === RESPONSE_MESSAGE.NO_ERROR ? true : false;
-    return exists;
-  }
-
-
-  // Get all species within a genus
-  async getAllPlantSpeciesInGenus(plant_genus: string) {
+  async getAllPlantSpeciesInGenus(genus: string): Promise<GetPlantResponse> {
     const command = new QueryCommand({
       "TableName": TABLE.PLANT,
       "KeyConditionExpression":
         "genus = :genus",
       "ExpressionAttributeValues": {
-        ":genus": { "S": plant_genus }
+        ":genus": genus
       }
     });
+
+    try {
+      const response = await this.docClient.send(command);
+
+      if (response.Items?.length === 0) {
+        return {
+          data: [],
+          message: RESPONSE_MESSAGE.NO_ERROR
+        };
+      }
+
+      let species = response.Items as PlantSpecies[];
+      species = species.filter((s) => { return s.species !== 'genus' });
+
+      return {
+        data: species,
+        message: RESPONSE_MESSAGE.NO_ERROR
+      };
+    } catch (e) {
+      console.error(`failed to get plant species list in genus ${genus}: ${e}`);
+      return {
+        data: undefined,
+        message: RESPONSE_MESSAGE.NO_ITEMS_FOUND
+      };
+    }
   }
-  // Get species by genus & species
-  async getPlantSpeciesByGenusSpecies(plant_genus: string, plant_species: string): Promise<GetPlantResponse> {
+
+  // Create genus ( cannot change species from it being genus )
+  async createPlantGenus(plantGenus: PlantGenus) {
+    const command = new PutCommand({
+      "TableName": TABLE.PLANT,
+      "Item": plantGenus
+    });
+
+    try {
+      const response = await this.docClient.send(command);
+      return {
+        data: response,
+        message: RESPONSE_MESSAGE.NO_ERROR
+      };
+    } catch (e) {
+      console.error(`failed to create plant genus ${plantGenus.genus}: ${e}`);
+      return {
+        data: undefined,
+        message: RESPONSE_MESSAGE.INTERNAL
+      };
+    }
+  }
+  // Update genus ( cannot change species from it being genus )
+  async updatePlantGenus() {
+  }
+  // Delete genus ( disallow deletion if there are species in the genus )
+  async deletePlantGenus(genus: string): Promise<DeletePlantResponse> {
+    const command = new DeleteCommand({
+      "TableName": TABLE.PLANT,
+      "Key": {
+        "genus": genus,
+        "species": 'genus'
+      }
+    });
+
+    try {
+      const response = await this.docClient.send(command);
+      return {
+        data: response,
+        message: RESPONSE_MESSAGE.NO_ERROR
+      };
+    } catch (e) {
+      console.error(`failed to delete genus ${genus}: ${e}`);
+      return {
+        data: undefined,
+        message: RESPONSE_MESSAGE.INTERNAL
+      };
+    }
+  }
+
+
+  async getPlantSpeciesByGenusSpecies(genus: string, species: string): Promise<GetPlantResponse> {
     const command = new GetCommand({
       "TableName": TABLE.PLANT,
       "Key": {
-        "genus": plant_genus,
-        "species": plant_species
+        "genus": genus,
+        "species": species
       }
     });
 
@@ -116,13 +173,14 @@ class PlantService {
         message: RESPONSE_MESSAGE.NO_ERROR
       };
     } catch (e) {
-      console.error(`failed to get plant species ${plant_species} in genus ${plant_genus}: ${e}`);
+      console.error(`failed to get plant species ${species} in genus ${genus}: ${e}`);
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
       };
     }
   }
+
   // Create species ( require existing genus )
   async createPlantSpecies(plantSpecies: PlantSpecies): Promise<PutPlantResponse> {
     const command = new PutCommand({
@@ -145,16 +203,17 @@ class PlantService {
       };
     }
   }
+
   // Update species ( require existing genus )
   async updatePlantSpecies() {
   }
 
-  async deletePlantSpecies(plant_genus: string, plant_species: string) {
+  async deletePlantSpecies(genus: string, species: string) {
     const command = new DeleteCommand({
       "TableName": TABLE.PLANT,
       "Key": {
-        "genus": plant_genus,
-        "species": plant_species
+        "genus": genus,
+        "species": species
       }
     });
 
@@ -166,7 +225,7 @@ class PlantService {
         message: RESPONSE_MESSAGE.NO_ERROR
       };
     } catch (e) {
-      console.error(`failed to delete plant species ${plant_species} in genus ${plant_genus}: ${e}`);
+      console.error(`failed to delete plant species ${species} in genus ${genus}: ${e}`);
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
@@ -174,19 +233,24 @@ class PlantService {
     }
   }
 
-  /**
-   * Considers both the genus and species
-   * Checks genus existence first, check species existence only if genus exists as well
-   *
-   * @returns Whether or not both a given plant genus and species exist within the table
-   */
-  async checkSpeciesExists(plant_genus: string, plant_species: string) {
-    const genusExists = await this.checkGenusExists(plant_genus);
-    if (!genusExists) {
-      return genusExists;
+  async checkGenusExists(genus: string): Promise<boolean> {
+    const response = await this.getPlantGenusByGenus(genus);
+    const exists = response.message === RESPONSE_MESSAGE.NO_ERROR ? true : false;
+    return exists;
+  }
+  async checkGenusHasSpecies(genus: string): Promise<boolean> {
+    const response = await this.getAllPlantSpeciesInGenus(genus);
+
+    if (response.data !== undefined) {
+      const species = response.data as PlantSpecies[];
+      const exists = species.length !== 0 ? true : false;
+      return exists;
     }
 
-    const response = await this.getPlantSpeciesByGenusSpecies(plant_genus, plant_species);
+    return false;
+  }
+  async checkSpeciesExists(genus: string, species: string) {
+    const response = await this.getPlantSpeciesByGenusSpecies(genus, species);
     const speciesExists = response.message === RESPONSE_MESSAGE.NO_ERROR ? true : false;
     return speciesExists;
   }

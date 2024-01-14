@@ -98,24 +98,17 @@ ProductRouter.put('/', async (req, res) => {
 ProductRouter.delete('/:product_name', async (req, res) => {
   const product_name = req.params['product_name'];
 
-  const exists = await productService.checkProductExists(product_name);
-  if (!exists) {
-    res.status(404).send(RESPONSE_MESSAGE.NOT_FOUND);
-  }
+  const response = await productService.deleteProduct(product_name);
 
-  if (exists) {
-    const response = await productService.deleteProduct(product_name);
-
-    switch (response.message) {
-      case RESPONSE_MESSAGE.NO_ERROR:
-        res.status(204).send();
-        break;
-      case RESPONSE_MESSAGE.INTERNAL:
-        res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
-        break;
-      default:
-        res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
-        break;
-    }
+  switch (response.message) {
+    case RESPONSE_MESSAGE.NO_ERROR:
+      res.status(204).send();
+      break;
+    case RESPONSE_MESSAGE.INTERNAL:
+      res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
+      break;
+    default:
+      res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
+      break;
   }
 });

@@ -3,15 +3,15 @@ import PlantService from '../services/plantService';
 import { PlantGenus, PlantSpecies } from '../interfaces/plantInterface';
 import { RESPONSE_MESSAGE } from '../constants/responseMessageEnum';
 import { PLANT_DIFFICULTY, PLANT_LIGHT } from '../constants/plantEnum';
-import { checkValidSpeciesToCreate } from '../functions/validatePlant';
+import { checkValidPlantGenusToCreate, checkValidPlantGenusToDelete, checkValidPlantSpeciesToCreate } from '../functions/validatePlant';
 
 export const PlantRouter = Router();
 const plantService = new PlantService();
 
 PlantRouter.get('/:genus', async (req, res) => {
-  const plant_genus = req.params['genus'];
+  const genus = req.params['genus'];
 
-  const response = await plantService.getPlantGenusByGenus(plant_genus);
+  const response = await plantService.getPlantGenusByGenus(genus);
 
   switch (response.message) {
     case RESPONSE_MESSAGE.NO_ERROR:
@@ -29,11 +29,10 @@ PlantRouter.get('/:genus', async (req, res) => {
   }
 });
 
-PlantRouter.get('/:genus/:species', async (req, res) => {
-  const plant_genus = req.params['genus'];
-  const plant_species = req.params['species'];
+PlantRouter.get('/:genus/species', async (req, res) => {
+  const genus = req.params['genus'];
 
-  const response = await plantService.getPlantSpeciesByGenusSpecies(plant_genus, plant_species);
+  const response = await plantService.getAllPlantSpeciesInGenus(genus);
 
   switch (response.message) {
     case RESPONSE_MESSAGE.NO_ERROR:
@@ -53,7 +52,107 @@ PlantRouter.get('/:genus/:species', async (req, res) => {
 
 // TODO:
 // Make it required for difficulty / light / feed type / etc ( attrs w/ enums ) to only be the values specified in those enums
-PlantRouter.post('/', async (req, res) => {
+PlantRouter.post('/genus', async (req, res) => {
+  const genus: string = req.body.genus || '';
+  const type: string = req.body.type || '';
+  const feed_style: string = req.body.feed_style || '';
+  const growth_rate: string = req.body.growth_rate || '';
+  const sensitivity: string[] = req.body.sensitivity || [];
+
+  const plantGenus: PlantGenus = {
+    genus: genus,
+    species: 'genus',
+    type: type,
+    feed_style: feed_style,
+    growth_rate: growth_rate,
+    sensitivity: sensitivity
+  }
+
+  const requestValidity = await checkValidPlantGenusToCreate(plantGenus);
+
+  if (!requestValidity.valid) {
+    res.status(400).send(requestValidity.message);
+  }
+
+  if (requestValidity.valid) {
+    const response = await plantService.createPlantGenus(plantGenus);
+
+    switch (response.message) {
+      case RESPONSE_MESSAGE.NO_ERROR:
+        res.status(200).send(response.data);
+        break;
+      case RESPONSE_MESSAGE.INTERNAL:
+        res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
+        break;
+      default:
+        res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
+        break;
+    }
+  }
+});
+
+PlantRouter.delete('/:genus', async (req, res) => {
+  const genus = req.params['genus'];
+
+  const requestValidity = await checkValidPlantGenusToDelete(genus);
+
+  if (!requestValidity.valid) {
+    switch (requestValidity.message) {
+      case RESPONSE_MESSAGE.INVALID:
+        res.status(400).send(RESPONSE_MESSAGE.INVALID);
+        break;
+      case RESPONSE_MESSAGE.NOT_FOUND:
+        res.status(404).send(RESPONSE_MESSAGE.NOT_FOUND);
+        break;
+      case RESPONSE_MESSAGE.HAS_SPECIES:
+        res.status(409).send(RESPONSE_MESSAGE.HAS_SPECIES);
+        break;
+    }
+  }
+
+  if (requestValidity.valid) {
+    const response = await plantService.deletePlantGenus(genus);
+
+    switch (response.message) {
+      case RESPONSE_MESSAGE.NO_ERROR:
+        res.status(204).send();
+        break;
+      case RESPONSE_MESSAGE.INTERNAL:
+        res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
+        break;
+      default:
+        res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
+        break;
+    }
+  }
+});
+
+
+PlantRouter.get('/:genus/:species', async (req, res) => {
+  const genus = req.params['genus'];
+  const species = req.params['species'];
+
+  const response = await plantService.getPlantSpeciesByGenusSpecies(genus, species);
+
+  switch (response.message) {
+    case RESPONSE_MESSAGE.NO_ERROR:
+      res.status(200).send(response.data);
+      break;
+    case RESPONSE_MESSAGE.NOT_FOUND:
+      res.status(404).send(RESPONSE_MESSAGE.NOT_FOUND);
+      break;
+    case RESPONSE_MESSAGE.INTERNAL:
+      res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
+      break;
+    default:
+      res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
+      break;
+  }
+});
+
+// TODO:
+// Make it required for difficulty / light / feed type / etc ( attrs w/ enums ) to only be the values specified in those enums
+PlantRouter.post('/species', async (req, res) => {
   const genus: string = req.body.genus || '';
   const species: string = req.body.species || '';
   const CO2: boolean = req.body.CO2 || false;
@@ -70,7 +169,7 @@ PlantRouter.post('/', async (req, res) => {
     light: light
   }
 
-  const requestValidity = await checkValidSpeciesToCreate(plantSpecies);
+  const requestValidity = await checkValidPlantSpeciesToCreate(plantSpecies);
 
   if (!requestValidity.valid) {
     let statusCode: number;
@@ -107,27 +206,20 @@ PlantRouter.post('/', async (req, res) => {
 });
 
 PlantRouter.delete('/:genus/:species', async (req, res) => {
-  const plant_genus = req.params['genus'];
-  const plant_species = req.params['species'];
+  const genus = req.params['genus'];
+  const species = req.params['species'];
 
-  const exists = await plantService.checkSpeciesExists(plant_genus, plant_species);
-  if (!exists) {
-    res.status(404).send(RESPONSE_MESSAGE.NOT_FOUND);
-  }
+  const response = await plantService.deletePlantSpecies(genus, species);
 
-  if (exists) {
-    const response = await plantService.deletePlantSpecies(plant_genus, plant_species);
-
-    switch (response.message) {
-      case RESPONSE_MESSAGE.NO_ERROR:
-        res.status(204).send();
-        break;
-      case RESPONSE_MESSAGE.INTERNAL:
-        res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
-        break;
-      default:
-        res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
-        break;
-    }
+  switch (response.message) {
+    case RESPONSE_MESSAGE.NO_ERROR:
+      res.status(204).send();
+      break;
+    case RESPONSE_MESSAGE.INTERNAL:
+      res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
+      break;
+    default:
+      res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
+      break;
   }
 });

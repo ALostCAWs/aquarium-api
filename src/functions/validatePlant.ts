@@ -1,7 +1,7 @@
 import PlantService from "../services/plantService";
 import { RESPONSE_MESSAGE } from "../constants/responseMessageEnum";
 import { checkStringValid } from "./validateInput";
-import { PlantSpecies } from "../interfaces/plantInterface";
+import { PlantGenus, PlantSpecies } from "../interfaces/plantInterface";
 
 const plantService = new PlantService();
 
@@ -10,7 +10,7 @@ interface ValidityCheckResponse {
   message: string
 }
 
-export const checkValidGenusToUse = async (genus: string): Promise<ValidityCheckResponse> => {
+export const checkValidPlantGenusToUse = async (genus: string): Promise<ValidityCheckResponse> => {
   if (!checkStringValid(genus)) {
     return {
       valid: false,
@@ -21,6 +21,7 @@ export const checkValidGenusToUse = async (genus: string): Promise<ValidityCheck
   const exists = await plantService.checkGenusExists(genus);
 
   if (!exists) {
+    console.error(`failed to get genus ${genus}`);
     return {
       valid: false,
       message: RESPONSE_MESSAGE.NOT_FOUND
@@ -33,7 +34,9 @@ export const checkValidGenusToUse = async (genus: string): Promise<ValidityCheck
   };
 }
 
-export const checkValidGenusToCreate = async (genus: string): Promise<ValidityCheckResponse> => {
+export const checkValidPlantGenusToCreate = async (plantGenus: PlantGenus): Promise<ValidityCheckResponse> => {
+  const genus = plantGenus.genus;
+
   if (!checkStringValid(genus)) {
     return {
       valid: false,
@@ -44,6 +47,7 @@ export const checkValidGenusToCreate = async (genus: string): Promise<ValidityCh
   const exists = await plantService.checkGenusExists(genus);
 
   if (exists) {
+    console.error(`failed to create genus ${genus}: ${RESPONSE_MESSAGE.ALREADY_EXISTS}`);
     return {
       valid: false,
       message: RESPONSE_MESSAGE.ALREADY_EXISTS
@@ -56,21 +60,101 @@ export const checkValidGenusToCreate = async (genus: string): Promise<ValidityCh
   };
 }
 
-export const checkValidSpeciesToCreate = async (plantSpecies: PlantSpecies): Promise<ValidityCheckResponse> => {
+export const checkValidPlantGenusToDelete = async (genus: string): Promise<ValidityCheckResponse> => {
   // Check genus is valid to use
-  const genus = plantSpecies.genus;
-  const species = plantSpecies.species;
-  const validGenus = await checkValidGenusToUse(genus);
+  const validGenus = await checkValidPlantGenusToUse(genus);
 
-  if (!validGenus.valid && validGenus.message === RESPONSE_MESSAGE.INVALID) {
-    console.error(`failed to create plant ${genus} ${species}: genus ${RESPONSE_MESSAGE.NOT_FOUND}`);
+  if (validGenus.message === RESPONSE_MESSAGE.INVALID) {
+    console.error(`failed to delete genus ${genus}: genus ${RESPONSE_MESSAGE.INVALID}`);
     return {
       valid: false,
       message: RESPONSE_MESSAGE.INVALID
     };
   }
-  if (!validGenus.valid && validGenus.message === RESPONSE_MESSAGE.NOT_FOUND) {
-    console.error(`failed to create plant ${genus} ${species}: species ${RESPONSE_MESSAGE.INVALID}`);
+  if (validGenus.message === RESPONSE_MESSAGE.NOT_FOUND) {
+    console.error(`failed to delete genus ${genus}: genus ${RESPONSE_MESSAGE.NOT_FOUND}`);
+    return {
+      valid: false,
+      message: RESPONSE_MESSAGE.NOT_FOUND
+    };
+  }
+
+  const hasSpecies = await plantService.checkGenusHasSpecies(genus);
+
+  if (hasSpecies) {
+    console.error(`failed to delete genus ${genus}: genus ${RESPONSE_MESSAGE.HAS_SPECIES}`);
+    return {
+      valid: false,
+      message: RESPONSE_MESSAGE.HAS_SPECIES
+    };
+  }
+
+  return {
+    valid: true,
+    message: RESPONSE_MESSAGE.NO_ERROR
+  };
+}
+
+export const checkValidPlantSpeciesToUse = async (plantSpecies: PlantSpecies): Promise<ValidityCheckResponse> => {
+  // Check genus is valid to use
+  const genus = plantSpecies.genus;
+  const species = plantSpecies.species;
+  const validGenus = await checkValidPlantGenusToUse(genus);
+
+  if (validGenus.message === RESPONSE_MESSAGE.INVALID) {
+    console.error(`failed to get plant ${genus} ${species}: genus ${RESPONSE_MESSAGE.INVALID}`);
+    return {
+      valid: false,
+      message: RESPONSE_MESSAGE.INVALID
+    };
+  }
+  if (validGenus.message === RESPONSE_MESSAGE.NOT_FOUND) {
+    console.error(`failed to get plant ${genus} ${species}: genus ${RESPONSE_MESSAGE.NOT_FOUND}`);
+    return {
+      valid: false,
+      message: RESPONSE_MESSAGE.NOT_FOUND
+    };
+  }
+
+  // Check species is valid to use
+  if (!checkStringValid(species)) {
+    return {
+      valid: false,
+      message: RESPONSE_MESSAGE.INVALID
+    };
+  }
+
+  const exists = await plantService.checkSpeciesExists(genus, species);
+
+  if (!exists) {
+    console.error(`failed to get plant ${genus} ${species}: species ${RESPONSE_MESSAGE.NOT_FOUND}`);
+    return {
+      valid: false,
+      message: RESPONSE_MESSAGE.NOT_FOUND
+    };
+  }
+
+  return {
+    valid: true,
+    message: RESPONSE_MESSAGE.NO_ERROR
+  };
+}
+
+export const checkValidPlantSpeciesToCreate = async (plantSpecies: PlantSpecies): Promise<ValidityCheckResponse> => {
+  // Check genus is valid to use
+  const genus = plantSpecies.genus;
+  const species = plantSpecies.species;
+  const validGenus = await checkValidPlantGenusToUse(genus);
+
+  if (validGenus.message === RESPONSE_MESSAGE.INVALID) {
+    console.error(`failed to create plant ${genus} ${species}: genus ${RESPONSE_MESSAGE.INVALID}`);
+    return {
+      valid: false,
+      message: RESPONSE_MESSAGE.INVALID
+    };
+  }
+  if (validGenus.message === RESPONSE_MESSAGE.NOT_FOUND) {
+    console.error(`failed to create plant ${genus} ${species}: genus ${RESPONSE_MESSAGE.NOT_FOUND}`);
     return {
       valid: false,
       message: RESPONSE_MESSAGE.NOT_FOUND
