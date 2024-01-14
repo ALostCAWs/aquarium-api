@@ -4,24 +4,28 @@ export enum PLANT_TYPE {
   STOLON = 'stolon',
   ROSULATE = 'rosulate',
   MOSS = 'moss',
-  FLOATING = 'floating'
+  FLOATING = 'floating',
+  UNSPECIFIED = 'unspecified'
 }
 
 export enum PLANT_FEED_STYLE {
   WATER_COLUMN = 'water column',
-  ROOT = 'root'
+  ROOT = 'root',
+  UNSPECIFIED = 'unspecified'
 }
 
 export enum PLANT_GROWTH_RATE {
   SLOW = 'slow',
   MODERATE = 'moderate',
-  FAST = 'fast'
+  FAST = 'fast',
+  UNSPECIFIED = 'unspecified'
 }
 
 export enum PLANT_DIFFICULTY {
   EASY = 'easy',
   MODERATE = 'moderate',
-  HARD = 'hard'
+  HARD = 'hard',
+  UNSPECIFIED = 'unspecified'
 }
 
 export enum PLANT_LIGHT {
@@ -30,4 +34,5 @@ export enum PLANT_LIGHT {
   MODERATE = 'moderate',
   MODERATE_HIGH = 'moderate-high',
   HIGH = 'high',
+  UNSPECIFIED = 'unspecified'
 }

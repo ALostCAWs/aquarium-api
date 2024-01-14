@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import TankService from '../services/tankService';
 import { Tank } from '../interfaces/tankInterface';
-import { RESPONSE_MESSAGE } from '../constants/responseMessage';
+import { RESPONSE_MESSAGE } from '../constants/responseMessageEnum';
 
 export const TankRouter = Router();
 const tankService = new TankService();
@@ -94,14 +94,12 @@ TankRouter.put('/', async (req, res) => {
 
 TankRouter.delete('/:tank_id', async (req, res) => {
   const tank_id = req.params['tank_id'];
+
   const response = await tankService.deleteTank(tank_id);
 
   switch (response.message) {
     case RESPONSE_MESSAGE.NO_ERROR:
       res.status(204).send();
-      break;
-    case RESPONSE_MESSAGE.NOT_FOUND:
-      res.status(404).send(RESPONSE_MESSAGE.NOT_FOUND);
       break;
     case RESPONSE_MESSAGE.INTERNAL:
       res.status(500).send(RESPONSE_MESSAGE.INTERNAL);

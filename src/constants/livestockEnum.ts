@@ -1,28 +1,33 @@
 export enum LIVESTOCK_TYPE {
   FISH = 'fish',
   SHRIMP = 'shrimp',
-  SNAIL = 'snail'
+  SNAIL = 'snail',
+  UNSPECIFIED = 'unspecified'
 }
 
 export enum LIVESTOCK_FEED_STYLE {
-  OMNI = 'omnivorous',
-  CARN = 'carnivorous',
-  HERB = 'herbivorous',
-  DETRITE = 'detritivorous'
+  OMNIVORE = 'omnivorous',
+  CARNIVORE = 'carnivorous',
+  HERBIVORE = 'herbivorous',
+  DETRITIVORE = 'detritivorous',
+  UNSPECIFIED = 'unspecified'
 }
 
 export enum FISH_REPRODUCTION_STYLE {
   LIVE = 'live-bearing',
   EGG = 'egg-laying',
+  UNSPECIFIED = 'unspecified'
 }
 
 export enum SHRIMP_REPRODUCTION_STYLE {
   HIGH_ORDER = 'high order shrimp',
-  LOW_ORDER = 'low order shrimp'
+  LOW_ORDER = 'low order shrimp',
+  UNSPECIFIED = 'unspecified'
 }
 
 export enum LIVESTOCK_DIFFICULTY {
   EASY = 'easy',
   MODERATE = 'moderate',
-  HARD = 'hard'
+  HARD = 'hard',
+  UNSPECIFIED = 'unspecified'
 }

@@ -1,7 +1,7 @@
 import { DynamoDBDocumentClient, ScanCommand, GetCommand, PutCommand, PutCommandOutput, UpdateCommand, UpdateCommandOutput, DeleteCommand, DeleteCommandOutput } from '@aws-sdk/lib-dynamodb';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { TABLE } from '../constants/table';
-import { RESPONSE_MESSAGE } from '../constants/responseMessage';
+import { RESPONSE_MESSAGE } from '../constants/responseMessageEnum';
 import { Product } from '../interfaces/productInterface';
 
 interface GetProductResponse {
@@ -115,11 +115,11 @@ class ProductService {
     });
 
     try {
+      const exists = await this.checkProductExists(product.name);
       const response = await this.docClient.send(command);
 
-      if (!this.checkExists(product.name)) {
+      if (!exists) {
         response.$metadata.httpStatusCode = 201;
-
         return {
           data: response,
           message: RESPONSE_MESSAGE.NOT_FOUND
@@ -140,13 +140,6 @@ class ProductService {
   }
 
   async deleteProduct(product_name: string): Promise<DeleteProductResponse> {
-    if (!this.checkExists(product_name)) {
-      return {
-        data: undefined,
-        message: RESPONSE_MESSAGE.NOT_FOUND
-      };
-    }
-
     const command = new DeleteCommand({
       "TableName": TABLE.PRODUCT,
       "Key": {
@@ -170,7 +163,7 @@ class ProductService {
     }
   }
 
-  async checkExists(product_name: string): Promise<boolean> {
+  async checkProductExists(product_name: string): Promise<boolean> {
     const response = await this.getProductByName(product_name);
     const exists = response.message === RESPONSE_MESSAGE.NO_ERROR ? true : false;
     return exists;
