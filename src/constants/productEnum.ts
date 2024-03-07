@@ -4,6 +4,6 @@ export enum PRODUCT_TYPE {
   MEDICATION = 'medication',
   SALT = 'salt',
   WATER_COLUMN_FERTILIZER = 'water column fertilizer',
-  ROOT_FERTILIZER = 'root fertilizer',
+  SUBSTRATE_FERTILIZER = 'substrate fertilizer',
   ALGICIDE = 'algicide'
 }

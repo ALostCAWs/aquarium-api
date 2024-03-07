@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import PlantService from '../services/plantService';
 import { PlantGenus, PlantSpecies } from '../interfaces/plantInterface';
+import { Temperature_Range, Parameter_Range } from '../interfaces/rangeInterface';
 import { RESPONSE_MESSAGE } from '../constants/responseMessageEnum';
 import { PLANT_TYPE, PLANT_FEED_STYLE, PLANT_GROWTH_RATE, PLANT_DIFFICULTY, PLANT_LIGHT } from '../constants/plantEnum';
 import { checkValidPlantGenusToCreate, checkValidPlantGenusToDelete, checkValidPlantGenusToUse, checkValidPlantSpeciesToCreate } from '../functions/validatePlant';
@@ -57,6 +58,8 @@ PlantRouter.post('/genus', async (req, res) => {
   const type: string = req.body.type || PLANT_TYPE.UNSPECIFIED;
   const feed_style: string = req.body.feed_style || PLANT_FEED_STYLE.UNSPECIFIED;
   const growth_rate: string = req.body.growth_rate || PLANT_GROWTH_RATE.UNSPECIFIED;
+  const temperature_range: Temperature_Range = req.body.temperature_range || {};
+  const parameters: Parameter_Range = req.body.parameters || {};
   const sensitivity: string[] = req.body.sensitivity || [];
 
   const plantGenus: PlantGenus = {
@@ -65,6 +68,8 @@ PlantRouter.post('/genus', async (req, res) => {
     type: type,
     feed_style: feed_style,
     growth_rate: growth_rate,
+    temperature_range: temperature_range,
+    parameters: parameters,
     sensitivity: sensitivity
   }
 
@@ -96,6 +101,8 @@ PlantRouter.put('/genus', async (req, res) => {
   const type: string = req.body.type || '';
   const feed_style: string = req.body.feed_style || PLANT_FEED_STYLE.UNSPECIFIED;
   const growth_rate: string = req.body.growth_rate || PLANT_GROWTH_RATE.UNSPECIFIED;
+  const temperature_range: Temperature_Range = req.body.temperature_range || {};
+  const parameters: Parameter_Range = req.body.parameters || {};
   const sensitivity: string[] = req.body.sensitivity || [];
 
   const plantGenus: PlantGenus = {
@@ -104,6 +111,8 @@ PlantRouter.put('/genus', async (req, res) => {
     type: type,
     feed_style: feed_style,
     growth_rate: growth_rate,
+    temperature_range: temperature_range,
+    parameters: parameters,
     sensitivity: sensitivity
   }
 
@@ -199,7 +208,7 @@ PlantRouter.post('/species', async (req, res) => {
     species: species,
     CO2: CO2,
     difficulty: difficulty,
-    commonName: commonName,
+    common_name: commonName,
     light: light
   }
 
@@ -264,7 +273,7 @@ PlantRouter.put('/species', async (req, res) => {
     const plantSpecies: PlantSpecies = {
       genus: genus,
       species: species,
-      commonName: commonName,
+      common_name: commonName,
       CO2: CO2,
       difficulty: difficulty,
       light: light

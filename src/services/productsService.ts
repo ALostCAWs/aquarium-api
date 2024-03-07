@@ -1,6 +1,6 @@
 import { DynamoDBDocumentClient, ScanCommand, GetCommand, PutCommand, PutCommandOutput, UpdateCommand, UpdateCommandOutput, DeleteCommand, DeleteCommandOutput } from '@aws-sdk/lib-dynamodb';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { TABLE } from '../constants/table';
+import { TABLE } from '../constants/tableEnum';
 import { RESPONSE_MESSAGE } from '../constants/responseMessageEnum';
 import { Product } from '../interfaces/productInterface';
 

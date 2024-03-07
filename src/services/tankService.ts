@@ -2,8 +2,11 @@ import { DynamoDBDocumentClient, ScanCommand, GetCommand, PutCommand, PutCommand
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { v4 as uuidv4 } from 'uuid';
 import { Tank } from '../interfaces/tankInterface';
-import { TABLE } from '../constants/table';
+import EventService from './eventService';
+import { TABLE } from '../constants/tableEnum';
 import { RESPONSE_MESSAGE } from '../constants/responseMessageEnum';
+
+const eventService = new EventService();
 
 interface GetTankResponse {
   data: Tank | Tank[] | undefined,
@@ -133,6 +136,12 @@ class TankService {
           message: RESPONSE_MESSAGE.NOT_FOUND
         }
       }
+
+      // Check if events occurred
+      const tankPreviousStateResponse = await this.getTankById(tank.id);
+      const tankPreviousState = tankPreviousStateResponse.data as Tank;
+
+      await eventService.determineEventOccurred(tank, tankPreviousState);
 
       return {
         data: response,
