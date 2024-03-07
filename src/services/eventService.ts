@@ -35,7 +35,7 @@ class EventService {
       // create event for cycle change
     }
 
-    if (tank.recent_water_change_timestamp !== tankPreviousState.recent_water_change_timestamp) {
+    if (tank.recent_water_change.timestamp !== tankPreviousState.recent_water_change.timestamp) {
       // create event for water change
     }
 

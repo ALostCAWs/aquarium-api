@@ -9,6 +9,25 @@ import { checkValidPlantGenusToCreate, checkValidPlantGenusToDelete, checkValidP
 export const PlantRouter = Router();
 const plantService = new PlantService();
 
+PlantRouter.get('/genera', async (req, res) => {
+  const response = await plantService.getAllPlantGenera();
+
+  switch (response.message) {
+    case RESPONSE_MESSAGE.NO_ERROR:
+      res.status(200).send(response.data);
+      break;
+    case RESPONSE_MESSAGE.NOT_FOUND:
+      res.status(404).send(RESPONSE_MESSAGE.NOT_FOUND);
+      break;
+    case RESPONSE_MESSAGE.INTERNAL:
+      res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
+      break;
+    default:
+      res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
+      break;
+  }
+});
+
 PlantRouter.get('/:genus', async (req, res) => {
   const genus = req.params['genus'];
 

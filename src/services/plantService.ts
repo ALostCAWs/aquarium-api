@@ -23,9 +23,38 @@ class PlantService {
   client: DynamoDBClient;
   docClient: DynamoDBDocumentClient;
 
-  // Get all genera
-  // Requires secondary index ?
   async getAllPlantGenera() {
+    const command = new QueryCommand({
+      "TableName": TABLE.PLANT,
+      "IndexName": 'species-index',
+      "KeyConditionExpression": 'species = :species_name',
+      "ExpressionAttributeValues": {
+        ':species_name': 'genus'
+      }
+    });
+
+    try {
+      const response = await this.docClient.send(command);
+
+      if (response.Items?.length === 0) {
+        return {
+          data: [],
+          message: RESPONSE_MESSAGE.NOT_FOUND
+        };
+      }
+
+      let genera = response.Items as PlantGenus[];
+      return {
+        data: genera,
+        message: RESPONSE_MESSAGE.NO_ERROR
+      };
+    } catch (e) {
+      console.error(`failed to get genera: ${e}`);
+      return {
+        data: undefined,
+        message: RESPONSE_MESSAGE.INTERNAL
+      }
+    }
   }
 
   async getPlantGenusByGenus(genus: string): Promise<GetPlantResponse> {
