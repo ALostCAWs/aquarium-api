@@ -2,6 +2,7 @@ import { Router } from 'express';
 import TankService from '../services/tankService';
 import { Tank } from '../interfaces/tankInterface';
 import { RESPONSE_MESSAGE } from '../constants/responseMessageEnum';
+import { Light } from '../interfaces/lightInterface';
 import { Parameter } from '../interfaces/parameterInterface';
 import { Test_Schedule } from '../interfaces/testScheduleInterface';
 import { WaterChange } from '../interfaces/waterChange';
@@ -54,12 +55,11 @@ TankRouter.post('/', async (req, res) => {
   const is_cycled: boolean = req.body.is_cycled;
   const filtration: string = req.body.filtration;
   const substrate: string = req.body.substrate;
-  const light: string = req.body.light;
-  const light_schedule: number = req.body.light_schedule;
   const temperature_setting: number = req.body.temperature_setting;
   const temperature_unit: string = req.body.temperature_unit;
   const livestock_list: string[] = req.body.livestock_list || [];
   const plant_list: string[] = req.body.plant_list || [];
+  const light: Light = req.body.light || {};
   const parameters: Parameter = req.body.parameters || {};
   const test_schedule: Test_Schedule = req.body.test_schedule || {};
   const recent_water_change: WaterChange = req.body.recent_water_change || {};
@@ -71,12 +71,11 @@ TankRouter.post('/', async (req, res) => {
     is_cycled: is_cycled,
     filtration: filtration,
     substrate: substrate,
-    light: light,
-    light_schedule: light_schedule,
     temperature_setting: temperature_setting,
     temperature_unit: temperature_unit,
     livestock_list: livestock_list,
     plant_list: plant_list,
+    light: light,
     parameters: parameters,
     test_schedule: test_schedule,
     recent_water_change: recent_water_change
