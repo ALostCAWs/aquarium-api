@@ -6,6 +6,7 @@ import { DynamoDBClient, ListTablesCommand } from '@aws-sdk/client-dynamodb';
 import { TankRouter } from './routers/tankRouter';
 import { ProductRouter } from './routers/productRouter';
 import { PlantRouter } from './routers/plantRouter';
+import { LivestockRouter } from './routers/livestockRouter';
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ const client = new DynamoDBClient({});
 app.use('/tanks', TankRouter);
 app.use('/products', ProductRouter);
 app.use('/plants', PlantRouter);
+app.use('/livestock', LivestockRouter);
 
 app.get('/', async (req, res) => {
   const command = new ListTablesCommand({});

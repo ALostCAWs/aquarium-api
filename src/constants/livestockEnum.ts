@@ -13,6 +13,10 @@ export enum LIVESTOCK_FEED_STYLE {
   UNSPECIFIED = 'unspecified'
 }
 
+export enum REPRODUCTION_STYLE {
+  UNSPECIFIED = 'unspecified'
+}
+
 export enum FISH_REPRODUCTION_STYLE {
   LIVE = 'live-bearing',
   EGG = 'egg-laying',

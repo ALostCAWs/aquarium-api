@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import PlantService from '../services/plantService';
 import { PlantGenus, PlantSpecies } from '../interfaces/plantInterface';
-import { Temperature_Range, Parameter_Range } from '../interfaces/rangeInterface';
+import { TemperatureRange, ParameterRange } from '../interfaces/rangeInterface';
 import { RESPONSE_MESSAGE } from '../constants/responseMessageEnum';
 import { PLANT_TYPE, PLANT_FEED_STYLE, PLANT_GROWTH_RATE, PLANT_DIFFICULTY, PLANT_LIGHT } from '../constants/plantEnum';
-import { checkValidPlantGenusToCreate, checkValidPlantGenusToDelete, checkValidPlantGenusToUse, checkValidPlantSpeciesToCreate } from '../functions/validatePlant';
+import { checkValidPlantGenusToCreate, checkValidPlantGenusToDelete, checkValidPlantSpeciesToCreate, checkValidPlantGenusToUse } from '../functions/validatePlant';
 
 export const PlantRouter = Router();
 const plantService = new PlantService();
@@ -77,8 +77,8 @@ PlantRouter.post('/genus', async (req, res) => {
   const type: string = req.body.type || PLANT_TYPE.UNSPECIFIED;
   const feed_style: string = req.body.feed_style || PLANT_FEED_STYLE.UNSPECIFIED;
   const growth_rate: string = req.body.growth_rate || PLANT_GROWTH_RATE.UNSPECIFIED;
-  const temperature_range: Temperature_Range = req.body.temperature_range || {};
-  const parameters: Parameter_Range = req.body.parameters || {};
+  const temperature_range: TemperatureRange = req.body.temperature_range || {};
+  const parameters: ParameterRange = req.body.parameters || {};
   const sensitivity: string[] = req.body.sensitivity || [];
 
   const plantGenus: PlantGenus = {
@@ -120,8 +120,8 @@ PlantRouter.put('/genus', async (req, res) => {
   const type: string = req.body.type || '';
   const feed_style: string = req.body.feed_style || PLANT_FEED_STYLE.UNSPECIFIED;
   const growth_rate: string = req.body.growth_rate || PLANT_GROWTH_RATE.UNSPECIFIED;
-  const temperature_range: Temperature_Range = req.body.temperature_range || {};
-  const parameters: Parameter_Range = req.body.parameters || {};
+  const temperature_range: TemperatureRange = req.body.temperature_range || {};
+  const parameters: ParameterRange = req.body.parameters || {};
   const sensitivity: string[] = req.body.sensitivity || [];
 
   const plantGenus: PlantGenus = {

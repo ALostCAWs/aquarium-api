@@ -1,16 +1,16 @@
-import PlantService from "../services/plantService";
+import LivestockService from "../services/livestockService";
 import { RESPONSE_MESSAGE } from "../constants/responseMessageEnum";
 import { checkStringValid } from "./validateInput";
-import { PlantGenus, PlantSpecies } from "../interfaces/plantInterface";
+import { LivestockGenus, LivestockSpecies } from "../interfaces/livestockInterface";
 
-const plantService = new PlantService();
+const livestockService = new LivestockService();
 
 interface ValidityCheckResponse {
   valid: boolean,
   message: string
 }
 
-export const checkValidPlantGenusToUse = async (genus: string): Promise<ValidityCheckResponse> => {
+export const checkValidLivestockGenusToUse = async (genus: string): Promise<ValidityCheckResponse> => {
   if (!checkStringValid(genus)) {
     return {
       valid: false,
@@ -18,10 +18,10 @@ export const checkValidPlantGenusToUse = async (genus: string): Promise<Validity
     };
   }
 
-  const exists = await plantService.checkGenusExists(genus);
+  const exists = await livestockService.checkGenusExists(genus);
 
   if (!exists) {
-    console.error(`failed to get plant genus ${genus}`);
+    console.error(`failed to get livestock genus ${genus}`);
     return {
       valid: false,
       message: RESPONSE_MESSAGE.NOT_FOUND
@@ -34,8 +34,8 @@ export const checkValidPlantGenusToUse = async (genus: string): Promise<Validity
   };
 }
 
-export const checkValidPlantGenusToCreate = async (plantGenus: PlantGenus): Promise<ValidityCheckResponse> => {
-  const genus = plantGenus.genus;
+export const checkValidLivestockGenusToCreate = async (livestockGenus: LivestockGenus): Promise<ValidityCheckResponse> => {
+  const genus = livestockGenus.genus;
 
   if (!checkStringValid(genus)) {
     return {
@@ -44,10 +44,10 @@ export const checkValidPlantGenusToCreate = async (plantGenus: PlantGenus): Prom
     };
   }
 
-  const exists = await plantService.checkGenusExists(genus);
+  const exists = await livestockService.checkGenusExists(genus);
 
   if (exists) {
-    console.error(`failed to create plant genus ${genus}: ${RESPONSE_MESSAGE.ALREADY_EXISTS}`);
+    console.error(`failed to create livestock genus ${genus}: ${RESPONSE_MESSAGE.ALREADY_EXISTS}`);
     return {
       valid: false,
       message: RESPONSE_MESSAGE.ALREADY_EXISTS
@@ -60,29 +60,29 @@ export const checkValidPlantGenusToCreate = async (plantGenus: PlantGenus): Prom
   };
 }
 
-export const checkValidPlantGenusToDelete = async (genus: string): Promise<ValidityCheckResponse> => {
+export const checkValidLivestockGenusToDelete = async (genus: string): Promise<ValidityCheckResponse> => {
   // Check genus is valid to use
-  const validGenus = await checkValidPlantGenusToUse(genus);
+  const validGenus = await checkValidLivestockGenusToUse(genus);
 
   if (validGenus.message === RESPONSE_MESSAGE.INVALID) {
-    console.error(`failed to delete genus ${genus}: genus ${RESPONSE_MESSAGE.INVALID}`);
+    console.error(`failed to delete livestock genus ${genus}: genus ${RESPONSE_MESSAGE.INVALID}`);
     return {
       valid: false,
       message: RESPONSE_MESSAGE.INVALID
     };
   }
   if (validGenus.message === RESPONSE_MESSAGE.NOT_FOUND) {
-    console.error(`failed to delete genus ${genus}: genus ${RESPONSE_MESSAGE.NOT_FOUND}`);
+    console.error(`failed to delete livestock genus ${genus}: genus ${RESPONSE_MESSAGE.NOT_FOUND}`);
     return {
       valid: false,
       message: RESPONSE_MESSAGE.NOT_FOUND
     };
   }
 
-  const hasSpecies = await plantService.checkGenusHasSpecies(genus);
+  const hasSpecies = await livestockService.checkGenusHasSpecies(genus);
 
   if (hasSpecies) {
-    console.error(`failed to delete genus ${genus}: genus ${RESPONSE_MESSAGE.HAS_SPECIES}`);
+    console.error(`failed to delete livestock genus ${genus}: genus ${RESPONSE_MESSAGE.HAS_SPECIES}`);
     return {
       valid: false,
       message: RESPONSE_MESSAGE.HAS_SPECIES
@@ -95,21 +95,21 @@ export const checkValidPlantGenusToDelete = async (genus: string): Promise<Valid
   };
 }
 
-export const checkValidPlantSpeciesToUse = async (plantSpecies: PlantSpecies): Promise<ValidityCheckResponse> => {
+export const checkValidLivestockSpeciesToUse = async (livestockSpecies: LivestockSpecies): Promise<ValidityCheckResponse> => {
   // Check genus is valid to use
-  const genus = plantSpecies.genus;
-  const species = plantSpecies.species;
-  const validGenus = await checkValidPlantGenusToUse(genus);
+  const genus = livestockSpecies.genus;
+  const species = livestockSpecies.species;
+  const validGenus = await checkValidLivestockGenusToUse(genus);
 
   if (validGenus.message === RESPONSE_MESSAGE.INVALID) {
-    console.error(`failed to get plant ${genus} ${species}: genus ${RESPONSE_MESSAGE.INVALID}`);
+    console.error(`failed to get livestock ${genus} ${species}: genus ${RESPONSE_MESSAGE.INVALID}`);
     return {
       valid: false,
       message: RESPONSE_MESSAGE.INVALID
     };
   }
   if (validGenus.message === RESPONSE_MESSAGE.NOT_FOUND) {
-    console.error(`failed to get plant ${genus} ${species}: genus ${RESPONSE_MESSAGE.NOT_FOUND}`);
+    console.error(`failed to get livestock ${genus} ${species}: genus ${RESPONSE_MESSAGE.NOT_FOUND}`);
     return {
       valid: false,
       message: RESPONSE_MESSAGE.NOT_FOUND
@@ -124,7 +124,7 @@ export const checkValidPlantSpeciesToUse = async (plantSpecies: PlantSpecies): P
     };
   }
 
-  const exists = await plantService.checkSpeciesExists(genus, species);
+  const exists = await livestockService.checkSpeciesExists(genus, species);
 
   if (!exists) {
     console.error(`failed to get plant ${genus} ${species}: species ${RESPONSE_MESSAGE.NOT_FOUND}`);
@@ -140,21 +140,21 @@ export const checkValidPlantSpeciesToUse = async (plantSpecies: PlantSpecies): P
   };
 }
 
-export const checkValidPlantSpeciesToCreate = async (plantSpecies: PlantSpecies): Promise<ValidityCheckResponse> => {
+export const checkValidLivestockSpeciesToCreate = async (livestockSpecies: LivestockSpecies): Promise<ValidityCheckResponse> => {
   // Check genus is valid to use
-  const genus = plantSpecies.genus;
-  const species = plantSpecies.species;
-  const validGenus = await checkValidPlantGenusToUse(genus);
+  const genus = livestockSpecies.genus;
+  const species = livestockSpecies.species;
+  const validGenus = await checkValidLivestockGenusToUse(genus);
 
   if (validGenus.message === RESPONSE_MESSAGE.INVALID) {
-    console.error(`failed to create plant ${genus} ${species}: genus ${RESPONSE_MESSAGE.INVALID}`);
+    console.error(`failed to create livestock ${genus} ${species}: genus ${RESPONSE_MESSAGE.INVALID}`);
     return {
       valid: false,
       message: RESPONSE_MESSAGE.INVALID
     };
   }
   if (validGenus.message === RESPONSE_MESSAGE.NOT_FOUND) {
-    console.error(`failed to create plant ${genus} ${species}: genus ${RESPONSE_MESSAGE.NOT_FOUND}`);
+    console.error(`failed to create livestock ${genus} ${species}: genus ${RESPONSE_MESSAGE.NOT_FOUND}`);
     return {
       valid: false,
       message: RESPONSE_MESSAGE.NOT_FOUND
@@ -163,14 +163,14 @@ export const checkValidPlantSpeciesToCreate = async (plantSpecies: PlantSpecies)
 
   // Check species is valid to create
   if (!checkStringValid(species)) {
-    console.error(`failed to create plant ${genus} ${species}: species ${RESPONSE_MESSAGE.INVALID}`);
+    console.error(`failed to create livestock ${genus} ${species}: species ${RESPONSE_MESSAGE.INVALID}`);
     return {
       valid: false,
       message: RESPONSE_MESSAGE.INVALID
     };
   }
 
-  const exists = await plantService.checkSpeciesExists(genus, species);
+  const exists = await livestockService.checkSpeciesExists(genus, species);
   if (exists) {
     console.error(`failed to create plant ${genus} ${species}: species ${RESPONSE_MESSAGE.ALREADY_EXISTS}`);
     return {

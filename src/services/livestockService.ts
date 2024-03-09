@@ -135,6 +135,7 @@ class LivestockService {
 
     try {
       const response = await this.docClient.send(command);
+      console.log(response);
       return {
         data: response,
         message: RESPONSE_MESSAGE.NO_ERROR

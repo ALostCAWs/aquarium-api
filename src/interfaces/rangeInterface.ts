@@ -1,30 +1,26 @@
-interface Temperature_Range_Item {
+export interface TemperatureRange {
   min: number,
   max: number
 }
-export interface Temperature_Range {
-  celsius: Temperature_Range_Item,
-  fahrenheit: Temperature_Range_Item
-}
 
-interface Parameter_Range_Item {
+interface ParameterRangeItem {
   min: number,
   max: number,
   unit: string
 }
-interface Parameter_Requirement_Item {
+interface ParameterRequirementItem {
   min: number,
   unit: string
 }
-interface Parameter_Tolerance_Item {
+interface ParameterToleranceItem {
   max: number,
   unit: string
 }
-export interface Parameter_Range {
-  [parameter: string]: Parameter_Range_Item | Parameter_Requirement_Item | Parameter_Tolerance_Item
+export interface ParameterRange {
+  [parameter: string]: ParameterRangeItem | ParameterRequirementItem | ParameterToleranceItem
 }
 /*
-let myParam: Parameter_Range = {};
+let myParam: ParameterRange = {};
 
 myParam['NH3'] = {
   min: 0,

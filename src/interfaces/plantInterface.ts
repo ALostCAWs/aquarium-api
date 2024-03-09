@@ -1,4 +1,4 @@
-import { Temperature_Range, Parameter_Range } from "./rangeInterface"
+import { TemperatureRange, ParameterRange } from "./rangeInterface"
 
 export interface PlantGenus {
   genus: string,
@@ -6,8 +6,8 @@ export interface PlantGenus {
   type: string,
   feed_style: string,
   growth_rate: string,
-  temperature_range: Temperature_Range,
-  parameters: Parameter_Range,
+  temperature_range: TemperatureRange,
+  parameters: ParameterRange,
   sensitivity: string[]
 }
 
