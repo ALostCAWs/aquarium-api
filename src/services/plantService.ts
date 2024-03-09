@@ -49,7 +49,7 @@ class PlantService {
         message: RESPONSE_MESSAGE.NO_ERROR
       };
     } catch (e) {
-      console.error(`failed to get genera: ${e}`);
+      console.error(`failed to get plant genera: ${e}`);
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
@@ -171,7 +171,7 @@ class PlantService {
         message: RESPONSE_MESSAGE.NO_ERROR
       };
     } catch (e) {
-      console.error(`failed to update genus ${plantGenus.genus}: ${e}`);
+      console.error(`failed to update plant genus ${plantGenus.genus}: ${e}`);
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
@@ -195,7 +195,7 @@ class PlantService {
         message: RESPONSE_MESSAGE.NO_ERROR
       };
     } catch (e) {
-      console.error(`failed to delete genus ${genus}: ${e}`);
+      console.error(`failed to delete plant genus ${genus}: ${e}`);
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
