@@ -1,6 +1,6 @@
-import { Light } from "./lightInterface"
+import { LightSettings } from "./lightInterface"
 import { Parameter } from "./parameterInterface"
-import { Test_Schedule } from "./testScheduleInterface"
+import { TestSchedule } from "./testScheduleInterface"
 import { WaterChange } from "./waterChange"
 
 export interface Tank {
@@ -14,8 +14,8 @@ export interface Tank {
   temperature_unit: string,
   livestock_list: string[],
   plant_list: string[],
-  light: Light,
+  light_settings: LightSettings,
   parameters: Parameter,
-  test_schedule: Test_Schedule,
+  test_schedule: TestSchedule,
   recent_water_change: WaterChange,
 }

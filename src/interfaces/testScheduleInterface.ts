@@ -1,4 +1,4 @@
 // Schedule for specific test to be taken every n days
-export interface Test_Schedule {
+export interface TestSchedule {
   [parameter: string]: number
 }

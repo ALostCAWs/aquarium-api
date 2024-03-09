@@ -2,9 +2,9 @@ import { Router } from 'express';
 import TankService from '../services/tankService';
 import { Tank } from '../interfaces/tankInterface';
 import { RESPONSE_MESSAGE } from '../constants/responseMessageEnum';
-import { Light } from '../interfaces/lightInterface';
+import { LightSettings as LightSettings } from '../interfaces/lightInterface';
 import { Parameter } from '../interfaces/parameterInterface';
-import { Test_Schedule } from '../interfaces/testScheduleInterface';
+import { TestSchedule as TestSchedule } from '../interfaces/testScheduleInterface';
 import { WaterChange } from '../interfaces/waterChange';
 
 export const TankRouter = Router();
@@ -59,9 +59,9 @@ TankRouter.post('/', async (req, res) => {
   const temperature_unit: string = req.body.temperature_unit;
   const livestock_list: string[] = req.body.livestock_list || [];
   const plant_list: string[] = req.body.plant_list || [];
-  const light: Light = req.body.light || {};
+  const light_settings: LightSettings = req.body.light || {};
   const parameters: Parameter = req.body.parameters || {};
-  const test_schedule: Test_Schedule = req.body.test_schedule || {};
+  const test_schedule: TestSchedule = req.body.test_schedule || {};
   const recent_water_change: WaterChange = req.body.recent_water_change || {};
 
   let tank = {
@@ -75,7 +75,7 @@ TankRouter.post('/', async (req, res) => {
     temperature_unit: temperature_unit,
     livestock_list: livestock_list,
     plant_list: plant_list,
-    light: light,
+    light_settings: light_settings,
     parameters: parameters,
     test_schedule: test_schedule,
     recent_water_change: recent_water_change
