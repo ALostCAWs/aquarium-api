@@ -6,6 +6,7 @@ import { LightSettings as LightSettings } from '../interfaces/lightInterface';
 import { Parameter } from '../interfaces/parameterInterface';
 import { TestSchedule as TestSchedule } from '../interfaces/testScheduleInterface';
 import { WaterChange } from '../interfaces/waterChange';
+import { Ailment } from '../interfaces/ailmentInterface';
 
 export const TankRouter = Router();
 const tankService = new TankService();
@@ -63,6 +64,7 @@ TankRouter.post('/', async (req, res) => {
   const parameters: Parameter = req.body.parameters || {};
   const test_schedule: TestSchedule = req.body.test_schedule || {};
   const recent_water_change: WaterChange = req.body.recent_water_change || {};
+  const ailment: Ailment[] = req.body.ailment || {};
 
   let tank = {
     id: '',
@@ -78,7 +80,8 @@ TankRouter.post('/', async (req, res) => {
     light_settings: light_settings,
     parameters: parameters,
     test_schedule: test_schedule,
-    recent_water_change: recent_water_change
+    recent_water_change: recent_water_change,
+    ailment: ailment
   }
 
   const response = await tankService.createTank(tank);
