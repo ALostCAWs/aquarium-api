@@ -1,6 +1,7 @@
 export enum EVENT {
   WATER_CHANGE = "water change",
-  TESTED = "tested",
+  LIGHT_SETTINGS_CHANGED = "light settings changed",
+  PARAMETER_TESTED = "tested",
   WATER_COLUMN_FERTILIZED = "water column fertilized",
   SUBSTRATE_FERTILIZED = "substrate fertilized",
   ALGICIDE_ADDED = "algicide added",
