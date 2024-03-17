@@ -58,8 +58,8 @@ TankRouter.get('/:tank_id/livestock', async (req, res) => {
     case RESPONSE_MESSAGE.NO_ERROR:
       res.status(200).send(response.data);
       break;
-    case RESPONSE_MESSAGE.NOT_FOUND:
-      res.status(404).send(RESPONSE_MESSAGE.NOT_FOUND);
+    case RESPONSE_MESSAGE.INTERNAL:
+      res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
       break;
     default:
       res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
@@ -75,8 +75,8 @@ TankRouter.get('/:tank_id/plants', async (req, res) => {
     case RESPONSE_MESSAGE.NO_ERROR:
       res.status(200).send(response.data);
       break;
-    case RESPONSE_MESSAGE.NOT_FOUND:
-      res.status(404).send(RESPONSE_MESSAGE.NOT_FOUND);
+    case RESPONSE_MESSAGE.INTERNAL:
+      res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
       break;
     default:
       res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
