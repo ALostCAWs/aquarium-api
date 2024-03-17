@@ -29,6 +29,7 @@ class EventService {
   client: DynamoDBClient;
   docClient: DynamoDBDocumentClient;
 
+  // Going to use Lambda triggers for these
   async determineEventOccurred(tank: Tank, tankPreviousState: Tank) {
     if (tank.is_cycled !== tankPreviousState.is_cycled) {
       const cycleEvent = this.determineCycleEvent(tankPreviousState.is_cycled);
@@ -39,17 +40,17 @@ class EventService {
       // create event for water change
     }
 
-    if (tank.livestock_list.length !== tankPreviousState.livestock_list.length) {
+    if (tank.livestock.length !== tankPreviousState.livestock.length) {
       // will need an update for determining deaths vs. removals
       // for now, program will consider all removals to be a death
-      const livestockEvent = this.determineLivestockListEvent(tank.livestock_list.length, tankPreviousState.livestock_list.length);
+      const livestockEvent = this.determineLivestockListEvent(tank.livestock.length, tankPreviousState.livestock.length);
       // create event for list update
     }
 
-    if (tank.plant_list.length !== tankPreviousState.plant_list.length) {
+    if (tank.plants.length !== tankPreviousState.plants.length) {
       // will need an update for determining deaths vs. removals
       // for now, program will consider all removals to be a death
-      const livestockEvent = this.determinePlantListEvent(tank.plant_list.length, tankPreviousState.plant_list.length);
+      const livestockEvent = this.determinePlantListEvent(tank.plants.length, tankPreviousState.plants.length);
       // create event for list update
     }
   }
@@ -69,6 +70,8 @@ class EventService {
     return plantEvent;
   }
 
+  // Create event needs to check the tank's livestock & plants for sensitivities
+  // If a sensitivity to a product is found, the user should be warned prior to the event's creation
   async createEvent() {
 
   }

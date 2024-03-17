@@ -4,6 +4,15 @@ import { TestSchedule } from "./testScheduleInterface"
 import { WaterChange } from "./waterChange"
 import { Ailment } from "./ailmentInterface"
 
+export interface TankInhabitant_Item {
+  genus: string,
+  species: string
+}
+
+export interface TankInhabitant {
+  [parameter: string]: TankInhabitant_Item
+}
+
 /* TODO
 * Needs full range of items to trigger all event types
 * WATER_CHANGE
@@ -42,8 +51,8 @@ export interface Tank {
   substrate: string,
   temperature_setting: number,
   temperature_unit: string,
-  livestock_list: string[],
-  plant_list: string[],
+  livestock: TankInhabitant[],
+  plants: TankInhabitant[],
   light_settings: LightSettings,
   parameters: Parameter,
   test_schedule: TestSchedule,

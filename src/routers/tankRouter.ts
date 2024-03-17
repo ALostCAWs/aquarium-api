@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import TankService from '../services/tankService';
-import { Tank } from '../interfaces/tankInterface';
+import { Tank, TankInhabitant } from '../interfaces/tankInterface';
 import { RESPONSE_MESSAGE } from '../constants/responseMessageEnum';
 import { LightSettings as LightSettings } from '../interfaces/lightInterface';
 import { Parameter } from '../interfaces/parameterInterface';
@@ -50,6 +50,40 @@ TankRouter.get('/:tank_id', async (req, res) => {
   }
 });
 
+TankRouter.get('/:tank_id/livestock', async (req, res) => {
+  const tank_id = req.params['tank_id'];
+  const response = await tankService.getTankLivestock(tank_id);
+
+  switch (response.message) {
+    case RESPONSE_MESSAGE.NO_ERROR:
+      res.status(200).send(response.data);
+      break;
+    case RESPONSE_MESSAGE.NOT_FOUND:
+      res.status(404).send(RESPONSE_MESSAGE.NOT_FOUND);
+      break;
+    default:
+      res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
+      break;
+  }
+});
+
+TankRouter.get('/:tank_id/plants', async (req, res) => {
+  const tank_id = req.params['tank_id'];
+  const response = await tankService.getTankPlants(tank_id);
+
+  switch (response.message) {
+    case RESPONSE_MESSAGE.NO_ERROR:
+      res.status(200).send(response.data);
+      break;
+    case RESPONSE_MESSAGE.NOT_FOUND:
+      res.status(404).send(RESPONSE_MESSAGE.NOT_FOUND);
+      break;
+    default:
+      res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
+      break;
+  }
+});
+
 TankRouter.post('/', async (req, res) => {
   const volume: number = req.body.volume;
   const volume_unit: string = req.body.volume_unit;
@@ -58,8 +92,8 @@ TankRouter.post('/', async (req, res) => {
   const substrate: string = req.body.substrate;
   const temperature_setting: number = req.body.temperature_setting;
   const temperature_unit: string = req.body.temperature_unit;
-  const livestock_list: string[] = req.body.livestock_list || [];
-  const plant_list: string[] = req.body.plant_list || [];
+  const livestock: TankInhabitant[] = req.body.livestock || [];
+  const plants: TankInhabitant[] = req.body.plants || [];
   const light_settings: LightSettings = req.body.light || {};
   const parameters: Parameter = req.body.parameters || {};
   const test_schedule: TestSchedule = req.body.test_schedule || {};
@@ -75,8 +109,8 @@ TankRouter.post('/', async (req, res) => {
     substrate: substrate,
     temperature_setting: temperature_setting,
     temperature_unit: temperature_unit,
-    livestock_list: livestock_list,
-    plant_list: plant_list,
+    livestock: livestock,
+    plants: plants,
     light_settings: light_settings,
     parameters: parameters,
     test_schedule: test_schedule,

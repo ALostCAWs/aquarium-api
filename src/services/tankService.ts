@@ -1,17 +1,28 @@
 import { DynamoDBDocumentClient, ScanCommand, GetCommand, PutCommand, PutCommandOutput, UpdateCommand, UpdateCommandOutput, DeleteCommand, DeleteCommandOutput } from '@aws-sdk/lib-dynamodb';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { v4 as uuidv4 } from 'uuid';
-import { Tank } from '../interfaces/tankInterface';
+import { Tank, TankInhabitant } from '../interfaces/tankInterface';
 import EventService from './eventService';
 import { TABLE } from '../constants/tableEnum';
 import { RESPONSE_MESSAGE } from '../constants/responseMessageEnum';
 
 const eventService = new EventService();
 
-interface GetTankResponse {
-  data: Tank | Tank[] | undefined,
+interface GetTanksResponse {
+  data: Tank[] | undefined,
   message: string
 }
+
+interface GetTankResponse {
+  data: Tank | undefined,
+  message: string
+}
+
+interface GetInhabitantsResponse {
+  data: TankInhabitant[] | undefined,
+  message: string
+}
+
 interface PutTankResponse {
   data: PutCommandOutput | undefined,
   message: string
@@ -30,7 +41,7 @@ class TankService {
   client: DynamoDBClient;
   docClient: DynamoDBDocumentClient;
 
-  async getAllTanks(): Promise<GetTankResponse> {
+  async getAllTanks(): Promise<GetTanksResponse> {
     const command = new ScanCommand({
       "TableName": TABLE.TANK
     });
@@ -91,6 +102,44 @@ class TankService {
         message: RESPONSE_MESSAGE.INTERNAL
       }
     }
+  }
+
+  async getTankLivestock(tank_id: string): Promise<GetInhabitantsResponse> {
+    const response = await this.getTankById(tank_id);
+
+    if (!response.data) {
+      return {
+        data: undefined,
+        message: RESPONSE_MESSAGE.NOT_FOUND
+      };
+    }
+
+    const tank = response.data as Tank;
+    // const inhabitants = [...tank.livestock_list] as TankInhabitant[] || [];
+
+    return {
+      data: tank.livestock,
+      message: RESPONSE_MESSAGE.NO_ERROR
+    };
+  }
+
+  async getTankPlants(tank_id: string): Promise<GetInhabitantsResponse> {
+    const response = await this.getTankById(tank_id);
+
+    if (!response.data) {
+      return {
+        data: undefined,
+        message: RESPONSE_MESSAGE.NOT_FOUND
+      };
+    }
+
+    const tank = response.data as Tank;
+    // const inhabitants = [...tank.plant_list] as TankInhabitant[] || [];
+
+    return {
+      data: tank.plants,
+      message: RESPONSE_MESSAGE.NO_ERROR
+    };
   }
 
   async createTank(tank: Tank): Promise<PutTankResponse> {
