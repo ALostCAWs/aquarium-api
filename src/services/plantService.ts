@@ -96,14 +96,14 @@ class PlantService {
     }
   }
 
-  async getPlantGenusSensitivity(genus: string) {
+  async getPlantGenusSensitivity(genus: string): Promise<GetSensitivityResponse> {
     const command = new GetCommand({
       "TableName": TABLE.PLANT,
       "Key": {
         "genus": genus,
         "species": "genus"
       },
-      "ProjectionExpression": 'sensitivity'
+      "ProjectionExpression": "sensitivity"
     });
 
     try {
@@ -124,7 +124,7 @@ class PlantService {
         message: RESPONSE_MESSAGE.NO_ERROR
       };
     } catch (e) {
-      console.error(`failed to get sensitivities for plant genus ${genus}`);
+      console.error(`failed to get sensitivities for plant genus ${genus}: ${e}`);
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
@@ -244,7 +244,6 @@ class PlantService {
     }
   }
 
-
   async getPlantSpeciesByGenusSpecies(genus: string, species: string): Promise<GetPlantResponse> {
     const command = new GetCommand({
       "TableName": TABLE.PLANT,
@@ -362,6 +361,7 @@ class PlantService {
     const exists = response.message === RESPONSE_MESSAGE.NO_ERROR ? true : false;
     return exists;
   }
+
   async checkGenusHasSpecies(genus: string): Promise<boolean> {
     const response = await this.getAllPlantSpeciesInGenus(genus);
 
@@ -373,6 +373,7 @@ class PlantService {
 
     return false;
   }
+
   async checkSpeciesExists(genus: string, species: string) {
     const response = await this.getPlantSpeciesByGenusSpecies(genus, species);
     const speciesExists = response.message === RESPONSE_MESSAGE.NO_ERROR ? true : false;

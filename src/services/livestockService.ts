@@ -9,6 +9,11 @@ interface GetLivestockResponse {
   message: string;
 }
 
+interface GetSensitivityResponse {
+  data: string[] | undefined,
+  message: string
+}
+
 interface PutLivestockResponse {
   data: PutCommandOutput | undefined,
   message: string
@@ -84,6 +89,42 @@ class LivestockService {
       };
     } catch (e) {
       console.error(`failed to get livestock genus ${genus}: ${e}`);
+      return {
+        data: undefined,
+        message: RESPONSE_MESSAGE.INTERNAL
+      };
+    }
+  }
+
+  async getLivestockGenusSensitivity(genus: string): Promise<GetSensitivityResponse> {
+    const command = new GetCommand({
+      "TableName": TABLE.LIVESTOCK,
+      "Key": {
+        "genus": genus,
+        "species": "genus"
+      },
+      "ProjectionExpression": "sensitivity"
+    });
+
+    try {
+      const response = await this.docClient.send(command);
+
+      // Finding no sensitivities in a given genus isn't necessarily erroneous
+      if (!response.Item) {
+        return {
+          data: [],
+          message: RESPONSE_MESSAGE.NO_ERROR
+        };
+      }
+
+      const sensitivity = response.Item as string[];
+
+      return {
+        data: sensitivity,
+        message: RESPONSE_MESSAGE.NO_ERROR
+      };
+    } catch (e) {
+      console.error(`failed to get sensitivities for livestock genus ${genus}: ${e}`);
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
@@ -204,7 +245,6 @@ class LivestockService {
     }
   }
 
-
   async getLivestockSpeciesByGenusSpecies(genus: string, species: string): Promise<GetLivestockResponse> {
     const command = new GetCommand({
       "TableName": TABLE.LIVESTOCK,
@@ -322,6 +362,7 @@ class LivestockService {
     const exists = response.message === RESPONSE_MESSAGE.NO_ERROR ? true : false;
     return exists;
   }
+
   async checkGenusHasSpecies(genus: string): Promise<boolean> {
     const response = await this.getAllLivestockSpeciesInGenus(genus);
 
@@ -333,6 +374,7 @@ class LivestockService {
 
     return false;
   }
+
   async checkSpeciesExists(genus: string, species: string) {
     const response = await this.getLivestockSpeciesByGenusSpecies(genus, species);
     const speciesExists = response.message === RESPONSE_MESSAGE.NO_ERROR ? true : false;

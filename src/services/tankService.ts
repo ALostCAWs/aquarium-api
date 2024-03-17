@@ -96,7 +96,7 @@ class TankService {
         message: RESPONSE_MESSAGE.NO_ERROR
       }
     } catch (e) {
-      console.error(`failed to get tank with Id ${tank_id}`);
+      console.error(`failed to get tank with Id ${tank_id}: ${e}`);
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
@@ -131,7 +131,7 @@ class TankService {
         message: RESPONSE_MESSAGE.NO_ERROR
       }
     } catch (e) {
-      console.error(`failed to get livestock in tank with Id ${tank_id}`);
+      console.error(`failed to get livestock in tank with Id ${tank_id}: ${e}`);
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
@@ -166,7 +166,7 @@ class TankService {
         message: RESPONSE_MESSAGE.NO_ERROR
       };
     } catch (e) {
-      console.error(`failed to get plants in tank with Id ${tank_id}`);
+      console.error(`failed to get plants in tank with Id ${tank_id}: ${e}`);
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
