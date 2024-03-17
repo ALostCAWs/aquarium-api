@@ -9,6 +9,11 @@ interface GetPlantResponse {
   message: string;
 }
 
+interface GetSensitivityResponse {
+  data: string[] | undefined,
+  message: string
+}
+
 interface PutPlantResponse {
   data: PutCommandOutput | undefined,
   message: string
@@ -84,6 +89,42 @@ class PlantService {
       };
     } catch (e) {
       console.error(`failed to get plant genus ${genus}: ${e}`);
+      return {
+        data: undefined,
+        message: RESPONSE_MESSAGE.INTERNAL
+      };
+    }
+  }
+
+  async getPlantGenusSensitivity(genus: string) {
+    const command = new GetCommand({
+      "TableName": TABLE.PLANT,
+      "Key": {
+        "genus": genus,
+        "species": "genus"
+      },
+      "ProjectionExpression": 'sensitivity'
+    });
+
+    try {
+      const response = await this.docClient.send(command);
+
+      // Finding no sensitivities in a given genus isn't necessarily erroneous
+      if (!response.Item) {
+        return {
+          data: [],
+          message: RESPONSE_MESSAGE.NO_ERROR
+        };
+      }
+
+      const sensitivity = response.Item as string[];
+
+      return {
+        data: sensitivity,
+        message: RESPONSE_MESSAGE.NO_ERROR
+      };
+    } catch (e) {
+      console.error(`failed to get sensitivities for plant genus ${genus}`);
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL

@@ -49,6 +49,23 @@ PlantRouter.get('/:genus', async (req, res) => {
   }
 });
 
+PlantRouter.get('/:genus/sensitivity', async (req, res) => {
+  const genus = req.params['genus'];
+  const response = await plantService.getPlantGenusSensitivity(genus);
+
+  switch (response.message) {
+    case RESPONSE_MESSAGE.NO_ERROR:
+      res.status(200).send(response.data);
+      break;
+    case RESPONSE_MESSAGE.INTERNAL:
+      res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
+      break;
+    default:
+      res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
+      break;
+  }
+});
+
 PlantRouter.get('/:genus/species', async (req, res) => {
   const genus = req.params['genus'];
 
