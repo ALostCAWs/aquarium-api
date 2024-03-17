@@ -18,6 +18,11 @@ interface GetTankResponse {
   message: string
 }
 
+interface GetTankSensitivityResponse {
+  data: string[] | undefined,
+  message: string
+}
+
 interface GetInhabitantsResponse {
   data: TankInhabitant[] | undefined,
   message: string
@@ -104,6 +109,12 @@ class TankService {
     }
   }
 
+  /*async getTankSensitivity(tank_id: string): Promise<GetTankSensitivityResponse> {
+    const tankLivestock = this.getTankLivestock(tank_id) || [];
+    const tankPlants = this.getTankPlants(tank_id) || [];
+    const tankLivestockSensitivity = '';
+  }*/
+
   async getTankLivestock(tank_id: string): Promise<GetInhabitantsResponse> {
     const command = new GetCommand({
       "TableName": TABLE.TANK,
@@ -124,7 +135,7 @@ class TankService {
         };
       }
 
-      const livestock = response.Item as TankInhabitant[];
+      const livestock = response.Item['livestock'] as TankInhabitant[];
 
       return {
         data: livestock,
@@ -145,7 +156,7 @@ class TankService {
       "Key": {
         "id": tank_id
       },
-      "ProjectionExpression": 'plants'
+      "ProjectionExpression": "plants",
     });
 
     try {
@@ -159,7 +170,7 @@ class TankService {
         };
       }
 
-      const plants = response.Item as TankInhabitant[];
+      const plants = response.Item['plants'] as TankInhabitant[];
 
       return {
         data: plants,

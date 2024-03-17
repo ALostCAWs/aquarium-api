@@ -1,15 +1,20 @@
 import { Router } from 'express';
 import TankService from '../services/tankService';
-import { Tank, TankInhabitant } from '../interfaces/tankInterface';
+import LivestockService from '../services/livestockService';
+import PlantService from '../services/plantService';
+import { Tank, TankInhabitant, TankInhabitant_Item } from '../interfaces/tankInterface';
 import { RESPONSE_MESSAGE } from '../constants/responseMessageEnum';
 import { LightSettings as LightSettings } from '../interfaces/lightInterface';
 import { Parameter } from '../interfaces/parameterInterface';
 import { TestSchedule as TestSchedule } from '../interfaces/testScheduleInterface';
 import { WaterChange } from '../interfaces/waterChange';
 import { Ailment } from '../interfaces/ailmentInterface';
+import { convertInhabitantsToArrayOfObjects } from '../functions/convertData';
 
 export const TankRouter = Router();
 const tankService = new TankService();
+const livestockService = new LivestockService();
+const plantService = new PlantService();
 
 TankRouter.get('/', async (req, res) => {
   const response = await tankService.getAllTanks();
@@ -48,6 +53,26 @@ TankRouter.get('/:tank_id', async (req, res) => {
       res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
       break;
   }
+});
+
+TankRouter.get('/:tank_id/sensitivity', async (req, res) => {
+  const tank_id = req.params['tank_id'];
+  const tankLivestock = (await tankService.getTankLivestock(tank_id)).data || [];
+  const tankPlants = (await tankService.getTankPlants(tank_id)).data || [];
+
+  const livestock = convertInhabitantsToArrayOfObjects(tankLivestock) as TankInhabitant_Item[];
+  const plants = convertInhabitantsToArrayOfObjects(tankPlants) as TankInhabitant_Item[];
+  const tankSensitivity = new Set();
+
+  livestock.forEach(async (l) => {
+    const sensitivity = await livestockService.getLivestockGenusSensitivity(l.genus) as unknown as string[];
+    tankSensitivity.add([...sensitivity]);
+  });
+
+  plants.forEach(async (p) => {
+    const sensitivity = await plantService.getPlantGenusSensitivity(p.genus) as unknown as string[];
+    tankSensitivity.add([...sensitivity]);
+  });
 });
 
 TankRouter.get('/:tank_id/livestock', async (req, res) => {
