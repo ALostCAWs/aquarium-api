@@ -105,41 +105,73 @@ class TankService {
   }
 
   async getTankLivestock(tank_id: string): Promise<GetInhabitantsResponse> {
-    const response = await this.getTankById(tank_id);
+    const command = new GetCommand({
+      "TableName": TABLE.TANK,
+      "Key": {
+        "id": tank_id
+      },
+      "ProjectionExpression": 'livestock'
+    });
 
-    if (!response.data) {
+    try {
+      const response = await this.docClient.send(command);
+
+      // Finding no livestock in a given tank isn't necessarily erroneous
+      if (!response.Item) {
+        return {
+          data: [],
+          message: RESPONSE_MESSAGE.NO_ERROR
+        };
+      }
+
+      const livestock = response.Item as TankInhabitant[];
+
+      return {
+        data: livestock,
+        message: RESPONSE_MESSAGE.NO_ERROR
+      }
+    } catch (e) {
+      console.error(`failed to get livestock in tank with Id ${tank_id}`);
       return {
         data: undefined,
-        message: RESPONSE_MESSAGE.NOT_FOUND
-      };
+        message: RESPONSE_MESSAGE.INTERNAL
+      }
     }
-
-    const tank = response.data as Tank;
-    // const inhabitants = [...tank.livestock_list] as TankInhabitant[] || [];
-
-    return {
-      data: tank.livestock,
-      message: RESPONSE_MESSAGE.NO_ERROR
-    };
   }
 
   async getTankPlants(tank_id: string): Promise<GetInhabitantsResponse> {
-    const response = await this.getTankById(tank_id);
+    const command = new GetCommand({
+      "TableName": TABLE.TANK,
+      "Key": {
+        "id": tank_id
+      },
+      "ProjectionExpression": 'plants'
+    });
 
-    if (!response.data) {
+    try {
+      const response = await this.docClient.send(command);
+
+      // Finding no plants in a given tank isn't necessarily erroneous
+      if (!response.Item) {
+        return {
+          data: [],
+          message: RESPONSE_MESSAGE.NO_ERROR
+        };
+      }
+
+      const plants = response.Item as TankInhabitant[];
+
+      return {
+        data: plants,
+        message: RESPONSE_MESSAGE.NO_ERROR
+      };
+    } catch (e) {
+      console.error(`failed to get plants in tank with Id ${tank_id}`);
       return {
         data: undefined,
-        message: RESPONSE_MESSAGE.NOT_FOUND
+        message: RESPONSE_MESSAGE.INTERNAL
       };
     }
-
-    const tank = response.data as Tank;
-    // const inhabitants = [...tank.plant_list] as TankInhabitant[] || [];
-
-    return {
-      data: tank.plants,
-      message: RESPONSE_MESSAGE.NO_ERROR
-    };
   }
 
   async createTank(tank: Tank): Promise<PutTankResponse> {
