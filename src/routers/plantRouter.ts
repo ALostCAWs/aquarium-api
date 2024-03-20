@@ -254,14 +254,13 @@ PlantRouter.post('/species', async (req, res) => {
     let statusCode: number;
     switch (requestValidity.message) {
       case RESPONSE_MESSAGE.NOT_FOUND:
-        statusCode = 404;
-        break;
       case RESPONSE_MESSAGE.ALREADY_EXISTS:
       case RESPONSE_MESSAGE.INVALID:
         statusCode = 400;
         break;
       default:
         statusCode = 400;
+        break;
     }
 
     res.status(statusCode).send(requestValidity.message);
@@ -297,10 +296,11 @@ PlantRouter.put('/species', async (req, res) => {
   if (!requestValidity.valid) {
     switch (requestValidity.message) {
       case RESPONSE_MESSAGE.INVALID:
+      case RESPONSE_MESSAGE.NOT_FOUND:
         res.status(400).send(RESPONSE_MESSAGE.INVALID);
         break;
-      case RESPONSE_MESSAGE.NOT_FOUND:
-        res.status(404).send(RESPONSE_MESSAGE.NOT_FOUND);
+      default:
+        res.status(400).send(RESPONSE_MESSAGE.INVALID);
         break;
     }
   }
@@ -313,7 +313,7 @@ PlantRouter.put('/species', async (req, res) => {
       CO2: CO2,
       difficulty: difficulty,
       light: light
-    }
+    };
 
     const response = await plantService.putPlantSpecies(plantSpecies);
 

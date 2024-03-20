@@ -168,10 +168,10 @@ class LivestockService {
     }
   }
 
-  async createLivestockGenus(LivestockGenus: LivestockGenus): Promise<PutLivestockResponse> {
+  async createLivestockGenus(livestockGenus: LivestockGenus): Promise<PutLivestockResponse> {
     const command = new PutCommand({
       "TableName": TABLE.LIVESTOCK,
-      "Item": LivestockGenus
+      "Item": livestockGenus
     });
 
     try {
@@ -182,7 +182,7 @@ class LivestockService {
         message: RESPONSE_MESSAGE.NO_ERROR
       };
     } catch (e) {
-      console.error(`failed to create livestock genus ${LivestockGenus.genus}: ${e}`);
+      console.error(`failed to create livestock genus ${livestockGenus.genus}: ${e}`);
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
@@ -190,14 +190,14 @@ class LivestockService {
     }
   }
 
-  async putLivestockGenus(LivestockGenus: LivestockGenus): Promise<PutLivestockResponse> {
+  async putLivestockGenus(livestockGenus: LivestockGenus): Promise<PutLivestockResponse> {
     const command = new PutCommand({
       "TableName": TABLE.LIVESTOCK,
-      "Item": LivestockGenus
+      "Item": livestockGenus
     });
 
     try {
-      const exists = await this.checkGenusExists(LivestockGenus.genus);
+      const exists = await this.checkGenusExists(livestockGenus.genus);
       const response = await this.docClient.send(command);
 
       if (!exists) {
@@ -213,7 +213,7 @@ class LivestockService {
         message: RESPONSE_MESSAGE.NO_ERROR
       };
     } catch (e) {
-      console.error(`failed to update livestock genus ${LivestockGenus.genus}: ${e}`);
+      console.error(`failed to update livestock genus ${livestockGenus.genus}: ${e}`);
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
@@ -279,10 +279,10 @@ class LivestockService {
     }
   }
 
-  async createLivestockSpecies(LivestockSpecies: LivestockSpecies): Promise<PutLivestockResponse> {
+  async createLivestockSpecies(livestockSpecies: LivestockSpecies): Promise<PutLivestockResponse> {
     const command = new PutCommand({
       "TableName": TABLE.LIVESTOCK,
-      "Item": LivestockSpecies
+      "Item": livestockSpecies
     });
 
     try {
@@ -293,7 +293,7 @@ class LivestockService {
         message: RESPONSE_MESSAGE.NO_ERROR
       };
     } catch (e) {
-      console.error(`failed to create livestock species ${LivestockSpecies.species} in genus ${LivestockSpecies.genus}: ${e}`);
+      console.error(`failed to create livestock species ${livestockSpecies.species} in genus ${livestockSpecies.genus}: ${e}`);
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
@@ -302,16 +302,16 @@ class LivestockService {
   }
 
   // Update species ( require existing genus )
-  async putLivestockSpecies(LivestockSpecies: LivestockSpecies): Promise<PutLivestockResponse> {
+  async putLivestockSpecies(livestockSpecies: LivestockSpecies): Promise<PutLivestockResponse> {
     const command = new PutCommand({
       "TableName": TABLE.LIVESTOCK,
-      "Item": LivestockSpecies
+      "Item": livestockSpecies
     });
 
     try {
       const response = await this.docClient.send(command);
 
-      if (!this.checkSpeciesExists(LivestockSpecies.genus, LivestockSpecies.species)) {
+      if (!this.checkSpeciesExists(livestockSpecies.genus, livestockSpecies.species)) {
         response.$metadata.httpStatusCode = 201;
         return {
           data: response,
@@ -324,7 +324,7 @@ class LivestockService {
         message: RESPONSE_MESSAGE.NO_ERROR
       };
     } catch (e) {
-      console.error(`failed to update livestock species ${LivestockSpecies.genus} ${LivestockSpecies.species}: ${e}`);
+      console.error(`failed to update livestock species ${livestockSpecies.genus} ${livestockSpecies.species}: ${e}`);
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL

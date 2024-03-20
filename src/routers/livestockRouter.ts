@@ -225,7 +225,7 @@ LivestockRouter.post('/species', async (req, res) => {
     species: species,
     common_name: common_name,
     difficulty: difficulty
-  }
+  };
 
   const requestValidity = await checkValidLivestockSpeciesToCreate(livestockSpecies);
 
@@ -233,14 +233,13 @@ LivestockRouter.post('/species', async (req, res) => {
     let statusCode: number;
     switch (requestValidity.message) {
       case RESPONSE_MESSAGE.NOT_FOUND:
-        statusCode = 404;
-        break;
       case RESPONSE_MESSAGE.ALREADY_EXISTS:
       case RESPONSE_MESSAGE.INVALID:
         statusCode = 400;
         break;
       default:
         statusCode = 400;
+        break;
     }
 
     res.status(statusCode).send(requestValidity.message);
@@ -274,10 +273,8 @@ LivestockRouter.put('/species', async (req, res) => {
   if (!requestValidity.valid) {
     switch (requestValidity.message) {
       case RESPONSE_MESSAGE.INVALID:
-        res.status(400).send(RESPONSE_MESSAGE.INVALID);
-        break;
       case RESPONSE_MESSAGE.NOT_FOUND:
-        res.status(404).send(RESPONSE_MESSAGE.NOT_FOUND);
+        res.status(400).send(RESPONSE_MESSAGE.INVALID);
         break;
     }
   }
@@ -288,7 +285,7 @@ LivestockRouter.put('/species', async (req, res) => {
       species: species,
       common_name: common_name,
       difficulty: difficulty
-    }
+    };
 
     const response = await livestockService.putLivestockSpecies(livestockSpecies);
 
