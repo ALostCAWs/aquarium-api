@@ -8,7 +8,7 @@ interface ParameterRangeItem {
   max: number,
   unit: string
 }
-interface ParameterRequirementItem {
+export interface ParameterRequirementItem {
   min: number,
   unit: string
 }

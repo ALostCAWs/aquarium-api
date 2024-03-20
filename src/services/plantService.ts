@@ -300,7 +300,6 @@ class PlantService {
     }
   }
 
-  // Update species ( require existing genus )
   async putPlantSpecies(plantSpecies: PlantSpecies): Promise<PutPlantResponse> {
     const command = new PutCommand({
       "TableName": TABLE.PLANT,
@@ -378,6 +377,22 @@ class PlantService {
     const response = await this.getPlantSpeciesByGenusSpecies(genus, species);
     const speciesExists = response.message === RESPONSE_MESSAGE.NO_ERROR ? true : false;
     return speciesExists;
+  }
+
+  // For test purposes only
+  async deleteAllPLantEntries() {
+    const generaEntries = (await this.getAllPlantGenera()).data as PlantGenus[];
+
+    for (const genusEntry in generaEntries) {
+      const genus = generaEntries[genusEntry].genus;
+      const speciesInGenus = (await this.getAllPlantSpeciesInGenus(genus)).data as PlantSpecies[];
+
+      for (const speciesEntry in speciesInGenus) {
+        const species = speciesInGenus[speciesEntry].species;
+        await this.deletePlantSpecies(genus, species);
+      }
+      await this.deletePlantGenus(genus);
+    }
   }
 
   constructor() {
