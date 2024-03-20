@@ -4,7 +4,6 @@ import { LIVESTOCK_TYPE, LIVESTOCK_FEED_STYLE, LIVESTOCK_DIFFICULTY, FISH_REPROD
 import { RESULTS_UNIT } from "./constants/unitEnum";
 import LivestockService from "./services/livestockService";
 
-
 const livestockService = new LivestockService();
 
 (async () => {
