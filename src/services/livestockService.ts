@@ -381,6 +381,21 @@ class LivestockService {
     return speciesExists;
   }
 
+  async deleteAllLivestockEntries() {
+    const generaEntries = (await this.getAllLivestockGenera()).data as LivestockGenus[];
+
+    for (const genusEntry in generaEntries) {
+      const genus = generaEntries[genusEntry].genus;
+      const speciesInGenus = (await this.getAllLivestockSpeciesInGenus(genus)).data as LivestockSpecies[];
+
+      for (const speciesEntry in speciesInGenus) {
+        const species = speciesInGenus[speciesEntry].species;
+        await this.deleteLivestockSpecies(genus, species);
+      }
+      await this.deleteLivestockGenus(genus);
+    }
+  }
+
   constructor() {
     this.client = new DynamoDBClient({});
     this.docClient = DynamoDBDocumentClient.from(this.client);

@@ -6,13 +6,9 @@ import PlantService from "./services/plantService";
 
 const plantService = new PlantService();
 
-console.log('Deleting existing plant data . . .');
 (async () => {
   await plantService.deleteAllPLantEntries();
 });
-
-console.log('Existing plant data deleted');
-console.log('Adding plant data');
 
 const parameters: ParameterRange = {};
 

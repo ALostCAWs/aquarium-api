@@ -379,7 +379,6 @@ class PlantService {
     return speciesExists;
   }
 
-  // For test purposes only
   async deleteAllPLantEntries() {
     const generaEntries = (await this.getAllPlantGenera()).data as PlantGenus[];
 

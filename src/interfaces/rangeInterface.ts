@@ -3,7 +3,7 @@ export interface TemperatureRange {
   max: number
 }
 
-interface ParameterRangeItem {
+export interface ParameterRangeItem {
   min: number,
   max: number,
   unit: string
@@ -12,7 +12,7 @@ export interface ParameterRequirementItem {
   min: number,
   unit: string
 }
-interface ParameterToleranceItem {
+export interface ParameterToleranceItem {
   max: number,
   unit: string
 }
