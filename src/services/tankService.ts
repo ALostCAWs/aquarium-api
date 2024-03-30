@@ -284,10 +284,10 @@ class TankService {
     return exists;
   }
 
-  async deleteAllTankEntries() {
-    const tankEntries = (await this.getAllTanks()).data as Tank[];
+  async deleteAllTanks() {
+    const tanks = (await this.getAllTanks()).data as Tank[];
 
-    for (const [i, tank] of tankEntries.entries()) {
+    for (const [i, tank] of tanks.entries()) {
       const tankId = tank.id;
       await this.deleteTank(tankId);
     }

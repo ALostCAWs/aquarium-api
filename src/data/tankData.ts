@@ -10,7 +10,7 @@ import TankService from "../services/tankService";
 const tankService = new TankService();
 
 (async () => {
-  await tankService.deleteAllTankEntries();
+  await tankService.deleteAllTanks();
   await loadData();
 })();
 

@@ -380,9 +380,9 @@ class PlantService {
   }
 
   async deleteAllPLantEntries() {
-    const generaEntries = (await this.getAllPlantGenera()).data as PlantGenus[];
+    const genera = (await this.getAllPlantGenera()).data as PlantGenus[];
 
-    for (const [i, genusEntry] of generaEntries.entries()) {
+    for (const [i, genusEntry] of genera.entries()) {
       const genus = genusEntry.genus;
       const speciesInGenus = (await this.getAllPlantSpeciesInGenus(genus)).data as PlantSpecies[];
 
