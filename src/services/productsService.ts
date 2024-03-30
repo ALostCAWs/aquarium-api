@@ -169,6 +169,15 @@ class ProductService {
     return exists;
   }
 
+  async deleteAllProducts() {
+    const products = (await this.getAllProducts()).data as Product[];
+
+    for (const [i, product] of products.entries()) {
+      const name = product.name;
+      await this.deleteProduct(name);
+    }
+  }
+
   constructor() {
     this.client = new DynamoDBClient({});
     this.docClient = DynamoDBDocumentClient.from(this.client);
