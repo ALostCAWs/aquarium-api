@@ -288,7 +288,6 @@ class TankService {
     const tankEntries = (await this.getAllTanks()).data as Tank[];
 
     for (const [i, tank] of tankEntries.entries()) {
-      console.log(tank);
       const tankId = tank.id;
       await this.deleteTank(tankId);
     }
