@@ -187,7 +187,7 @@ class TankService {
 
   async createTank(tank: Tank): Promise<PutTankResponse> {
     const tank_id = uuidv4();
-    //tank.id = tank_id;
+    tank.id = tank_id;
 
     const command = new PutCommand({
       "TableName": TABLE.TANK,
