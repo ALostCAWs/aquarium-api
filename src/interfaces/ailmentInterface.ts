@@ -1,5 +1,6 @@
 export interface Ailment {
-  timestamp: string,
+  dx_timestamp: string,
+  cured_timestamp: string,
   name: string,
   type: string,
   notes: string

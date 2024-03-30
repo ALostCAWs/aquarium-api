@@ -36,6 +36,14 @@ export interface TankInhabitant {
 *   ^ Create event when ailment differs from previous state
 *     Needs Ailment interface ( name & type ) & enum ( enum to contain ailment types -> viral, bacterial, fungal, parasitic )
 *     Needs Ailment added to Tank interface as well
+*
+*
+* Events can have broader overall types
+*   Water change, param. change, settings change, inhabitants change, product addition, cycle change, ailment change
+*
+* Want to allow for searching of specific event for a specific tank
+*   Allow for broad & specific -> Any event, product add, fert., inhabitant, livestock, plant, ailment, ailment uncured, ailment cured
+*     All instances, date range, most recent
 */
 
 export interface Tank {
