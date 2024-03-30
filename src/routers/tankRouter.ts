@@ -2,12 +2,12 @@ import { Router } from 'express';
 import TankService from '../services/tankService';
 import LivestockService from '../services/livestockService';
 import PlantService from '../services/plantService';
-import { Tank, TankInhabitant, TankInhabitant_Item } from '../interfaces/tankInterface';
+import { Tank, TankInhabitant } from '../interfaces/tankInterface';
 import { RESPONSE_MESSAGE } from '../constants/responseMessageEnum';
 import { LightSettings as LightSettings } from '../interfaces/lightInterface';
 import { Parameter } from '../interfaces/parameterInterface';
 import { TestSchedule as TestSchedule } from '../interfaces/testScheduleInterface';
-import { WaterChange } from '../interfaces/waterChange';
+import { WaterChange } from '../interfaces/waterChangeInterface';
 import { Ailment } from '../interfaces/ailmentInterface';
 import { convertInhabitantsToArrayOfObjects } from '../functions/convertData';
 
@@ -60,8 +60,8 @@ TankRouter.get('/:tank_id/sensitivity', async (req, res) => {
   const tankLivestock = (await tankService.getTankLivestock(tank_id)).data || [];
   const tankPlants = (await tankService.getTankPlants(tank_id)).data || [];
 
-  const livestock = convertInhabitantsToArrayOfObjects(tankLivestock) as TankInhabitant_Item[];
-  const plants = convertInhabitantsToArrayOfObjects(tankPlants) as TankInhabitant_Item[];
+  const livestock = convertInhabitantsToArrayOfObjects(tankLivestock) as TankInhabitant[];
+  const plants = convertInhabitantsToArrayOfObjects(tankPlants) as TankInhabitant[];
   const tankSensitivity = new Set();
 
   livestock.forEach(async (l) => {
@@ -123,7 +123,7 @@ TankRouter.post('/', async (req, res) => {
   const parameters: Parameter = req.body.parameters || {};
   const test_schedule: TestSchedule = req.body.test_schedule || {};
   const recent_water_change: WaterChange = req.body.recent_water_change || {};
-  const ailment: Ailment[] = req.body.ailment || {};
+  const ailments: Ailment[] = req.body.ailments || {};
 
   let tank = {
     id: '',
@@ -140,7 +140,7 @@ TankRouter.post('/', async (req, res) => {
     parameters: parameters,
     test_schedule: test_schedule,
     recent_water_change: recent_water_change,
-    ailment: ailment
+    ailments: ailments
   }
 
   const response = await tankService.createTank(tank);

@@ -1,8 +1,8 @@
-interface Parameter_Item {
+export interface ParameterItem {
   result: number,
   result_unit: string,
   test_timestamp: string
 }
 export interface Parameter {
-  [parameter: string]: Parameter_Item
+  [parameter: string]: ParameterItem
 }

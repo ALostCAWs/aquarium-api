@@ -187,7 +187,7 @@ class TankService {
 
   async createTank(tank: Tank): Promise<PutTankResponse> {
     const tank_id = uuidv4();
-    tank.id = tank_id;
+    //tank.id = tank_id;
 
     const command = new PutCommand({
       "TableName": TABLE.TANK,
@@ -282,6 +282,16 @@ class TankService {
     const response = await this.getTankById(tank_id);
     const exists = response.message === RESPONSE_MESSAGE.NO_ERROR ? true : false;
     return exists;
+  }
+
+  async deleteAllTankEntries() {
+    const tankEntries = (await this.getAllTanks()).data as Tank[];
+
+    for (const [i, tank] of tankEntries.entries()) {
+      console.log(tank);
+      const tankId = tank.id;
+      await this.deleteTank(tankId);
+    }
   }
 
   constructor() {

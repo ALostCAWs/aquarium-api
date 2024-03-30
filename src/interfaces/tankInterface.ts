@@ -1,16 +1,12 @@
 import { LightSettings } from "./lightInterface"
 import { Parameter } from "./parameterInterface"
 import { TestSchedule } from "./testScheduleInterface"
-import { WaterChange } from "./waterChange"
+import { WaterChange } from "./waterChangeInterface"
 import { Ailment } from "./ailmentInterface"
 
-export interface TankInhabitant_Item {
+export interface TankInhabitant {
   genus: string,
   species: string
-}
-
-export interface TankInhabitant {
-  [parameter: string]: TankInhabitant_Item
 }
 
 /* TODO
@@ -57,5 +53,5 @@ export interface Tank {
   parameters: Parameter,
   test_schedule: TestSchedule,
   recent_water_change: WaterChange,
-  ailment: Ailment[]
+  ailments: Ailment[]
 }

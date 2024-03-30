@@ -1,4 +1,4 @@
-import { TankInhabitant, TankInhabitant_Item } from "../interfaces/tankInterface";
+import { TankInhabitant } from "../interfaces/tankInterface";
 
 export const convertInhabitantsToArrayOfObjects = <T>(inhabitants: TankInhabitant[]): T[] => {
   const inhabitantsList = [];
