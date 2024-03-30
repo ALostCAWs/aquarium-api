@@ -384,12 +384,12 @@ class LivestockService {
   async deleteAllLivestockEntries() {
     const generaEntries = (await this.getAllLivestockGenera()).data as LivestockGenus[];
 
-    for (const genusEntry in generaEntries) {
-      const genus = generaEntries[genusEntry].genus;
+    for (const [i, genusEntry] of generaEntries.entries()) {
+      const genus = genusEntry.genus;
       const speciesInGenus = (await this.getAllLivestockSpeciesInGenus(genus)).data as LivestockSpecies[];
 
-      for (const speciesEntry in speciesInGenus) {
-        const species = speciesInGenus[speciesEntry].species;
+      for (const [i, speciesEntry] of speciesInGenus.entries()) {
+        const species = speciesEntry.species;
         await this.deleteLivestockSpecies(genus, species);
       }
       await this.deleteLivestockGenus(genus);

@@ -382,12 +382,12 @@ class PlantService {
   async deleteAllPLantEntries() {
     const generaEntries = (await this.getAllPlantGenera()).data as PlantGenus[];
 
-    for (const genusEntry in generaEntries) {
-      const genus = generaEntries[genusEntry].genus;
+    for (const [i, genusEntry] of generaEntries.entries()) {
+      const genus = genusEntry.genus;
       const speciesInGenus = (await this.getAllPlantSpeciesInGenus(genus)).data as PlantSpecies[];
 
-      for (const speciesEntry in speciesInGenus) {
-        const species = speciesInGenus[speciesEntry].species;
+      for (const [i, speciesEntry] of speciesInGenus.entries()) {
+        const species = speciesEntry.species;
         await this.deletePlantSpecies(genus, species);
       }
       await this.deletePlantGenus(genus);
