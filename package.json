@@ -10,6 +10,7 @@
     "load-plants": "npx tsc && node dist/data/plantData.js",
     "load-livestock": "npx tsc && node dist/data/livestockData.js",
     "load-tanks": "npx tsc && node dist/data/tankData.js",
+    "load-products": "npx tsc && node dist/data/productData.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

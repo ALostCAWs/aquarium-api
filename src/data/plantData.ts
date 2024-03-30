@@ -244,7 +244,7 @@ function loadData() {
     genus: `vallisneria`,
     species: `genus`,
     feed_style: PLANT_FEED_STYLE.ROOT,
-    sensitivity: [`seachem flourish excel`],
+    sensitivity: [`Seachem Flourish Excel`],
     type: PLANT_TYPE.STOLON,
     growth_rate: PLANT_GROWTH_RATE.FAST,
     parameters: parameters,
