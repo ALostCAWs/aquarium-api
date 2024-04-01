@@ -1,4 +1,4 @@
-import { _Record as DynamoRecord, GetRecordsOutput } from "@aws-sdk/client-dynamodb-streams";
+import { GetRecordsOutput } from "@aws-sdk/client-dynamodb-streams";
 import { marshall, unmarshall } from "@aws-sdk/util-dynamodb";
 import { Tank } from "../../src/interfaces/tankInterface";
 
