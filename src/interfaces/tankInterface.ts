@@ -60,7 +60,7 @@ export interface Tank {
   plants: TankInhabitant[],
   light_settings: LightSettings,
   parameters: Parameter[],
-  test_schedule: TestSchedule,
+  test_schedule: TestSchedule[],
   recent_water_change: WaterChange,
   ailments: Ailment[],
   recent_product: RecentProduct,

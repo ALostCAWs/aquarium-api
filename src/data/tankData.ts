@@ -1,12 +1,12 @@
 import { Tank, TankInhabitant } from "../interfaces/tankInterface";
 import { Parameter } from "../interfaces/parameterInterface";
-import { TestSchedule, TestScheduleItem } from "../interfaces/testScheduleInterface";
+import { TestSchedule } from "../interfaces/testScheduleInterface";
 import { WaterChange } from "../interfaces/waterChangeInterface";
+import { RecentProduct } from "../interfaces/productInterface";
 import { WATER_TYPE } from "../constants/waterEnum";
 import { PLANT_LIGHT } from "../constants/plantEnum";
 import { RESULTS_UNIT, VOLUME_UNIT, TEMPERATURE_UNIT } from "../constants/unitEnum";
 import TankService from "../services/tankService";
-import { RecentProduct } from "../interfaces/productInterface";
 
 const tankService = new TankService();
 
@@ -113,17 +113,17 @@ function loadData() {
   plants_4.push(hCorymbosaCompact);
   plants_4.push(nHydrophyllaTai);
 
-  const fishTestSchedule: TestSchedule = {};
-  const shrimpTestSchedule: TestSchedule = {};
+  const fishTestSchedule: TestSchedule[] = [];
+  const shrimpTestSchedule: TestSchedule[] = [];
 
   const testWeekly = {
     frequency: 7
-  } as TestScheduleItem;
+  } as TestSchedule;
 
-  fishTestSchedule[`NO3`] = testWeekly;
-  shrimpTestSchedule[`NO3`] = testWeekly;
-  shrimpTestSchedule[`GH`] = testWeekly;
-  shrimpTestSchedule[`KH`] = testWeekly;
+  fishTestSchedule.push(testWeekly);
+  shrimpTestSchedule.push(testWeekly);
+  shrimpTestSchedule.push(testWeekly);
+  shrimpTestSchedule.push(testWeekly);
 
 
   const parameters_1: Parameter[] = [];
