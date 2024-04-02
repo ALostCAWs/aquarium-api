@@ -3,6 +3,7 @@ import { Parameter } from "./parameterInterface"
 import { TestSchedule } from "./testScheduleInterface"
 import { WaterChange } from "./waterChangeInterface"
 import { Ailment } from "./ailmentInterface"
+import { RecentProduct } from "./productInterface"
 
 export interface TankInhabitant {
   genus: string,
@@ -58,8 +59,11 @@ export interface Tank {
   livestock: TankInhabitant[],
   plants: TankInhabitant[],
   light_settings: LightSettings,
-  parameters: Parameter,
+  parameters: Parameter[],
   test_schedule: TestSchedule,
   recent_water_change: WaterChange,
-  ailments: Ailment[]
+  ailments: Ailment[],
+  recent_product: RecentProduct,
+  recent_substrate_fertilizer: RecentProduct,
+  recent_water_fertilizer: RecentProduct,
 }

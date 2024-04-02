@@ -1,11 +1,12 @@
 import { Tank, TankInhabitant } from "../interfaces/tankInterface";
-import { Parameter, ParameterItem } from "../interfaces/parameterInterface";
+import { Parameter } from "../interfaces/parameterInterface";
 import { TestSchedule, TestScheduleItem } from "../interfaces/testScheduleInterface";
 import { WaterChange } from "../interfaces/waterChangeInterface";
 import { WATER_TYPE } from "../constants/waterEnum";
 import { PLANT_LIGHT } from "../constants/plantEnum";
 import { RESULTS_UNIT, VOLUME_UNIT, TEMPERATURE_UNIT } from "../constants/unitEnum";
 import TankService from "../services/tankService";
+import { RecentProduct } from "../interfaces/productInterface";
 
 const tankService = new TankService();
 
@@ -125,93 +126,106 @@ function loadData() {
   shrimpTestSchedule[`KH`] = testWeekly;
 
 
-  const parameters_1: Parameter = {};
-  const parameters_2: Parameter = {};
-  const parameters_3: Parameter = {};
+  const parameters_1: Parameter[] = [];
+  const parameters_2: Parameter[] = [];
+  const parameters_3: Parameter[] = [];
 
   const parameterNH3_1 = {
+    parameter: `NH3`,
     result: 0,
     result_unit: RESULTS_UNIT.PPM,
     test_timestamp: `1710091750`
-  } as ParameterItem;
+  } as Parameter;
   const parameterNO2_1 = {
+    parameter: `NO2`,
     result: 0,
     result_unit: RESULTS_UNIT.PPM,
     test_timestamp: `1710091765`
-  } as ParameterItem;
+  } as Parameter;
   const parameterNO3_1 = {
+    parameter: `NO3`,
     result: 10,
     result_unit: RESULTS_UNIT.PPM,
     test_timestamp: `1710092365`
-  } as ParameterItem;
+  } as Parameter;
   const parameterGH_1 = {
+    parameter: `GH`,
     result: 12,
     result_unit: RESULTS_UNIT.DEGREES,
     test_timestamp: `1710092410`
-  } as ParameterItem;
+  } as Parameter;
   const parameterKH_1 = {
+    parameter: `KH`,
     result: 6,
     result_unit: RESULTS_UNIT.DEGREES,
     test_timestamp: `1710092650`
-  } as ParameterItem;
+  } as Parameter;
 
   const parameterNH3_2 = {
+    parameter: `NH3`,
     result: 0,
     result_unit: RESULTS_UNIT.PPM,
     test_timestamp: `1710096250`
-  } as ParameterItem;
+  } as Parameter;
   const parameterNO2_2 = {
+    parameter: `NO2`,
     result: 0,
     result_unit: RESULTS_UNIT.PPM,
     test_timestamp: `1710096260`
-  } as ParameterItem;
+  } as Parameter;
   const parameterNO3_2 = {
+    parameter: `NO3`,
     result: 10,
     result_unit: RESULTS_UNIT.PPM,
     test_timestamp: `1710096560`
-  } as ParameterItem;
+  } as Parameter;
   const parameterGH_2 = {
+    parameter: `NGH`,
     result: 12,
     result_unit: RESULTS_UNIT.DEGREES,
     test_timestamp: `1710096740`
-  } as ParameterItem;
+  } as Parameter;
   const parameterKH_2 = {
+    parameter: `NKH`,
     result: 6,
     result_unit: RESULTS_UNIT.DEGREES,
     test_timestamp: `1710096920`
-  } as ParameterItem;
+  } as Parameter;
 
   const parameterNH3_3 = {
+    parameter: `NH3`,
     result: 0,
     result_unit: RESULTS_UNIT.PPM,
     test_timestamp: `1710097220`
-  } as ParameterItem;
+  } as Parameter;
   const parameterNO2_3 = {
+    parameter: `NO2`,
     result: 0,
     result_unit: RESULTS_UNIT.PPM,
     test_timestamp: `1710097230`
-  } as ParameterItem;
+  } as Parameter;
   const parameterNO3_3 = {
+    parameter: `NO3`,
     result: 10,
     result_unit: RESULTS_UNIT.PPM,
     test_timestamp: `1710097650`
-  } as ParameterItem;
+  } as Parameter;
 
-  parameters_1[`NH3`] = parameterNH3_1;
-  parameters_1[`NO2`] = parameterNO2_1;
-  parameters_1[`NO3`] = parameterNO3_1;
-  parameters_1[`GH`] = parameterGH_1;
-  parameters_1[`KH`] = parameterKH_1;
+  parameters_1.push(parameterNH3_1);
+  parameters_1.push(parameterNO2_1);
+  parameters_1.push(parameterNO3_1);
+  parameters_1.push(parameterGH_1);
+  parameters_1.push(parameterKH_1);
 
-  parameters_2[`NH3`] = parameterNH3_2;
-  parameters_2[`NO2`] = parameterNO2_2;
-  parameters_2[`NO3`] = parameterNO3_2;
-  parameters_2[`GH`] = parameterGH_2;
-  parameters_2[`KH`] = parameterKH_2;
+  parameters_2.push(parameterNH3_2);
+  parameters_2.push(parameterNO2_2);
+  parameters_2.push(parameterNO3_2);
+  parameters_2.push(parameterGH_2);
+  parameters_2.push(parameterKH_2);
 
-  parameters_3[`NH3`] = parameterNH3_3;
-  parameters_3[`NO2`] = parameterNO2_3;
-  parameters_3[`NO3`] = parameterNO3_3;
+  parameters_3.push(parameterNH3_3);
+  parameters_3.push(parameterNO2_3);
+  parameters_3.push(parameterNO3_3);
 
   tankService.createTank({
     id: `1`,
@@ -238,6 +252,9 @@ function loadData() {
       timestamp: `1708486816`
     } as WaterChange,
     ailments: [],
+    recent_product: {} as RecentProduct,
+    recent_substrate_fertilizer: {} as RecentProduct,
+    recent_water_fertilizer: {} as RecentProduct,
   } as Tank);
 
   tankService.createTank({
@@ -265,6 +282,9 @@ function loadData() {
       timestamp: `1709320410`
     } as WaterChange,
     ailments: [],
+    recent_product: {} as RecentProduct,
+    recent_substrate_fertilizer: {} as RecentProduct,
+    recent_water_fertilizer: {} as RecentProduct,
   } as Tank);
 
   tankService.createTank({
@@ -292,6 +312,9 @@ function loadData() {
       timestamp: `1707765210`
     } as WaterChange,
     ailments: [],
+    recent_product: {} as RecentProduct,
+    recent_substrate_fertilizer: {} as RecentProduct,
+    recent_water_fertilizer: {} as RecentProduct,
   } as Tank);
 
   tankService.createTank({
@@ -319,5 +342,8 @@ function loadData() {
       timestamp: `1707765210`
     } as WaterChange,
     ailments: [],
+    recent_product: {} as RecentProduct,
+    recent_substrate_fertilizer: {} as RecentProduct,
+    recent_water_fertilizer: {} as RecentProduct,
   } as Tank);
 }

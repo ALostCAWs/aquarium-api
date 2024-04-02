@@ -4,11 +4,12 @@ import LivestockService from '../services/livestockService';
 import PlantService from '../services/plantService';
 import { Tank, TankInhabitant } from '../interfaces/tankInterface';
 import { RESPONSE_MESSAGE } from '../constants/responseMessageEnum';
-import { LightSettings as LightSettings } from '../interfaces/lightInterface';
+import { LightSettings } from '../interfaces/lightInterface';
 import { Parameter } from '../interfaces/parameterInterface';
-import { TestSchedule as TestSchedule } from '../interfaces/testScheduleInterface';
+import { TestSchedule } from '../interfaces/testScheduleInterface';
 import { WaterChange } from '../interfaces/waterChangeInterface';
 import { Ailment } from '../interfaces/ailmentInterface';
+import { RecentProduct } from '../interfaces/productInterface';
 import { convertInhabitantsToArrayOfObjects } from '../functions/convertData';
 
 export const TankRouter = Router();
@@ -120,10 +121,13 @@ TankRouter.post('/', async (req, res) => {
   const livestock: TankInhabitant[] = req.body.livestock || [];
   const plants: TankInhabitant[] = req.body.plants || [];
   const light_settings: LightSettings = req.body.light || {};
-  const parameters: Parameter = req.body.parameters || {};
+  const parameters: Parameter[] = req.body.parameters || [];
   const test_schedule: TestSchedule = req.body.test_schedule || {};
   const recent_water_change: WaterChange = req.body.recent_water_change || {};
   const ailments: Ailment[] = req.body.ailments || {};
+  const recent_product: RecentProduct = req.body.recent_product || {};
+  const recent_substrate_fertilizer: RecentProduct = req.body.recent_product || {};
+  const recent_water_fertilizer: RecentProduct = req.body.recent_product || {};
 
   let tank = {
     id: '',
@@ -140,7 +144,10 @@ TankRouter.post('/', async (req, res) => {
     parameters: parameters,
     test_schedule: test_schedule,
     recent_water_change: recent_water_change,
-    ailments: ailments
+    ailments: ailments,
+    recent_product: recent_product,
+    recent_substrate_fertilizer: recent_substrate_fertilizer,
+    recent_water_fertilizer: recent_water_fertilizer
   }
 
   const response = await tankService.createTank(tank);
