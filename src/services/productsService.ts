@@ -173,8 +173,7 @@ class ProductService {
     const products = (await this.getAllProducts()).data as Product[];
 
     for (const [i, product] of products.entries()) {
-      const name = product.name;
-      await this.deleteProduct(name);
+      await this.deleteProduct(product.name);
     }
   }
 
