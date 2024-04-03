@@ -6,9 +6,11 @@ export interface Event {
   tank_id: string,
   timestamp: string,
   type: string,
-  light_settings: LightSettings | undefined,
-  parameters: Parameter | undefined,
+  product_dose: number | undefined,
+  product_dose_unit: string | undefined,
   water_change_percentage: number | undefined,
+  parameters: Parameter | undefined,
+  light_settings: LightSettings | undefined,
   ailment: Ailment | undefined
   comments: string | undefined,
 }

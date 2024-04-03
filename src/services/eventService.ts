@@ -1,10 +1,7 @@
 import { DynamoDBDocumentClient, ScanCommand, GetCommand, PutCommand, PutCommandOutput, UpdateCommand, UpdateCommandOutput, DeleteCommand, DeleteCommandOutput } from '@aws-sdk/lib-dynamodb';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { v4 as uuidv4 } from 'uuid';
 import { Event } from '../interfaces/eventInterface';
-import { Tank } from '../interfaces/tankInterface';
 import { TABLE } from '../constants/tableEnum';
-import { EVENT } from '../constants/eventEnum';
 import { RESPONSE_MESSAGE } from '../constants/responseMessageEnum';
 
 interface GetEventResponse {
@@ -29,8 +26,58 @@ class EventService {
   client: DynamoDBClient;
   docClient: DynamoDBDocumentClient;
 
-  // Create event needs to check the tank's livestock & plants for sensitivities
-  // If a sensitivity to a product is found, the user should be warned prior to the event's creation
+  async getAllEvents(): Promise<GetEventResponse> {
+    const command = new ScanCommand({
+      "TableName": TABLE.TANK_EVENT
+    });
+
+    try {
+      const response = await this.docClient.send(command);
+
+      if (response.Items?.length === 0) {
+        return {
+          data: undefined,
+          message: RESPONSE_MESSAGE.NO_ITEMS_FOUND
+        };
+      }
+
+      const events = response.Items as Event[];
+
+      return {
+        data: events,
+        message: RESPONSE_MESSAGE.NO_ERROR
+      };
+    } catch (e) {
+      console.error(`failed to get tank events: ${e}`);
+
+      return {
+        data: undefined,
+        message: RESPONSE_MESSAGE.INTERNAL
+      };
+    }
+  }
+
+  async getAllEventsByTank(tank_id: string): Promise<GetEventResponse> {
+    return {
+      data: undefined,
+      message: RESPONSE_MESSAGE.INTERNAL
+    };
+  }
+
+  async getEventByTankTimestamp(tank_id: string, timestamp: string): Promise<GetEventResponse> {
+    return {
+      data: undefined,
+      message: RESPONSE_MESSAGE.INTERNAL
+    };
+  }
+
+  async getAllEventsByTankDateRange(tank_id: string, timestamp_searchStart: string, timestamp_searchEnd: string): Promise<GetEventResponse> {
+    return {
+      data: undefined,
+      message: RESPONSE_MESSAGE.INTERNAL
+    };
+  }
+
   async createEvent(event: Event): Promise<PutEventResponse> {
     const command = new PutCommand({
       "TableName": TABLE.TANK_EVENT,
@@ -51,6 +98,77 @@ class EventService {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
       }
+    }
+  }
+
+  async putEvent(event: Event): Promise<PutEventResponse> {
+    const command = new PutCommand({
+      "TableName": TABLE.TANK_EVENT,
+      "Item": event
+    });
+
+    try {
+      const response = await this.docClient.send(command);
+
+      if (!this.checkEventExists(event.tank_id, event.timestamp)) {
+        response.$metadata.httpStatusCode = 201;
+        return {
+          data: response,
+          message: RESPONSE_MESSAGE.NOT_FOUND
+        };
+      }
+
+      return {
+        data: response,
+        message: RESPONSE_MESSAGE.NO_ERROR
+      };
+    } catch (e) {
+      console.error(`failed to update tank event - tank: ${event.tank_id} timestamp: ${event.timestamp}: ${e}`);
+
+      return {
+        data: undefined,
+        message: RESPONSE_MESSAGE.INTERNAL
+      };
+    }
+  }
+
+  async deleteEvent(tank_id: string, timestamp: string) {
+    const command = new DeleteCommand({
+      "TableName": TABLE.TANK_EVENT,
+      "Key": {
+        "tank_id": tank_id,
+        "timestamp": timestamp
+      }
+    });
+
+    try {
+      const response = await this.docClient.send(command);
+
+      return {
+        data: response,
+        message: RESPONSE_MESSAGE.NO_ERROR
+      };
+    } catch (e) {
+      console.error(`failed to delete tank event - tank: ${tank_id} timestamp: ${timestamp}: ${e}`);
+
+      return {
+        data: undefined,
+        message: RESPONSE_MESSAGE.INTERNAL
+      };
+    }
+  }
+
+  async checkEventExists(tank_id: string, timestamp: string): Promise<boolean> {
+    const response = await this.getEventByTankTimestamp(tank_id, timestamp);
+    const eventExists = response.message === RESPONSE_MESSAGE.NO_ERROR ? true : false;
+    return eventExists;
+  }
+
+  async deleteAllEvents() {
+    const events = (await this.getAllEvents()).data as Event[];
+
+    for (const [i, event] of events.entries()) {
+      await this.deleteEvent(event.tank_id, event.timestamp);
     }
   }
 

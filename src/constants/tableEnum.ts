@@ -3,5 +3,5 @@ export enum TABLE {
   PLANT = "plant",
   LIVESTOCK = "livestock",
   PRODUCT = "product",
-  TANK_EVENT = "tankEvent"
+  TANK_EVENT = "tank_event"
 }

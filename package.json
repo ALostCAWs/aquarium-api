@@ -11,6 +11,7 @@
     "load-livestock": "npx tsc && node dist/data/livestockData.js",
     "load-tanks": "npx tsc && node dist/data/tankData.js",
     "load-products": "npx tsc && node dist/data/productData.js",
+    "load-events": "npx tsc && node dist/data/eventData.js",
     "build-tank-change-lambda" :"esbuild ./src/lambdas/tankChangeHandler/tankChangeHandler.ts --bundle --sourcemap --platform=node --target=node18 --outdir=./src/lambdas/tankChangeHandler/zip",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
