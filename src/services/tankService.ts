@@ -229,12 +229,6 @@ class TankService {
         }
       }
 
-      // Check if events occurred
-      const tankPreviousStateResponse = await this.getTankById(tank.id);
-      const tankPreviousState = tankPreviousStateResponse.data as Tank;
-
-      await eventService.determineEventOccurred(tank, tankPreviousState);
-
       return {
         data: response,
         message: RESPONSE_MESSAGE.NO_ERROR

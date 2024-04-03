@@ -29,51 +29,29 @@ class EventService {
   client: DynamoDBClient;
   docClient: DynamoDBDocumentClient;
 
-  // Going to use Lambda triggers for these
-  async determineEventOccurred(tank: Tank, tankPreviousState: Tank) {
-    if (tank.is_cycled !== tankPreviousState.is_cycled) {
-      const cycleEvent = this.determineCycleEvent(tankPreviousState.is_cycled);
-      // create event for cycle change
-    }
-
-    if (tank.recent_water_change.timestamp !== tankPreviousState.recent_water_change.timestamp) {
-      // create event for water change
-    }
-
-    if (tank.livestock.length !== tankPreviousState.livestock.length) {
-      // will need an update for determining deaths vs. removals
-      // for now, program will consider all removals to be a death
-      const livestockEvent = this.determineLivestockListEvent(tank.livestock.length, tankPreviousState.livestock.length);
-      // create event for list update
-    }
-
-    if (tank.plants.length !== tankPreviousState.plants.length) {
-      // will need an update for determining deaths vs. removals
-      // for now, program will consider all removals to be a death
-      const livestockEvent = this.determinePlantListEvent(tank.plants.length, tankPreviousState.plants.length);
-      // create event for list update
-    }
-  }
-
-  determineCycleEvent(previousCycleState: boolean): string {
-    let cycleEvent: string = previousCycleState ? EVENT.CYCLE_CRASHED : EVENT.CYCLE_COMPLETE;
-    return cycleEvent;
-  }
-
-  determineLivestockListEvent(tankListLength: number, previousListLength: number): string {
-    let livestockEvent: string = tankListLength > previousListLength ? EVENT.LIVESTOCK_ADDED : EVENT.LIVESTOCK_DIED;
-    return livestockEvent;
-  }
-
-  determinePlantListEvent(tankListLength: number, previousListLength: number): string {
-    let plantEvent: string = tankListLength > previousListLength ? EVENT.LIVESTOCK_ADDED : EVENT.LIVESTOCK_DIED;
-    return plantEvent;
-  }
-
   // Create event needs to check the tank's livestock & plants for sensitivities
   // If a sensitivity to a product is found, the user should be warned prior to the event's creation
-  async createEvent() {
+  async createEvent(event: Event): Promise<PutEventResponse> {
+    const command = new PutCommand({
+      "TableName": TABLE.TANK_EVENT,
+      "Item": event
+    });
 
+    try {
+      const response = await this.docClient.send(command);
+
+      return {
+        data: response,
+        message: RESPONSE_MESSAGE.NO_ERROR
+      }
+    } catch (e) {
+      console.error(`failed to create tank event: ${e}`);
+
+      return {
+        data: undefined,
+        message: RESPONSE_MESSAGE.INTERNAL
+      }
+    }
   }
 
   constructor() {
