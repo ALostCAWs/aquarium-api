@@ -10,7 +10,7 @@ export enum VOLUME_UNIT {
 
 export enum RESULTS_UNIT {
   PPM = 'ppm',
-  DEGREES = 'd'
+  DEGREES = 'deg'
 }
 
 export enum DOSE_UNIT {

@@ -11,7 +11,7 @@
     "load-livestock": "npx tsc && node dist/data/livestockData.js",
     "load-tanks": "npx tsc && node dist/data/tankData.js",
     "load-products": "npx tsc && node dist/data/productData.js",
-    "test-compare": "npx tsc && node dist/functions/checkObjectImagesEqual.js",
+    "build-tank-change-lambda" :"esbuild ./src/lambdas/tankChangeHandler/tankChangeHandler.ts --bundle --sourcemap --platform=node --target=node18 --outdir=./src/lambdas/tankChangeHandler/zip",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -25,6 +25,7 @@
     "@types/aws-lambda": "^8.10.136",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
+    "esbuild": "^0.20.2",
     "express": "^4.18.2",
     "fast-xml-parser": "^4.3.5",
     "uuid": "^9.0.1"

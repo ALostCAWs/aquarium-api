@@ -116,14 +116,23 @@ function loadData() {
   const fishTestSchedule: TestSchedule[] = [];
   const shrimpTestSchedule: TestSchedule[] = [];
 
-  const testWeekly = {
+  const NO3_testWeekly = {
+    parameter: `NO3`,
+    frequency: 7
+  } as TestSchedule;
+  const GH_testWeekly = {
+    parameter: `GH`,
+    frequency: 7
+  } as TestSchedule;
+  const KH_testWeekly = {
+    parameter: `KH`,
     frequency: 7
   } as TestSchedule;
 
-  fishTestSchedule.push(testWeekly);
-  shrimpTestSchedule.push(testWeekly);
-  shrimpTestSchedule.push(testWeekly);
-  shrimpTestSchedule.push(testWeekly);
+  fishTestSchedule.push(NO3_testWeekly);
+  shrimpTestSchedule.push(NO3_testWeekly);
+  shrimpTestSchedule.push(GH_testWeekly);
+  shrimpTestSchedule.push(KH_testWeekly);
 
 
   const parameters_1: Parameter[] = [];
