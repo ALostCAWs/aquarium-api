@@ -69,6 +69,7 @@ class TankService {
       };
     } catch (e) {
       console.error(`failed to get tanks: ${e}`);
+
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
@@ -99,13 +100,14 @@ class TankService {
       return {
         data: tank,
         message: RESPONSE_MESSAGE.NO_ERROR
-      }
+      };
     } catch (e) {
       console.error(`failed to get tank with Id ${tank_id}: ${e}`);
+
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
-      }
+      };
     }
   }
 
@@ -140,13 +142,14 @@ class TankService {
       return {
         data: livestock,
         message: RESPONSE_MESSAGE.NO_ERROR
-      }
+      };
     } catch (e) {
       console.error(`failed to get livestock in tank with Id ${tank_id}: ${e}`);
+
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
-      }
+      };
     }
   }
 
@@ -187,7 +190,10 @@ class TankService {
 
   async createTank(tank: Tank): Promise<PutTankResponse> {
     const tank_id = uuidv4();
-    tank.id = tank_id;
+
+    if (!tank.id || await this.checkTankExists(tank.id)) {
+      tank.id = tank_id;
+    }
 
     const command = new PutCommand({
       "TableName": TABLE.TANK,
@@ -200,14 +206,14 @@ class TankService {
       return {
         data: response,
         message: RESPONSE_MESSAGE.NO_ERROR
-      }
+      };
     } catch (e) {
       console.error(`failed to create tank: ${e}`);
 
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
-      }
+      };
     }
   }
 
@@ -226,20 +232,20 @@ class TankService {
         return {
           data: response,
           message: RESPONSE_MESSAGE.NOT_FOUND
-        }
+        };
       }
 
       return {
         data: response,
         message: RESPONSE_MESSAGE.NO_ERROR
-      }
+      };
     } catch (e) {
       console.error(`failed to update tank: ${e}`);
 
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
-      }
+      };
     }
   }
 
@@ -261,14 +267,14 @@ class TankService {
       return {
         data: response,
         message: RESPONSE_MESSAGE.NO_ERROR
-      }
+      };
     } catch (e) {
       console.error(`failed to delete tank with Id ${tank_id}: ${e}`);
 
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
-      }
+      };
     }
   }
 

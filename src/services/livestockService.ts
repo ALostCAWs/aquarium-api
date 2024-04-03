@@ -55,6 +55,7 @@ class LivestockService {
       };
     } catch (e) {
       console.error(`failed to get livestock genera: ${e}`);
+
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
@@ -89,6 +90,7 @@ class LivestockService {
       };
     } catch (e) {
       console.error(`failed to get livestock genus ${genus}: ${e}`);
+
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
@@ -125,6 +127,7 @@ class LivestockService {
       };
     } catch (e) {
       console.error(`failed to get sensitivities for livestock genus ${genus}: ${e}`);
+
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
@@ -161,6 +164,7 @@ class LivestockService {
       };
     } catch (e) {
       console.error(`failed to get livestock species list in genus ${genus}: ${e}`);
+
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.NO_ITEMS_FOUND
@@ -183,6 +187,7 @@ class LivestockService {
       };
     } catch (e) {
       console.error(`failed to create livestock genus ${livestockGenus.genus}: ${e}`);
+
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
@@ -214,6 +219,7 @@ class LivestockService {
       };
     } catch (e) {
       console.error(`failed to update livestock genus ${livestockGenus.genus}: ${e}`);
+
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
@@ -238,6 +244,7 @@ class LivestockService {
       };
     } catch (e) {
       console.error(`failed to delete livestock genus ${genus}: ${e}`);
+
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
@@ -272,6 +279,7 @@ class LivestockService {
       };
     } catch (e) {
       console.error(`failed to get livestock species ${species} in genus ${genus}: ${e}`);
+
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
@@ -294,6 +302,7 @@ class LivestockService {
       };
     } catch (e) {
       console.error(`failed to create livestock species ${livestockSpecies.species} in genus ${livestockSpecies.genus}: ${e}`);
+
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
@@ -325,6 +334,7 @@ class LivestockService {
       };
     } catch (e) {
       console.error(`failed to update livestock species ${livestockSpecies.genus} ${livestockSpecies.species}: ${e}`);
+
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
@@ -350,6 +360,7 @@ class LivestockService {
       };
     } catch (e) {
       console.error(`failed to delete livestock species ${species} in genus ${genus}: ${e}`);
+
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL

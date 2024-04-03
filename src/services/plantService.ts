@@ -55,10 +55,11 @@ class PlantService {
       };
     } catch (e) {
       console.error(`failed to get plant genera: ${e}`);
+
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
-      }
+      };
     }
   }
 
@@ -89,6 +90,7 @@ class PlantService {
       };
     } catch (e) {
       console.error(`failed to get plant genus ${genus}: ${e}`);
+
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
@@ -125,6 +127,7 @@ class PlantService {
       };
     } catch (e) {
       console.error(`failed to get sensitivities for plant genus ${genus}: ${e}`);
+
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
@@ -161,6 +164,7 @@ class PlantService {
       };
     } catch (e) {
       console.error(`failed to get plant species list in genus ${genus}: ${e}`);
+
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.NO_ITEMS_FOUND
@@ -182,6 +186,7 @@ class PlantService {
       };
     } catch (e) {
       console.error(`failed to create plant genus ${plantGenus.genus}: ${e}`);
+
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
@@ -213,6 +218,7 @@ class PlantService {
       };
     } catch (e) {
       console.error(`failed to update plant genus ${plantGenus.genus}: ${e}`);
+
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
@@ -237,6 +243,7 @@ class PlantService {
       };
     } catch (e) {
       console.error(`failed to delete plant genus ${genus}: ${e}`);
+
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
@@ -271,6 +278,7 @@ class PlantService {
       };
     } catch (e) {
       console.error(`failed to get plant species ${species} in genus ${genus}: ${e}`);
+
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
@@ -293,6 +301,7 @@ class PlantService {
       };
     } catch (e) {
       console.error(`failed to create plant species ${plantSpecies.species} in genus ${plantSpecies.genus}: ${e}`);
+
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
@@ -323,6 +332,7 @@ class PlantService {
       };
     } catch (e) {
       console.error(`failed to update plant species ${plantSpecies.genus} ${plantSpecies.species}: ${e}`);
+
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
@@ -348,6 +358,7 @@ class PlantService {
       };
     } catch (e) {
       console.error(`failed to delete plant species ${species} in genus ${genus}: ${e}`);
+
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL

@@ -46,6 +46,7 @@ class ProductService {
       };
     } catch (e) {
       console.error(`failed to get products: ${e}`);
+
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
@@ -79,6 +80,7 @@ class ProductService {
       };
     } catch (e) {
       console.error(`failed to get product with name ${product_name}: ${e}`);
+
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
@@ -101,6 +103,7 @@ class ProductService {
       };
     } catch (e) {
       console.error(`failed to create product: ${e}`);
+
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
@@ -132,6 +135,7 @@ class ProductService {
       };
     } catch (e) {
       console.log(`failed to update product: ${e}`);
+
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
@@ -156,6 +160,7 @@ class ProductService {
       };
     } catch (e) {
       console.log(`failed to delete product with name ${product_name}: ${e}`);
+
       return {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
