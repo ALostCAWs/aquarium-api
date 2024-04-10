@@ -1,6 +1,6 @@
 import { LivestockGenus, LivestockSpecies } from "../interfaces/livestockInterface";
 import { ParameterRange, ParameterRangeItem, ParameterToleranceItem } from "../interfaces/rangeInterface";
-import { LIVESTOCK_TYPE, LIVESTOCK_FEED_STYLE, LIVESTOCK_DIFFICULTY, FISH_REPRODUCTION_STYLE, SHRIMP_REPRODUCTION_STYLE } from "../constants/livestockEnum";
+import { LIVESTOCK_TYPE, LIVESTOCK_FEED_STYLE, LIVESTOCK_DIFFICULTY, FISH_REPRODUCTION_STYLE, SHRIMP_REPRODUCTION_STYLE, REPRODUCTION_STYLE } from "../constants/livestockEnum";
 import { RESULTS_UNIT } from "../constants/unitEnum";
 import LivestockService from "../services/livestockService";
 
@@ -8,7 +8,7 @@ const livestockService = new LivestockService();
 
 (async () => {
   await livestockService.deleteAllLivestockEntries();
-  await loadData();
+  loadData();
 })();
 
 function loadData() {
@@ -39,6 +39,28 @@ function loadData() {
   neoParameters[`KH`] = neoKH;
 
   livestockService.createLivestockGenus({
+    genus: `betta`,
+    species: `genus`,
+    feed_style: LIVESTOCK_FEED_STYLE.CARNIVORE,
+    type: LIVESTOCK_TYPE.FISH,
+    reproduction_style: FISH_REPRODUCTION_STYLE.EGG,
+    sensitivity: [],
+    parameters: parameters,
+    temperature_range: {
+      min: 76,
+      max: 82
+    }
+  } as LivestockGenus);
+
+  livestockService.createLivestockSpecies({
+    genus: `betta`,
+    species: `splendens`,
+    common_name: `fighting fish`,
+    difficulty: LIVESTOCK_DIFFICULTY.EASY
+  } as LivestockSpecies);
+
+
+  livestockService.createLivestockGenus({
     genus: `neocaridina`,
     species: `genus`,
     feed_style: LIVESTOCK_FEED_STYLE.DETRITIVORE,
@@ -59,24 +81,25 @@ function loadData() {
     difficulty: LIVESTOCK_DIFFICULTY.EASY
   } as LivestockSpecies);
 
+
   livestockService.createLivestockGenus({
-    genus: `betta`,
+    genus: `vittina`,
     species: `genus`,
-    feed_style: LIVESTOCK_FEED_STYLE.CARNIVORE,
-    type: LIVESTOCK_TYPE.FISH,
-    reproduction_style: FISH_REPRODUCTION_STYLE.EGG,
+    feed_style: LIVESTOCK_FEED_STYLE.DETRITIVORE,
+    type: LIVESTOCK_TYPE.SNAIL,
+    reproduction_style: REPRODUCTION_STYLE.UNSPECIFIED,
     sensitivity: [],
-    parameters: parameters,
+    parameters: neoParameters,
     temperature_range: {
-      min: 76,
-      max: 82
+      min: 70,
+      max: 80
     }
   } as LivestockGenus);
 
   livestockService.createLivestockSpecies({
-    genus: `betta`,
-    species: `splendens`,
-    common_name: `fighting fish`,
+    genus: `vittina`,
+    species: `semiconica`,
+    common_name: `red onion nerite snail`,
     difficulty: LIVESTOCK_DIFFICULTY.EASY
   } as LivestockSpecies);
 }

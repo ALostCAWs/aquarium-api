@@ -8,7 +8,7 @@ const plantService = new PlantService();
 
 (async () => {
   await plantService.deleteAllPLantEntries();
-  await loadData();
+  loadData();
 })();
 
 function loadData() {
@@ -47,6 +47,54 @@ function loadData() {
   plantService.createPlantSpecies({
     genus: `anubias`,
     species: `gracilis`,
+    CO2: false,
+    common_name: ``,
+    difficulty: PLANT_DIFFICULTY.EASY,
+    light: PLANT_LIGHT.LOW
+  } as PlantSpecies);
+
+
+  plantService.createPlantGenus({
+    genus: `bacopa`,
+    species: `genus`,
+    feed_style: PLANT_FEED_STYLE.WATER_COLUMN,
+    sensitivity: [],
+    type: PLANT_TYPE.STEM,
+    growth_rate: PLANT_GROWTH_RATE.MODERATE,
+    parameters: parameters,
+    temperature_range: {
+      min: 72,
+      max: 82
+    }
+  } as PlantGenus);
+
+  plantService.createPlantSpecies({
+    genus: `bacopa`,
+    species: `caroliniana`,
+    CO2: false,
+    common_name: ``,
+    difficulty: PLANT_DIFFICULTY.EASY,
+    light: PLANT_LIGHT.LOW
+  } as PlantSpecies);
+
+
+  plantService.createPlantGenus({
+    genus: `bucephalandra`,
+    species: `genus`,
+    feed_style: PLANT_FEED_STYLE.WATER_COLUMN,
+    sensitivity: [],
+    type: PLANT_TYPE.RHIZOME,
+    growth_rate: PLANT_GROWTH_RATE.SLOW,
+    parameters: parameters,
+    temperature_range: {
+      min: 72,
+      max: 82
+    }
+  } as PlantGenus);
+
+  plantService.createPlantSpecies({
+    genus: `bucephalandra`,
+    species: `pygmaea 'bukit kelam'`,
     CO2: false,
     common_name: ``,
     difficulty: PLANT_DIFFICULTY.EASY,
@@ -94,7 +142,7 @@ function loadData() {
 
   plantService.createPlantSpecies({
     genus: `hygrophila`,
-    species: `corymbosa 'siamensis 53B'`,
+    species: `corymbosa 'compact'`,
     CO2: false,
     common_name: ``,
     difficulty: PLANT_DIFFICULTY.EASY,
@@ -103,7 +151,7 @@ function loadData() {
 
   plantService.createPlantSpecies({
     genus: `hygrophila`,
-    species: `corymbosa 'compact'`,
+    species: `corymbosa 'siamensis 53B'`,
     CO2: false,
     common_name: ``,
     difficulty: PLANT_DIFFICULTY.EASY,

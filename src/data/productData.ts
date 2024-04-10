@@ -6,7 +6,7 @@ const productsService = new ProductService();
 
 (async () => {
   await productsService.deleteAllProducts();
-  await loadData();
+  loadData();
 })();
 
 function loadData() {

@@ -1,22 +1,19 @@
-import { Tank, TankInhabitant } from "../interfaces/tankInterface";
-import { Parameter } from "../interfaces/parameterInterface";
-import { TestSchedule } from "../interfaces/testScheduleInterface";
-import { WaterChange } from "../interfaces/waterChangeInterface";
-import { RecentProduct } from "../interfaces/productInterface";
+import { Tank, Parameter, RecentProduct, TankInhabitant, TestSchedule, WaterChange } from "../interfaces/tankInterface";
 import { WATER_TYPE } from "../constants/waterEnum";
 import { PLANT_LIGHT } from "../constants/plantEnum";
-import { RESULTS_UNIT, VOLUME_UNIT, TEMPERATURE_UNIT } from "../constants/unitEnum";
+import { RESULTS_UNIT, VOLUME_UNIT, TEMPERATURE_UNIT, DOSE_UNIT } from "../constants/unitEnum";
 import TankService from "../services/tankService";
 
 const tankService = new TankService();
 
 (async () => {
   await tankService.deleteAllTanks();
-  await loadData();
+  loadData();
 })();
 
 function loadData() {
   const neoTankLivestock: TankInhabitant[] = [];
+  const tank1Livestock: TankInhabitant[] = [];
   const nDavidi = {
     genus: `neocaridina`,
     species: `davidi`
@@ -29,6 +26,12 @@ function loadData() {
     species: `splendens`
   } as TankInhabitant;
   bettaTankLivestock.push(bSplendens);
+
+  const vSemiconica = {
+    genus: `vittina`,
+    species: `semiconica`
+  } as TankInhabitant;
+  tank1Livestock.push(...neoTankLivestock, vSemiconica);
 
 
   const plants_1: TankInhabitant[] = [];
@@ -43,6 +46,16 @@ function loadData() {
   const aGracilis = {
     genus: `anubias`,
     species: `gracilis`
+  } as TankInhabitant;
+
+  const bCaroliniana = {
+    genus: `bacopa`,
+    species: `caroliniana`
+  } as TankInhabitant;
+
+  const bPygmaeaBukitKelam = {
+    genus: `bucephalandra`,
+    species: `pygmaea 'bukit kelam'`
   } as TankInhabitant;
 
   const cWendtiiRed = {
@@ -94,12 +107,15 @@ function loadData() {
   } as TankInhabitant;
 
   plants_1.push(aBarteri);
+  plants_1.push(bCaroliniana);
+  plants_1.push(bPygmaeaBukitKelam);
   plants_1.push(hCorymbosaSiam);
   plants_1.push(lLaevigatum);
   plants_1.push(nHydrophyllaTai);
   plants_1.push(rAquatica);
   plants_1.push(vNana);
 
+  plants_2.push(bCaroliniana);
   plants_2.push(hPolyspermaRosanervig);
   plants_2.push(lLaevigatum);
   plants_2.push(mPteropus);
@@ -143,81 +159,81 @@ function loadData() {
     parameter: `NH3`,
     result: 0,
     result_unit: RESULTS_UNIT.PPM,
-    test_timestamp: `1710091750`
+    timestamp: `1710062950000`,
   } as Parameter;
   const parameterNO2_1 = {
     parameter: `NO2`,
     result: 0,
     result_unit: RESULTS_UNIT.PPM,
-    test_timestamp: `1710091765`
+    timestamp: `1710062965000`
   } as Parameter;
   const parameterNO3_1 = {
     parameter: `NO3`,
     result: 10,
     result_unit: RESULTS_UNIT.PPM,
-    test_timestamp: `1710092365`
+    timestamp: `1710063565000`
   } as Parameter;
   const parameterGH_1 = {
     parameter: `GH`,
     result: 12,
     result_unit: RESULTS_UNIT.DEGREES,
-    test_timestamp: `1710092410`
+    timestamp: `1710063610000`
   } as Parameter;
   const parameterKH_1 = {
     parameter: `KH`,
     result: 6,
     result_unit: RESULTS_UNIT.DEGREES,
-    test_timestamp: `1710092650`
+    timestamp: `1710063850000`
   } as Parameter;
 
   const parameterNH3_2 = {
     parameter: `NH3`,
     result: 0,
     result_unit: RESULTS_UNIT.PPM,
-    test_timestamp: `1710096250`
+    timestamp: `1710067450000`
   } as Parameter;
   const parameterNO2_2 = {
     parameter: `NO2`,
     result: 0,
     result_unit: RESULTS_UNIT.PPM,
-    test_timestamp: `1710096260`
+    timestamp: `1710067460000`
   } as Parameter;
   const parameterNO3_2 = {
     parameter: `NO3`,
     result: 10,
     result_unit: RESULTS_UNIT.PPM,
-    test_timestamp: `1710096560`
+    timestamp: `1710067760000`
   } as Parameter;
   const parameterGH_2 = {
     parameter: `NGH`,
     result: 12,
     result_unit: RESULTS_UNIT.DEGREES,
-    test_timestamp: `1710096740`
+    timestamp: `1710067940000`
   } as Parameter;
   const parameterKH_2 = {
     parameter: `NKH`,
     result: 6,
     result_unit: RESULTS_UNIT.DEGREES,
-    test_timestamp: `1710096920`
+    timestamp: `1710068120000`
   } as Parameter;
 
   const parameterNH3_3 = {
     parameter: `NH3`,
     result: 0,
     result_unit: RESULTS_UNIT.PPM,
-    test_timestamp: `1710097220`
+    timestamp: `1710068420000`
   } as Parameter;
   const parameterNO2_3 = {
     parameter: `NO2`,
     result: 0,
     result_unit: RESULTS_UNIT.PPM,
-    test_timestamp: `1710097230`
+    timestamp: `1710068430000`
   } as Parameter;
   const parameterNO3_3 = {
     parameter: `NO3`,
     result: 10,
     result_unit: RESULTS_UNIT.PPM,
-    test_timestamp: `1710097650`
+    timestamp: `1710068850000`
   } as Parameter;
 
   parameters_1.push(parameterNH3_1);
@@ -245,7 +261,7 @@ function loadData() {
     substrate: `Seachem Flourite Black`,
     temperature_setting: 76,
     temperature_unit: TEMPERATURE_UNIT.FAHRENHEIT,
-    livestock: neoTankLivestock,
+    livestock: tank1Livestock,
     plants: plants_1,
     light_settings: {
       percentage: 45,
@@ -258,12 +274,22 @@ function loadData() {
     recent_water_change: {
       percentage: 50,
       water_type: WATER_TYPE.TAP,
-      timestamp: `1708486816`
+      timestamp: `1708573216000`
     } as WaterChange,
     ailments: [],
     recent_product: {} as RecentProduct,
-    recent_substrate_fertilizer: {} as RecentProduct,
-    recent_water_fertilizer: {} as RecentProduct,
+    recent_substrate_fertilizer: {
+      name: `Seachem Flourish Tabs`,
+      dose: 3,
+      unit: DOSE_UNIT.TABS,
+      timestamp: `1712585544000`
+    } as RecentProduct,
+    recent_water_fertilizer: {
+      name: `Seachem Flourish Potassium`,
+      dose: 1.6,
+      unit: DOSE_UNIT.MILLILITER,
+      timestamp: `1712695510000`
+    } as RecentProduct,
   } as Tank);
 
   tankService.createTank({
@@ -288,12 +314,22 @@ function loadData() {
     recent_water_change: {
       percentage: 20,
       water_type: WATER_TYPE.RO,
-      timestamp: `1709320410`
+      timestamp: `1709295210000`
     } as WaterChange,
     ailments: [],
     recent_product: {} as RecentProduct,
-    recent_substrate_fertilizer: {} as RecentProduct,
-    recent_water_fertilizer: {} as RecentProduct,
+    recent_substrate_fertilizer: {
+      name: `Seachem Flourish Tabs`,
+      dose: 2,
+      unit: DOSE_UNIT.TABS,
+      timestamp: `1712695930000`
+    } as RecentProduct,
+    recent_water_fertilizer: {
+      name: `Seachem Flourish Potassium`,
+      dose: 0.75,
+      unit: DOSE_UNIT.MILLILITER,
+      timestamp: `1712695513000`
+    } as RecentProduct,
   } as Tank);
 
   tankService.createTank({
@@ -318,12 +354,22 @@ function loadData() {
     recent_water_change: {
       percentage: 30,
       water_type: WATER_TYPE.RO,
-      timestamp: `1707765210`
+      timestamp: `1712696025000`
     } as WaterChange,
     ailments: [],
     recent_product: {} as RecentProduct,
-    recent_substrate_fertilizer: {} as RecentProduct,
-    recent_water_fertilizer: {} as RecentProduct,
+    recent_substrate_fertilizer: {
+      name: `Seachem Flourish Tabs`,
+      dose: 2,
+      unit: DOSE_UNIT.TABS,
+      timestamp: `1712739072000`
+    } as RecentProduct,
+    recent_water_fertilizer: {
+      name: `Seachem Flourish Potassium`,
+      dose: 0.5,
+      unit: DOSE_UNIT.MILLILITER,
+      timestamp: `1712695517000`
+    } as RecentProduct,
   } as Tank);
 
   tankService.createTank({
@@ -348,7 +394,7 @@ function loadData() {
     recent_water_change: {
       percentage: 30,
       water_type: WATER_TYPE.TAP,
-      timestamp: `1707765210`
+      timestamp: `1707741210000`
     } as WaterChange,
     ailments: [],
     recent_product: {} as RecentProduct,
