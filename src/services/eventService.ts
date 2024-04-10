@@ -110,7 +110,7 @@ class EventService {
     try {
       const response = await this.docClient.send(command);
 
-      if (!this.checkEventExists(event.tank_id, event.timestamp)) {
+      if (!this.checkEventExists(event.tank_id, event.timestamp as string)) {
         response.$metadata.httpStatusCode = 201;
         return {
           data: response,
@@ -168,7 +168,7 @@ class EventService {
     const events = (await this.getAllEvents()).data as Event[];
 
     for (const [i, event] of events.entries()) {
-      await this.deleteEvent(event.tank_id, event.timestamp);
+      await this.deleteEvent(event.tank_id, event.timestamp as string);
     }
   }
 

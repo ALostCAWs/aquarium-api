@@ -1,7 +1,4 @@
-import { TankInhabitant } from "../interfaces/tankInterface";
-import { Parameter } from "../interfaces/parameterInterface";
-import { TestSchedule } from "../interfaces/testScheduleInterface";
-import { Ailment } from "../interfaces/ailmentInterface";
+import { Ailment, Parameter, TankInhabitant, TestSchedule } from "../interfaces/tankInterface";
 
 const returnSortNumber = <T>(a: T, b: T) => {
   if (a > b) {

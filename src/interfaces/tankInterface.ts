@@ -1,15 +1,3 @@
-import { LightSettings } from "./lightInterface"
-import { Parameter } from "./parameterInterface"
-import { TestSchedule } from "./testScheduleInterface"
-import { WaterChange } from "./waterChangeInterface"
-import { Ailment } from "./ailmentInterface"
-import { RecentProduct } from "./productInterface"
-
-export interface TankInhabitant {
-  genus: string,
-  species: string
-}
-
 /* TODO
 * Needs full range of items to trigger all event types
 * WATER_CHANGE
@@ -66,4 +54,49 @@ export interface Tank {
   recent_product: RecentProduct,
   recent_substrate_fertilizer: RecentProduct,
   recent_water_fertilizer: RecentProduct,
+}
+
+export interface TankInhabitant {
+  genus: string,
+  species: string
+}
+
+export interface LightSettings {
+  name: string,
+  strength: string,
+  percentage: number,
+  hours_on: number
+}
+
+export interface Parameter {
+  parameter: string,
+  result: number,
+  result_unit: string,
+  timestamp: string
+}
+
+// Schedule for specific test to be taken every n days
+export interface TestSchedule {
+  parameter: string,
+  frequency: number
+}
+
+export interface WaterChange {
+  percentage: number,
+  water_type: string
+  timestamp: string,
+}
+
+export interface Ailment {
+  name: string,
+  type: string,
+  comments: string
+  timestamp: string,
+}
+
+export interface RecentProduct {
+  name: string,
+  dose: number,
+  unit: string
+  timestamp: string,
 }

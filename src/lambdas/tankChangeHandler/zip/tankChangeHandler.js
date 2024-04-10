@@ -59,7 +59,7 @@ var require_dist_cjs = __commonJS({
       NumberValueImpl: () => NumberValue,
       convertToAttr: () => convertToAttr,
       convertToNative: () => convertToNative,
-      marshall: () => marshall2,
+      marshall: () => marshall,
       unmarshall: () => unmarshall2
     });
     module2.exports = __toCommonJS2(src_exports);
@@ -330,7 +330,7 @@ var require_dist_cjs = __commonJS({
       (acc, [key, value]) => (acc[key] = convertToNative(value, options), acc),
       {}
     ), "convertMap");
-    function marshall2(data, options) {
+    function marshall(data, options) {
       const attributeValue = convertToAttr(data, options);
       const [key, value] = Object.entries(attributeValue)[0];
       switch (key) {
@@ -350,7 +350,7 @@ var require_dist_cjs = __commonJS({
           return attributeValue;
       }
     }
-    __name(marshall2, "marshall");
+    __name(marshall, "marshall");
     var unmarshall2 = /* @__PURE__ */ __name((data, options) => {
       if (options == null ? void 0 : options.convertWithoutMapWrapper) {
         return convertToNative(data, options);
@@ -19121,7 +19121,7 @@ var require_dist_cjs60 = __commonJS({
       SSEStatus: () => SSEStatus,
       SSEType: () => SSEType,
       ScalarAttributeType: () => ScalarAttributeType,
-      ScanCommand: () => ScanCommand2,
+      ScanCommand: () => ScanCommand,
       Select: () => Select,
       StreamViewType: () => StreamViewType,
       TableAlreadyExistsException: () => TableAlreadyExistsException,
@@ -23483,7 +23483,7 @@ var require_dist_cjs60 = __commonJS({
     }).s("DynamoDB_20120810", "Scan", {}).n("DynamoDBClient", "ScanCommand").f(void 0, void 0).ser(se_ScanCommand).de(de_ScanCommand).build() {
     };
     __name(_ScanCommand, "ScanCommand");
-    var ScanCommand2 = _ScanCommand;
+    var ScanCommand = _ScanCommand;
     var _TagResourceCommand = class _TagResourceCommand extends import_smithy_client.Command.classBuilder().ep({
       ...commonParams
     }).m(function(Command, cs, config, o) {
@@ -23668,7 +23668,7 @@ var require_dist_cjs60 = __commonJS({
       QueryCommand,
       RestoreTableFromBackupCommand,
       RestoreTableToPointInTimeCommand,
-      ScanCommand: ScanCommand2,
+      ScanCommand,
       TagResourceCommand,
       TransactGetItemsCommand,
       TransactWriteItemsCommand,
@@ -23699,7 +23699,7 @@ var require_dist_cjs60 = __commonJS({
     var import_core7 = require_dist_cjs35();
     var paginateQuery = (0, import_core7.createPaginator)(DynamoDBClient2, QueryCommand, "ExclusiveStartKey", "LastEvaluatedKey", "Limit");
     var import_core8 = require_dist_cjs35();
-    var paginateScan = (0, import_core8.createPaginator)(DynamoDBClient2, ScanCommand2, "ExclusiveStartKey", "LastEvaluatedKey", "Limit");
+    var paginateScan = (0, import_core8.createPaginator)(DynamoDBClient2, ScanCommand, "ExclusiveStartKey", "LastEvaluatedKey", "Limit");
     var import_util_waiter = require_dist_cjs59();
     var checkState = /* @__PURE__ */ __name(async (client, input) => {
       let reason;
@@ -24024,7 +24024,7 @@ var require_marshall = __commonJS({
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.marshall = void 0;
     var convertToAttr_1 = require_convertToAttr();
-    function marshall2(data, options) {
+    function marshall(data, options) {
       const attributeValue = (0, convertToAttr_1.convertToAttr)(data, options);
       const [key, value] = Object.entries(attributeValue)[0];
       switch (key) {
@@ -24044,7 +24044,7 @@ var require_marshall = __commonJS({
           return attributeValue;
       }
     }
-    exports2.marshall = marshall2;
+    exports2.marshall = marshall;
   }
 });
 
@@ -24416,7 +24416,7 @@ var require_DeleteCommand = __commonJS({
       return DynamoDBDocumentClientCommand_1.DynamoDBDocumentClientCommand;
     } });
     var utils_1 = require_utils();
-    var DeleteCommand2 = class extends DynamoDBDocumentClientCommand_1.DynamoDBDocumentClientCommand {
+    var DeleteCommand = class extends DynamoDBDocumentClientCommand_1.DynamoDBDocumentClientCommand {
       constructor(input) {
         super();
         this.input = input;
@@ -24446,7 +24446,7 @@ var require_DeleteCommand = __commonJS({
         return async () => handler(this.clientCommand);
       }
     };
-    exports2.DeleteCommand = DeleteCommand2;
+    exports2.DeleteCommand = DeleteCommand;
   }
 });
 
@@ -24701,7 +24701,7 @@ var require_ScanCommand = __commonJS({
       return DynamoDBDocumentClientCommand_1.DynamoDBDocumentClientCommand;
     } });
     var utils_1 = require_utils();
-    var ScanCommand2 = class extends DynamoDBDocumentClientCommand_1.DynamoDBDocumentClientCommand {
+    var ScanCommand = class extends DynamoDBDocumentClientCommand_1.DynamoDBDocumentClientCommand {
       constructor(input) {
         super();
         this.input = input;
@@ -24730,7 +24730,7 @@ var require_ScanCommand = __commonJS({
         return async () => handler(this.clientCommand);
       }
     };
-    exports2.ScanCommand = ScanCommand2;
+    exports2.ScanCommand = ScanCommand;
   }
 });
 
@@ -24865,7 +24865,7 @@ var require_UpdateCommand = __commonJS({
       return DynamoDBDocumentClientCommand_1.DynamoDBDocumentClientCommand;
     } });
     var utils_1 = require_utils();
-    var UpdateCommand2 = class extends DynamoDBDocumentClientCommand_1.DynamoDBDocumentClientCommand {
+    var UpdateCommand = class extends DynamoDBDocumentClientCommand_1.DynamoDBDocumentClientCommand {
       constructor(input) {
         super();
         this.input = input;
@@ -24900,7 +24900,7 @@ var require_UpdateCommand = __commonJS({
         return async () => handler(this.clientCommand);
       }
     };
-    exports2.UpdateCommand = UpdateCommand2;
+    exports2.UpdateCommand = UpdateCommand;
   }
 });
 
@@ -25244,6 +25244,8 @@ var require_dist_cjs62 = __commonJS({
 
 // src/lambdas/tankChangeHandler/tankChangeHandler.ts
 var import_util_dynamodb = __toESM(require_dist_cjs());
+var import_lib_dynamodb = __toESM(require_dist_cjs62());
+var import_client_dynamodb = __toESM(require_dist_cjs60());
 
 // src/functions/sortData.ts
 var returnSortNumber = (a, b) => {
@@ -25266,166 +25268,98 @@ var sortAilmentArrayByName = (a, b) => {
 
 // src/functions/checkObjectEquality.ts
 var checkArrayOfObjectImagesEqual = (oldImageArray, newImageArray) => {
-  oldImageArray.forEach((oldImage, i) => {
+  for (const [i, oldImage] of oldImageArray.entries()) {
     if (!checkObjectImagesEqual(oldImage, newImageArray[i])) {
       return false;
     }
-  });
+  }
   return true;
 };
 var checkObjectImagesEqual = (oldImage, newImage) => {
   for (const key in oldImage) {
     if (oldImage[key] !== newImage[key]) {
+      console.log(oldImage[key] !== newImage[key]);
       return false;
     }
   }
   return true;
 };
 
-// src/services/productsService.ts
-var import_lib_dynamodb = __toESM(require_dist_cjs62());
-var import_client_dynamodb = __toESM(require_dist_cjs60());
-var ProductService = class {
-  async getAllProducts() {
-    const command = new import_lib_dynamodb.ScanCommand({
-      "TableName": "product" /* PRODUCT */
-    });
-    try {
-      const response = await this.docClient.send(command);
-      if (response.Items?.length === 0) {
-        return {
-          data: void 0,
-          message: "no items found for" /* NO_ITEMS_FOUND */
-        };
-      }
-      const products = response.Items;
-      return {
-        data: products,
-        message: "" /* NO_ERROR */
-      };
-    } catch (e) {
-      console.error(`failed to get products: ${e}`);
-      return {
-        data: void 0,
-        message: "internal" /* INTERNAL */
-      };
+// src/functions/getDataDifference.ts
+var getArrayOfObjectsDifference = (sortedShortArray, sortedLongArray) => {
+  const diffArray = [];
+  for (const [i, item] of sortedLongArray.entries()) {
+    if (!checkObjectImagesEqual(sortedShortArray[i], item)) {
+      diffArray.push(sortedLongArray[i]);
     }
   }
-  async getProductByName(product_name) {
-    const command = new import_lib_dynamodb.GetCommand({
-      "TableName": "product" /* PRODUCT */,
-      "Key": {
-        "name": product_name
-      }
-    });
-    try {
-      const response = await this.docClient.send(command);
-      if (!response.Item) {
-        return {
-          data: void 0,
-          message: "not found" /* NOT_FOUND */
-        };
-      }
-      const product = response.Item;
-      return {
-        data: product,
-        message: "" /* NO_ERROR */
-      };
-    } catch (e) {
-      console.error(`failed to get product with name ${product_name}: ${e}`);
-      return {
-        data: void 0,
-        message: "internal" /* INTERNAL */
-      };
+  return diffArray;
+};
+var getAilmentsDifference = (shortArray, longArray) => {
+  const diffArray = [];
+  for (const ailment of longArray) {
+    if (!shortArray.some((a) => a.name === ailment.name)) {
+      diffArray.push(ailment);
     }
   }
-  async createProduct(product) {
-    const command = new import_lib_dynamodb.PutCommand({
-      "TableName": "product" /* PRODUCT */,
-      "Item": product
-    });
-    try {
-      const response = await this.docClient.send(command);
-      return {
-        data: response,
-        message: "" /* NO_ERROR */
-      };
-    } catch (e) {
-      console.error(`failed to create product: ${e}`);
-      return {
-        data: void 0,
-        message: "internal" /* INTERNAL */
-      };
+  return diffArray;
+};
+var getTankInhabitantsDifference = (shortArray, longArray) => {
+  const diffArray = [];
+  for (const inhabitant of longArray) {
+    if (!shortArray.some((i) => i.genus === inhabitant.genus && i.species === inhabitant.species)) {
+      diffArray.push(inhabitant);
     }
   }
-  async putProduct(product) {
-    const command = new import_lib_dynamodb.PutCommand({
-      "TableName": "product" /* PRODUCT */,
-      "Item": product
-    });
-    try {
-      const exists = await this.checkProductExists(product.name);
-      const response = await this.docClient.send(command);
-      if (!exists) {
-        response.$metadata.httpStatusCode = 201;
-        return {
-          data: response,
-          message: "not found" /* NOT_FOUND */
-        };
-      }
-      return {
-        data: response,
-        message: "" /* NO_ERROR */
-      };
-    } catch (e) {
-      console.log(`failed to update product: ${e}`);
-      return {
-        data: void 0,
-        message: "internal" /* INTERNAL */
-      };
+  return diffArray;
+};
+var getParameterDifference = (shortArray, longArray) => {
+  const diffArray = [];
+  for (const parameter of longArray) {
+    if (!shortArray.some((p) => p.parameter === parameter.parameter)) {
+      diffArray.push(parameter);
     }
   }
-  async deleteProduct(product_name) {
-    const command = new import_lib_dynamodb.DeleteCommand({
-      "TableName": "product" /* PRODUCT */,
-      "Key": {
-        "name": product_name
-      }
-    });
-    try {
-      const response = await this.docClient.send(command);
-      return {
-        data: response,
-        message: "" /* NO_ERROR */
-      };
-    } catch (e) {
-      console.log(`failed to delete product with name ${product_name}: ${e}`);
-      return {
-        data: void 0,
-        message: "internal" /* INTERNAL */
-      };
+  return diffArray;
+};
+var getTestScheduleDifference = (shortArray, longArray) => {
+  const diffArray = [];
+  for (const test of longArray) {
+    if (!shortArray.some((t) => t.parameter === test.parameter)) {
+      diffArray.push(test);
     }
   }
-  async checkProductExists(product_name) {
-    const response = await this.getProductByName(product_name);
-    const exists = response.message === "" /* NO_ERROR */ ? true : false;
-    return exists;
+  return diffArray;
+};
+
+// src/lambdas/tankChangeHandler/tankChangeHandler.ts
+exports.handler = async (event, context, callback) => {
+  if (!event.Records) {
+    return;
   }
-  async deleteAllProducts() {
-    const products = (await this.getAllProducts()).data;
-    for (const [i, product] of products.entries()) {
-      const name = product.name;
-      await this.deleteProduct(name);
+  for (const record of event.Records) {
+    console.log(JSON.stringify(record));
+    if (!record.dynamodb?.OldImage) {
+      return;
     }
-  }
-  constructor() {
-    this.client = new import_client_dynamodb.DynamoDBClient({});
-    this.docClient = import_lib_dynamodb.DynamoDBDocumentClient.from(this.client);
+    if (!record.dynamodb?.NewImage) {
+      return;
+    }
+    const oldImage = (0, import_util_dynamodb.unmarshall)(record.dynamodb?.OldImage);
+    const newImage = (0, import_util_dynamodb.unmarshall)(record.dynamodb?.NewImage);
+    const eventType = await determineEventType(oldImage, newImage);
+    if (eventType === "" /* NONE */) {
+      return;
+    }
+    console.log(eventType);
+    const event2 = await createEventObject(eventType, oldImage, newImage);
+    if (!event2 || !event2.update) {
+      return;
+    }
+    console.log(event2);
+    await createEventDBEntry(event2);
   }
 };
-var productsService_default = ProductService;
-
-// src/functions/determineEventType.ts
 var determineEventType = async (oldImage, newImage) => {
   if (oldImage.is_cycled !== newImage.is_cycled) {
     return checkCycleEvent(oldImage.is_cycled, newImage.is_cycled);
@@ -25443,28 +25377,28 @@ var determineEventType = async (oldImage, newImage) => {
     return "substrate fertilized" /* SUBSTRATE_FERTILIZED */;
   }
   if (!checkObjectImagesEqual(oldImage.recent_product, newImage.recent_product)) {
-    const productService = new productsService_default();
-    const product = (await productService.getProductByName(newImage.recent_product.name)).data;
-    if (!product) {
+    const productType = await getProductTypeByName(newImage.recent_product.name);
+    if (productType) {
+      switch (productType) {
+        case "algicide" /* ALGICIDE */:
+          return "algicide added" /* ALGICIDE_ADDED */;
+        case "bacteria" /* BACTERIA */:
+          return "nitrifying bacteria added" /* BACTERIA_ADDED */;
+        case "biofilm" /* BIOFILM */:
+          return "biofilm added" /* BIOFILM_ADDED */;
+        case "food" /* FOOD */:
+          return "livestock fed" /* LIVESTOCK_FED */;
+        case "medication" /* MEDICATION */:
+          return "medication added" /* MEDICATION_ADDED */;
+        case "substrate fertilizer" /* SUBSTRATE_FERTILIZER */:
+          return "substrate fertilized" /* SUBSTRATE_FERTILIZED */;
+        case "water column fertilizer" /* WATER_COLUMN_FERTILIZER */:
+          return "water column fertilized" /* WATER_COLUMN_FERTILIZED */;
+        default:
+          return "product added" /* PRODUCT_ADDED */;
+      }
     }
-    switch (product.type) {
-      case "algicide" /* ALGICIDE */:
-        return "algicide added" /* ALGICIDE_ADDED */;
-      case "bacteria" /* BACTERIA */:
-        return "nitrifying bacteria added" /* BACTERIA_ADDED */;
-      case "biofilm" /* BIOFILM */:
-        return "biofilm added" /* BIOFILM_ADDED */;
-      case "food" /* FOOD */:
-        return "livestock fed" /* LIVESTOCK_FED */;
-      case "medication" /* MEDICATION */:
-        return "medication added" /* MEDICATION_ADDED */;
-      case "substrate fertilizer" /* SUBSTRATE_FERTILIZER */:
-        return "substrate fertilized" /* SUBSTRATE_FERTILIZED */;
-      case "water column fertilizer" /* WATER_COLUMN_FERTILIZER */:
-        return "water column fertilized" /* WATER_COLUMN_FERTILIZED */;
-      default:
-        return "product added" /* PRODUCT_ADDED */;
-    }
+    return "product added" /* PRODUCT_ADDED */;
   }
   const livestock_oldImage = oldImage.livestock;
   const livestock_newImage = newImage.livestock;
@@ -25520,24 +25454,214 @@ var checkCycleEvent = (isCycled_oldImage, isCycled_newImage) => {
   }
   return "cycle complete" /* CYCLE_COMPLETE */;
 };
-
-// src/lambdas/tankChangeHandler/tankChangeHandler.ts
-exports.handler = (event, context, callback) => {
-  event.Records?.forEach((record) => {
-    console.log(JSON.stringify(record));
-    if (!record.dynamodb?.OldImage) {
-      return;
+var createEventObject = async (eventType, oldImage, newImage) => {
+  const event = {
+    tank_id: newImage.id,
+    timestamp: void 0,
+    type: eventType,
+    update: void 0,
+    comments: void 0
+  };
+  const createAilmentEventObject = (diffArray) => {
+    const update = [];
+    for (const ailment of diffArray) {
+      update.push({
+        name: ailment.name,
+        type: ailment.type,
+        comments: ailment.comments
+      });
     }
-    if (!record.dynamodb?.NewImage) {
-      return;
+    return update;
+  };
+  const createParameterEventObject = (diffArray) => {
+    const update = [];
+    for (const parameter of diffArray) {
+      update.push({
+        parameter: parameter.parameter,
+        result: parameter.result,
+        result_unit: parameter.result_unit
+      });
     }
-    const oldImage = (0, import_util_dynamodb.unmarshall)(record.dynamodb?.OldImage);
-    const newImage = (0, import_util_dynamodb.unmarshall)(record.dynamodb?.NewImage);
-    console.log(oldImage);
-    console.log(newImage);
-    const eventType = determineEventType(oldImage, newImage);
-    console.log(eventType);
+    return update;
+  };
+  switch (eventType) {
+    case "product added" /* PRODUCT_ADDED */:
+    case "algicide added" /* ALGICIDE_ADDED */:
+    case "nitrifying bacteria added" /* BACTERIA_ADDED */:
+    case "biofilm added" /* BIOFILM_ADDED */:
+    case "livestock fed" /* LIVESTOCK_FED */:
+    case "medication added" /* MEDICATION_ADDED */:
+      event.update = {
+        name: newImage.recent_product.name,
+        dose: newImage.recent_product.dose,
+        unit: newImage.recent_product.unit
+      };
+      event.timestamp = newImage.recent_product.timestamp;
+      break;
+    case "substrate fertilized" /* SUBSTRATE_FERTILIZED */:
+      event.update = {
+        name: newImage.recent_substrate_fertilizer.name,
+        dose: newImage.recent_substrate_fertilizer.dose,
+        unit: newImage.recent_substrate_fertilizer.unit
+      };
+      event.timestamp = newImage.recent_substrate_fertilizer.timestamp;
+      break;
+    case "water column fertilized" /* WATER_COLUMN_FERTILIZED */:
+      event.update = {
+        name: newImage.recent_water_fertilizer.name,
+        dose: newImage.recent_water_fertilizer.dose,
+        unit: newImage.recent_water_fertilizer.unit
+      };
+      event.timestamp = newImage.recent_water_fertilizer.timestamp;
+      break;
+    case "water change" /* WATER_CHANGE */:
+      event.update = {
+        percentage: newImage.recent_water_change.percentage,
+        water_type: newImage.recent_water_change.water_type
+      };
+      event.timestamp = newImage.recent_water_change.timestamp;
+      break;
+    case "cycle started" /* CYCLE_STARTED */:
+    case "cycle complete" /* CYCLE_COMPLETE */:
+    case "cycle crashed" /* CYCLE_CRASHED */:
+      event.update = "";
+      event.timestamp = String(Date.now());
+      break;
+    case "temperature settings changed" /* TEMPERATURE_SETTING_CHANGED */:
+      event.update = newImage.temperature_setting;
+      event.timestamp = String(Date.now());
+      break;
+    case "light settings changed" /* LIGHT_SETTINGS_CHANGED */:
+      event.update = newImage.light_settings;
+      event.timestamp = String(Date.now());
+      break;
+    case "tested" /* PARAMETER_TESTED */:
+      const param_oldArray = oldImage.parameters.sort(sortParametersArrayByParameter);
+      const param_newArray = newImage.parameters.sort(sortParametersArrayByParameter);
+      const param_diffArray = param_oldArray.length === param_newArray.length ? getArrayOfObjectsDifference(param_oldArray, param_newArray) : getParameterDifference(param_oldArray, param_newArray);
+      event.update = createParameterEventObject(param_diffArray);
+      event.timestamp = param_diffArray[0].timestamp;
+      break;
+    case "test schedule changed" /* TEST_SCHEDULE_CHANGED */:
+      const test_oldArray = oldImage.test_schedule.sort(sortTestScheduleArrayByParameter);
+      const test_newArray = newImage.test_schedule.sort(sortTestScheduleArrayByParameter);
+      const test_diffArray = test_oldArray.length === test_newArray.length ? getArrayOfObjectsDifference(test_oldArray, test_newArray) : getTestScheduleDifference(test_oldArray, test_newArray);
+      event.update = test_diffArray;
+      event.timestamp = String(Date.now());
+      break;
+    case "ailment diagnosed" /* AILMENT_DX */:
+      const ailmentDx_diffArray = getAilmentsDifference(oldImage.ailments, newImage.ailments);
+      event.update = createAilmentEventObject(ailmentDx_diffArray);
+      event.timestamp = ailmentDx_diffArray[0].timestamp;
+      break;
+    case "ailment cured" /* AILMENT_CURED */:
+      const diffArray = getAilmentsDifference(newImage.ailments, oldImage.ailments);
+      event.update = createAilmentEventObject(diffArray);
+      event.timestamp = String(Date.now());
+      break;
+    case "livestock added" /* LIVESTOCK_ADDED */:
+      event.update = getTankInhabitantsDifference(oldImage.livestock, newImage.livestock);
+      event.timestamp = String(Date.now());
+      break;
+    case "livestock removed" /* LIVESTOCK_REMOVED */:
+    case "livestock died" /* LIVESTOCK_DIED */:
+      event.update = getTankInhabitantsDifference(newImage.livestock, oldImage.livestock);
+      event.timestamp = String(Date.now());
+      break;
+    case "plant added" /* PLANT_ADDED */:
+      event.update = getTankInhabitantsDifference(oldImage.plants, newImage.plants);
+      event.timestamp = String(Date.now());
+      break;
+    case "plant removed" /* PLANT_REMOVED */:
+    case "plant died" /* PLANT_DIED */:
+      event.update = getTankInhabitantsDifference(newImage.plants, newImage.plants);
+      event.timestamp = String(Date.now());
+      break;
+  }
+  if (!event.timestamp) {
+    return;
+  }
+  const eventExists = await checkEventExists(newImage.id, event.timestamp);
+  if (eventExists === void 0) {
+    return void 0;
+  }
+  if (eventExists) {
+    console.error(`event already exists for tank id ${newImage.id} at timestamp ${event.timestamp}`);
+    return void 0;
+  }
+  return event;
+};
+var checkEventExists = async (tank_id, timestamp) => {
+  const client = new import_client_dynamodb.DynamoDBClient({});
+  const docClient = import_lib_dynamodb.DynamoDBDocumentClient.from(client);
+  const command = new import_lib_dynamodb.GetCommand({
+    "TableName": "tank_event" /* TANK_EVENT */,
+    "Key": {
+      "tank_id": tank_id,
+      "timestamp": timestamp
+    }
   });
+  try {
+    const response = await docClient.send(command);
+    if (!response.Item) {
+      return false;
+    }
+    return true;
+  } catch (e) {
+    console.error(`failed to check for existing event for tank with id ${tank_id} at timestamp ${timestamp}: ${e}`);
+    return void 0;
+  }
+};
+var createEventDBEntry = async (event) => {
+  const client = new import_client_dynamodb.DynamoDBClient({});
+  const docClient = import_lib_dynamodb.DynamoDBDocumentClient.from(client);
+  const command = new import_lib_dynamodb.PutCommand({
+    "TableName": "tank_event" /* TANK_EVENT */,
+    "Item": event
+  });
+  try {
+    const response = await docClient.send(command);
+    return {
+      data: response,
+      message: "" /* NO_ERROR */
+    };
+  } catch (e) {
+    console.error(`failed to create event for tank id ${event.tank_id} at timestamp ${event.timestamp}: ${e}`);
+    return {
+      data: void 0,
+      message: "internal" /* INTERNAL */
+    };
+  }
+};
+var getProductTypeByName = async (productName) => {
+  const client = new import_client_dynamodb.DynamoDBClient({});
+  const docClient = import_lib_dynamodb.DynamoDBDocumentClient.from(client);
+  const command = new import_lib_dynamodb.GetCommand({
+    "TableName": "product" /* PRODUCT */,
+    "Key": {
+      "name": productName
+    }
+  });
+  try {
+    const response = await docClient.send(command);
+    if (!response.Item) {
+      return {
+        data: void 0,
+        message: "not found" /* NOT_FOUND */
+      };
+    }
+    const product = response.Item;
+    return {
+      data: product.type,
+      message: "" /* NO_ERROR */
+    };
+  } catch (e) {
+    console.error(`failed to get product with name ${productName}: ${e}`);
+    return {
+      data: void 0,
+      message: "internal" /* INTERNAL */
+    };
+  }
 };
 /*! Bundled license information:
 

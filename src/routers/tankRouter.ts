@@ -2,14 +2,8 @@ import { Router } from 'express';
 import TankService from '../services/tankService';
 import LivestockService from '../services/livestockService';
 import PlantService from '../services/plantService';
-import { Tank, TankInhabitant } from '../interfaces/tankInterface';
+import { Tank, Ailment, LightSettings, Parameter, RecentProduct, TankInhabitant, TestSchedule, WaterChange } from '../interfaces/tankInterface';
 import { RESPONSE_MESSAGE } from '../constants/responseMessageEnum';
-import { LightSettings } from '../interfaces/lightInterface';
-import { Parameter } from '../interfaces/parameterInterface';
-import { TestSchedule } from '../interfaces/testScheduleInterface';
-import { WaterChange } from '../interfaces/waterChangeInterface';
-import { Ailment } from '../interfaces/ailmentInterface';
-import { RecentProduct } from '../interfaces/productInterface';
 import { convertInhabitantsToArrayOfObjects } from '../functions/convertData';
 
 export const TankRouter = Router();

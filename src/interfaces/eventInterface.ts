@@ -1,16 +1,34 @@
-import { Ailment } from "./ailmentInterface"
-import { LightSettings } from "./lightInterface"
-import { Parameter } from "./parameterInterface"
+import { LightSettings } from "./tankInterface"
+import { TankInhabitant } from "./tankInterface"
+import { TestSchedule } from "./tankInterface"
+
+export interface AilmentEvent {
+  name: string,
+  type: string,
+  comments: string
+}
+
+export interface ParameterEvent {
+  parameter: string,
+  result: number,
+  result_unit: string
+}
+
+export interface RecentProductEvent {
+  name: string,
+  dose: number | undefined,
+  unit: string | undefined
+}
+
+export interface WaterChangeEvent {
+  percentage: number,
+  water_type: string
+}
 
 export interface Event {
   tank_id: string,
-  timestamp: string,
+  timestamp: string | undefined,
   type: string,
-  product_dose: number | undefined,
-  product_dose_unit: string | undefined,
-  water_change_percentage: number | undefined,
-  parameters: Parameter | undefined,
-  light_settings: LightSettings | undefined,
-  ailment: Ailment | undefined
-  comments: string | undefined,
+  update: string | number | TankInhabitant[] | LightSettings | ParameterEvent[] | TestSchedule[] | WaterChangeEvent | AilmentEvent[] | RecentProductEvent | undefined,
+  comments: string | undefined
 }
