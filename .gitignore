@@ -25,4 +25,4 @@ yarn-error.log*
 
 # lambdas
 lambdaCommands.txt
-/lambdas/*/zip
+/src/lambdas/*/zip
