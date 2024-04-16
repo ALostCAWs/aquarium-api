@@ -17,6 +17,7 @@ export enum DOSE_UNIT {
   MILLILITER = 'mL',
   TEASPOON = 'tsp',
   TABLESPOON = 'tbsp',
+  SCOOPS = 'scoops',
   CUP = 'cup',
   DROPS = 'drops',
   TABS = 'tabs'

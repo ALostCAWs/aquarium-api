@@ -205,13 +205,13 @@ function loadData() {
     timestamp: `1710067760000`
   } as Parameter;
   const parameterGH_2 = {
-    parameter: `NGH`,
+    parameter: `GH`,
     result: 12,
     result_unit: RESULTS_UNIT.DEGREES,
     timestamp: `1710067940000`
   } as Parameter;
   const parameterKH_2 = {
-    parameter: `NKH`,
+    parameter: `KH`,
     result: 6,
     result_unit: RESULTS_UNIT.DEGREES,
     timestamp: `1710068120000`
