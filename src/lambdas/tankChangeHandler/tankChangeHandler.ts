@@ -83,7 +83,7 @@ const determineEventType = async (oldImage: Tank, newImage: Tank): Promise<strin
   }
 
   if (!checkObjectImagesEqual(oldImage.recent_product, newImage.recent_product)) {
-    const productType = await getProductTypeByName(newImage.recent_product.name);
+    const productType = await getProductTypeByName(newImage.recent_product.product);
 
     if (productType) {
       switch (productType as unknown as string) {
@@ -198,7 +198,7 @@ const createEventObject = async (eventType: string, oldImage: Tank, newImage: Ta
   const event = {
     tank_id: newImage.id,
     timestamp: undefined,
-    type: eventType,
+    event_type: eventType,
     update: undefined,
     comments: undefined
   } as Event;
@@ -207,8 +207,8 @@ const createEventObject = async (eventType: string, oldImage: Tank, newImage: Ta
     const update: AilmentEvent[] = [];
       for (const ailment of diffArray) {
         update.push({
-          name: ailment.name,
-          type: ailment.type,
+          ailment: ailment.ailment,
+          ailment_type: ailment.ailment_type,
           comments: ailment.comments
         } as AilmentEvent);
       }
@@ -259,7 +259,7 @@ const createEventObject = async (eventType: string, oldImage: Tank, newImage: Ta
     case EVENT.LIVESTOCK_FED:
     case EVENT.MEDICATION_ADDED:
       event.update = {
-        name: newImage.recent_product.name,
+        product: newImage.recent_product.product,
         dose: newImage.recent_product.dose,
         unit: newImage.recent_product.unit
       } as RecentProductEvent;
@@ -267,7 +267,7 @@ const createEventObject = async (eventType: string, oldImage: Tank, newImage: Ta
       break;
     case EVENT.SUBSTRATE_FERTILIZED:
       event.update = {
-        name: newImage.recent_substrate_fertilizer.name,
+        product: newImage.recent_substrate_fertilizer.product,
         dose: newImage.recent_substrate_fertilizer.dose,
         unit: newImage.recent_substrate_fertilizer.unit
       } as RecentProductEvent;
@@ -275,7 +275,7 @@ const createEventObject = async (eventType: string, oldImage: Tank, newImage: Ta
       break;
     case EVENT.WATER_COLUMN_FERTILIZED:
       event.update = {
-        name: newImage.recent_water_fertilizer.name,
+        product: newImage.recent_water_fertilizer.product,
         dose: newImage.recent_water_fertilizer.dose,
         unit: newImage.recent_water_fertilizer.unit
       } as RecentProductEvent;
@@ -439,7 +439,7 @@ const getProductTypeByName = async (productName: string): Promise<GetProductType
     const product = response.Item as Product;
 
     return {
-      data: product.type,
+      data: product.product_type,
       message: RESPONSE_MESSAGE.NO_ERROR
     };
   } catch (e) {

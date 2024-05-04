@@ -23,5 +23,5 @@ export const sortTestScheduleArrayByParameter = (a: TestSchedule, b: TestSchedul
 }
 
 export const sortAilmentArrayByName = (a: Ailment, b: Ailment) => {
-  return returnSortNumber(a.name, b.name);
+  return returnSortNumber(a.ailment, b.ailment);
 }

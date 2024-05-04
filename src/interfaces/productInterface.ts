@@ -1,4 +1,4 @@
 export interface Product {
-  name: string,
-  type: string
+  product: string,
+  product_type: string
 }

@@ -31,7 +31,7 @@ export const getArrayOfObjectsDifference = <T>(sortedShortArray: T[], sortedLong
 export const getAilmentsDifference = (shortArray: Ailment[], longArray: Ailment[]): Ailment[] => {
   const diffArray: Ailment[] = [];
   for (const ailment of longArray) {
-    if (!shortArray.some(a => a.name === ailment.name)) {
+    if (!shortArray.some(a => a.ailment === ailment.ailment)) {
       diffArray.push(ailment);
     }
   }

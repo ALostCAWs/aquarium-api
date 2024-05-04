@@ -3,8 +3,8 @@ import { TankInhabitant } from "./tankInterface"
 import { TestSchedule } from "./tankInterface"
 
 export interface AilmentEvent {
-  name: string,
-  type: string,
+  ailment: string,
+  ailment_type: string,
   comments: string
 }
 
@@ -15,7 +15,7 @@ export interface ParameterEvent {
 }
 
 export interface RecentProductEvent {
-  name: string,
+  product: string,
   dose: number | undefined,
   unit: string | undefined
 }
@@ -28,7 +28,7 @@ export interface WaterChangeEvent {
 export interface Event {
   tank_id: string,
   timestamp: string | undefined,
-  type: string,
+  event_type: string,
   update: string | number | TankInhabitant[] | LightSettings | ParameterEvent[] | TestSchedule[] | WaterChangeEvent | AilmentEvent[] | RecentProductEvent | undefined,
   comments: string | undefined
 }

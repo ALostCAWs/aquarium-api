@@ -279,13 +279,13 @@ function loadData() {
     ailments: [],
     recent_product: {} as RecentProduct,
     recent_substrate_fertilizer: {
-      name: `Seachem Flourish Tabs`,
+      product: `Seachem Flourish Tabs`,
       dose: 3,
       unit: DOSE_UNIT.TABS,
       timestamp: `1712585544000`
     } as RecentProduct,
     recent_water_fertilizer: {
-      name: `Seachem Flourish Potassium`,
+      product: `Seachem Flourish Potassium`,
       dose: 1.6,
       unit: DOSE_UNIT.MILLILITER,
       timestamp: `1712695510000`
@@ -319,13 +319,13 @@ function loadData() {
     ailments: [],
     recent_product: {} as RecentProduct,
     recent_substrate_fertilizer: {
-      name: `Seachem Flourish Tabs`,
+      product: `Seachem Flourish Tabs`,
       dose: 2,
       unit: DOSE_UNIT.TABS,
       timestamp: `1712695930000`
     } as RecentProduct,
     recent_water_fertilizer: {
-      name: `Seachem Flourish Potassium`,
+      product: `Seachem Flourish Potassium`,
       dose: 0.75,
       unit: DOSE_UNIT.MILLILITER,
       timestamp: `1712695513000`
@@ -359,13 +359,13 @@ function loadData() {
     ailments: [],
     recent_product: {} as RecentProduct,
     recent_substrate_fertilizer: {
-      name: `Seachem Flourish Tabs`,
+      product: `Seachem Flourish Tabs`,
       dose: 2,
       unit: DOSE_UNIT.TABS,
       timestamp: `1712739072000`
     } as RecentProduct,
     recent_water_fertilizer: {
-      name: `Seachem Flourish Potassium`,
+      product: `Seachem Flourish Potassium`,
       dose: 0.5,
       unit: DOSE_UNIT.MILLILITER,
       timestamp: `1712695517000`

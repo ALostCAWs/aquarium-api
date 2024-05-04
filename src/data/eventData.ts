@@ -20,7 +20,7 @@ function loadData() {
   eventService.createEvent({
     tank_id: `1`,
     timestamp: `1712110200000`,
-    type: EVENT.WATER_COLUMN_FERTILIZED,
+    event_type: EVENT.WATER_COLUMN_FERTILIZED,
     update: tank1_update1712110200000,
     comments: undefined
   } as Event);
@@ -32,7 +32,7 @@ function loadData() {
   eventService.createEvent({
     tank_id: `2`,
     timestamp: `1712110260000`,
-    type: EVENT.WATER_COLUMN_FERTILIZED,
+    event_type: EVENT.WATER_COLUMN_FERTILIZED,
     update: tank2_update1712110260000,
     comments: undefined
   } as Event);
@@ -44,7 +44,7 @@ function loadData() {
   eventService.createEvent({
     tank_id: `3`,
     timestamp: `1712110320000`,
-    type: EVENT.WATER_COLUMN_FERTILIZED,
+    event_type: EVENT.WATER_COLUMN_FERTILIZED,
     update: tank3_update1712110320000,
     comments: undefined
   } as Event);
@@ -56,7 +56,7 @@ function loadData() {
   eventService.createEvent({
     tank_id: `4`,
     timestamp: `1712110380000`,
-    type: EVENT.WATER_COLUMN_FERTILIZED,
+    event_type: EVENT.WATER_COLUMN_FERTILIZED,
     update: tank4_update1712110380000,
     comments: undefined
   } as Event);
@@ -69,7 +69,7 @@ function loadData() {
   eventService.createEvent({
     tank_id: `1`,
     timestamp: `1712507400000`,
-    type: EVENT.PLANT_ADDED,
+    event_type: EVENT.PLANT_ADDED,
     update: tank1_update1712507400000,
     comments: undefined
   } as Event);
@@ -79,7 +79,7 @@ function loadData() {
   eventService.createEvent({
     tank_id: `1`,
     timestamp: `1712508420000`,
-    type: EVENT.LIVESTOCK_ADDED,
+    event_type: EVENT.LIVESTOCK_ADDED,
     update: tank1_update1712508420000,
     comments: undefined
   } as Event);
@@ -92,7 +92,7 @@ function loadData() {
   eventService.createEvent({
     tank_id: `1`,
     timestamp: `1712695510000`,
-    type: EVENT.WATER_COLUMN_FERTILIZED,
+    event_type: EVENT.WATER_COLUMN_FERTILIZED,
     update: tank1_update1712695510000,
     comments: undefined
   });
@@ -104,7 +104,7 @@ function loadData() {
   eventService.createEvent({
     tank_id: `2`,
     timestamp: `1712695513000`,
-    type: EVENT.WATER_COLUMN_FERTILIZED,
+    event_type: EVENT.WATER_COLUMN_FERTILIZED,
     update: tank2_update1712695513000,
     comments: undefined
   });
@@ -116,7 +116,7 @@ function loadData() {
   eventService.createEvent({
     tank_id: `3`,
     timestamp: `1712695517000`,
-    type: EVENT.WATER_COLUMN_FERTILIZED,
+    event_type: EVENT.WATER_COLUMN_FERTILIZED,
     update: tank3_update1712695517000,
     comments: undefined
   });
@@ -129,7 +129,7 @@ function loadData() {
   eventService.createEvent({
     tank_id: `1`,
     timestamp: `1712585544000`,
-    type: EVENT.SUBSTRATE_FERTILIZED,
+    event_type: EVENT.SUBSTRATE_FERTILIZED,
     update: tank1_update1712585544000,
     comments: undefined
   });
@@ -141,7 +141,7 @@ function loadData() {
   eventService.createEvent({
     tank_id: `2`,
     timestamp: `1712695930000`,
-    type: EVENT.SUBSTRATE_FERTILIZED,
+    event_type: EVENT.SUBSTRATE_FERTILIZED,
     update: tank2_update1712695930000,
     comments: undefined
   });
@@ -153,7 +153,7 @@ function loadData() {
   eventService.createEvent({
     tank_id: `3`,
     timestamp: `1712739072000`,
-    type: EVENT.SUBSTRATE_FERTILIZED,
+    event_type: EVENT.SUBSTRATE_FERTILIZED,
     update: tank3_update1712739072000,
     comments: undefined
   });

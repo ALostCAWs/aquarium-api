@@ -11,33 +11,33 @@ const productsService = new ProductService();
 
 function loadData() {
   productsService.createProduct({
-    name: `Aquarium Co-Op Easy Green`,
-    type: PRODUCT_TYPE.WATER_COLUMN_FERTILIZER
+    product: `Aquarium Co-Op Easy Green`,
+    product_type: PRODUCT_TYPE.WATER_COLUMN_FERTILIZER
   } as Product);
 
   productsService.createProduct({
-    name: `GlasGarten Bacter AE`,
-    type: PRODUCT_TYPE.BIOFILM
+    product: `GlasGarten Bacter AE`,
+    product_type: PRODUCT_TYPE.BIOFILM
   } as Product);
 
   productsService.createProduct({
-    name: `Seachem Flourish Excel`,
-    type: PRODUCT_TYPE.ALGICIDE
+    product: `Seachem Flourish Excel`,
+    product_type: PRODUCT_TYPE.ALGICIDE
   } as Product);
   productsService.createProduct({
-    name: `Seachem Flourish Potassium`,
-    type: PRODUCT_TYPE.WATER_COLUMN_FERTILIZER
+    product: `Seachem Flourish Potassium`,
+    product_type: PRODUCT_TYPE.WATER_COLUMN_FERTILIZER
   } as Product);
   productsService.createProduct({
-    name: `Seachem Flourish Tabs`,
-    type: PRODUCT_TYPE.SUBSTRATE_FERTILIZER
+    product: `Seachem Flourish Tabs`,
+    product_type: PRODUCT_TYPE.SUBSTRATE_FERTILIZER
   } as Product);
   productsService.createProduct({
-    name: `Seachem Prime`,
-    type: PRODUCT_TYPE.CONDITIONER
+    product: `Seachem Prime`,
+    product_type: PRODUCT_TYPE.CONDITIONER
   } as Product);
   productsService.createProduct({
-    name: `Seachem Stability`,
-    type: PRODUCT_TYPE.BACTERIA
+    product: `Seachem Stability`,
+    product_type: PRODUCT_TYPE.BACTERIA
   } as Product);
 }

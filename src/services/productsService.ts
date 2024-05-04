@@ -1,5 +1,5 @@
 import { DynamoDBDocumentClient, ScanCommand, GetCommand, PutCommand, PutCommandOutput, UpdateCommand, UpdateCommandOutput, DeleteCommand, DeleteCommandOutput } from '@aws-sdk/lib-dynamodb';
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { AttributeValue, DynamoDBClient, QueryCommand } from '@aws-sdk/client-dynamodb';
 import { TABLE } from '../constants/tableEnum';
 import { RESPONSE_MESSAGE } from '../constants/responseMessageEnum';
 import { Product } from '../interfaces/productInterface';
@@ -58,7 +58,7 @@ class ProductService {
     const command = new GetCommand({
       "TableName": TABLE.PRODUCT,
       "Key": {
-        "name": product_name
+        "product": product_name
       }
     });
 
@@ -85,6 +85,47 @@ class ProductService {
         data: undefined,
         message: RESPONSE_MESSAGE.INTERNAL
       };
+    }
+  }
+
+  async getProductsByType(product_type: string):Promise<GetProductResponse> {
+    const command = new QueryCommand({
+      "TableName": TABLE.PRODUCT,
+      "IndexName": 'product_type-index',
+      "KeyConditionExpression": 'product_type = :type_name',
+      "ExpressionAttributeValues": {
+        ':type_name': { 'S': product_type }
+      }
+    });
+
+    try {
+      const response = await this.docClient.send(command);
+
+      if (!response.Items || response.Items?.length === 0) {
+        return {
+          data: [],
+          message: RESPONSE_MESSAGE.NOT_FOUND
+        };
+      }
+
+      const products: Product[] = [];
+      for (const product of response.Items) {
+        products.push({
+          product: product.product.S as string,
+          product_type: product.product_type.S as string,
+        });
+      }
+      return {
+        data: products,
+        message: RESPONSE_MESSAGE.NO_ERROR
+      };
+    } catch (e) {
+      console.error(`failed to get products of type ${product_type}: ${e}`);
+
+      return {
+        data: undefined,
+        message: RESPONSE_MESSAGE.INTERNAL
+      }
     }
   }
 
@@ -118,7 +159,7 @@ class ProductService {
     });
 
     try {
-      const exists = await this.checkProductExists(product.name);
+      const exists = await this.checkProductExists(product.product);
       const response = await this.docClient.send(command);
 
       if (!exists) {
@@ -147,7 +188,7 @@ class ProductService {
     const command = new DeleteCommand({
       "TableName": TABLE.PRODUCT,
       "Key": {
-        "name": product_name
+        "product": product_name
       }
     });
 
@@ -178,7 +219,7 @@ class ProductService {
     const products = (await this.getAllProducts()).data as Product[];
 
     for (const [i, product] of products.entries()) {
-      await this.deleteProduct(product.name);
+      await this.deleteProduct(product.product);
     }
   }
 

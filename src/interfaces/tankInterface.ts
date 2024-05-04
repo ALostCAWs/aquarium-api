@@ -88,14 +88,14 @@ export interface WaterChange {
 }
 
 export interface Ailment {
-  name: string,
-  type: string,
+  ailment: string,
+  ailment_type: string,
   comments: string
   timestamp: string,
 }
 
 export interface RecentProduct {
-  name: string,
+  product: string,
   dose: number,
   unit: string
   timestamp: string,

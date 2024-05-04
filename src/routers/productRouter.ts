@@ -25,8 +25,28 @@ ProductRouter.get('/', async (req, res) => {
   }
 });
 
-ProductRouter.get('/:product_name', async (req, res) => {
-  let product_name = req.params['product_name'];
+ProductRouter.get('/type/:product_type', async (req, res) => {
+  let product_type = req.params['product_type'];
+  const response = await productService.getProductsByType(product_type);
+
+  switch (response.message) {
+    case RESPONSE_MESSAGE.NO_ERROR:
+      res.status(200).send(response.data);
+      break;
+    case RESPONSE_MESSAGE.NOT_FOUND:
+      res.status(404).send(RESPONSE_MESSAGE.NOT_FOUND);
+      break;
+    case RESPONSE_MESSAGE.INTERNAL:
+      res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
+      break;
+    default:
+      res.status(500).send(RESPONSE_MESSAGE.INTERNAL);
+      break;
+  }
+});
+
+ProductRouter.get('/:product', async (req, res) => {
+  let product_name = req.params['product'];
   const response = await productService.getProductByName(product_name);
 
   switch (response.message) {
@@ -46,12 +66,12 @@ ProductRouter.get('/:product_name', async (req, res) => {
 });
 
 ProductRouter.post('/', async (req, res) => {
-  const product_name: string = req.body.name;
-  const product_type: string = req.body.type;
+  const product_name: string = req.body.product;
+  const product_type: string = req.body.product_type;
 
   let product: Product = {
-    name: product_name,
-    type: product_type
+    product: product_name,
+    product_type: product_type
   }
 
   const response = await productService.createProduct(product);
@@ -70,12 +90,12 @@ ProductRouter.post('/', async (req, res) => {
 });
 
 ProductRouter.put('/', async (req, res) => {
-  const product_name = req.body.name;
-  const product_type = req.body.type;
+  const product_name = req.body.product;
+  const product_type = req.body.product_type;
 
   const product = {
-    name: product_name,
-    type: product_type
+    product: product_name,
+    product_type: product_type
   }
 
   const successCode = await productService.checkProductExists(product_name) ? 200 : 201;
