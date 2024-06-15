@@ -119,7 +119,7 @@ class PlantService {
         };
       }
 
-      const sensitivity = response.Item as string[];
+      const sensitivity = response.Item.sensitivity as string[];
 
       return {
         data: sensitivity,

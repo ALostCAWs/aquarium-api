@@ -59,15 +59,30 @@ TankRouter.get('/:tank_id/sensitivity', async (req, res) => {
   const plants = convertInhabitantsToArrayOfObjects(tankPlants) as TankInhabitant[];
   const tankSensitivity = new Set();
 
-  livestock.forEach(async (l) => {
-    const sensitivity = await livestockService.getLivestockGenusSensitivity(l.genus) as unknown as string[];
-    tankSensitivity.add([...sensitivity]);
-  });
+  const addToSensitivitySet = (sensitivity: string[]) => {
+    for (const s of sensitivity) {
+      tankSensitivity.add(s);
+    }
+  }
 
-  plants.forEach(async (p) => {
-    const sensitivity = await plantService.getPlantGenusSensitivity(p.genus) as unknown as string[];
-    tankSensitivity.add([...sensitivity]);
-  });
+  for (const l of livestock) {
+    const response = await livestockService.getLivestockGenusSensitivity(l.genus);
+    const sensitivity = response.data;
+    if (!sensitivity) {
+      continue;
+    }
+    addToSensitivitySet(sensitivity);
+  }
+
+  for (const p of plants) {
+    const response = await plantService.getPlantGenusSensitivity(p.genus);
+    const sensitivity = response.data;
+    if (!sensitivity) {
+      continue;
+    }
+    addToSensitivitySet(sensitivity);
+  }
+  res.status(200).send(Array.from(tankSensitivity));
 });
 
 TankRouter.get('/:tank_id/livestock', async (req, res) => {
