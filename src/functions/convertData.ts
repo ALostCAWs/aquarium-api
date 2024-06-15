@@ -11,6 +11,5 @@ export const convertInhabitantsToArrayOfObjects = <T>(inhabitants: TankInhabitan
     } as T;
     inhabitantsList.push(inhabitant);
   }
-  console.log(inhabitantsList);
   return inhabitantsList;
 }
