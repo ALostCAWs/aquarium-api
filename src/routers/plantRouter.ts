@@ -4,7 +4,7 @@ import { PlantGenus, PlantSpecies } from '../interfaces/plantInterface';
 import { TemperatureRange, ParameterRange } from '../interfaces/rangeInterface';
 import { RESPONSE_MESSAGE } from '../constants/responseMessageEnum';
 import { PLANT_TYPE, PLANT_FEED_STYLE, PLANT_GROWTH_RATE, PLANT_DIFFICULTY, PLANT_LIGHT } from '../constants/plantEnum';
-import { checkValidPlantGenusToCreate, checkValidPlantGenusToDelete, checkValidPlantSpeciesToCreate, checkValidPlantGenusToUse } from '../functions/validatePlant';
+import { checkValidPlantGenusToCreate, checkValidPlantGenusToDelete, checkValidPlantSpeciesToCreate, checkValidPlantGenusToUse } from '../functions/validation/validatePlant';
 
 export const PlantRouter = Router();
 const plantService = new PlantService();

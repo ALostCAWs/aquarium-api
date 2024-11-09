@@ -4,7 +4,7 @@ import { LivestockGenus, LivestockSpecies } from '../interfaces/livestockInterfa
 import { TemperatureRange, ParameterRange } from '../interfaces/rangeInterface';
 import { RESPONSE_MESSAGE } from '../constants/responseMessageEnum';
 import { LIVESTOCK_TYPE, LIVESTOCK_FEED_STYLE, REPRODUCTION_STYLE, FISH_REPRODUCTION_STYLE, SHRIMP_REPRODUCTION_STYLE, LIVESTOCK_DIFFICULTY } from '../constants/livestockEnum';
-import { checkValidLivestockGenusToCreate, checkValidLivestockGenusToDelete, checkValidLivestockGenusToUse, checkValidLivestockSpeciesToCreate } from '../functions/validateLivestock';
+import { checkValidLivestockGenusToCreate, checkValidLivestockGenusToDelete, checkValidLivestockGenusToUse, checkValidLivestockSpeciesToCreate } from '../functions/validation/validateLivestock';
 
 export const LivestockRouter = Router();
 const livestockService = new LivestockService();

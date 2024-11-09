@@ -1,7 +1,7 @@
-import PlantService from "../services/plantService";
-import { RESPONSE_MESSAGE } from "../constants/responseMessageEnum";
-import { checkStringValid } from "./validateInput";
-import { PlantGenus, PlantSpecies } from "../interfaces/plantInterface";
+import PlantService from "../../services/plantService";
+import { RESPONSE_MESSAGE } from "../../constants/responseMessageEnum";
+import { validateString } from "./validateInput";
+import { PlantGenus, PlantSpecies } from "../../interfaces/plantInterface";
 
 const plantService = new PlantService();
 
@@ -11,7 +11,7 @@ interface ValidityCheckResponse {
 }
 
 export const checkValidPlantGenusToUse = async (genus: string): Promise<ValidityCheckResponse> => {
-  if (!checkStringValid(genus)) {
+  if (!validateString(genus)) {
     return {
       valid: false,
       message: RESPONSE_MESSAGE.INVALID
@@ -37,7 +37,7 @@ export const checkValidPlantGenusToUse = async (genus: string): Promise<Validity
 export const checkValidPlantGenusToCreate = async (plantGenus: PlantGenus): Promise<ValidityCheckResponse> => {
   const genus = plantGenus.genus;
 
-  if (!checkStringValid(genus)) {
+  if (!validateString(genus)) {
     return {
       valid: false,
       message: RESPONSE_MESSAGE.INVALID
@@ -117,7 +117,7 @@ export const checkValidPlantSpeciesToUse = async (plantSpecies: PlantSpecies): P
   }
 
   // Check species is valid to use
-  if (!checkStringValid(species)) {
+  if (!validateString(species)) {
     return {
       valid: false,
       message: RESPONSE_MESSAGE.INVALID
@@ -162,7 +162,7 @@ export const checkValidPlantSpeciesToCreate = async (plantSpecies: PlantSpecies)
   }
 
   // Check species is valid to create
-  if (!checkStringValid(species)) {
+  if (!validateString(species)) {
     console.error(`failed to create plant ${genus} ${species}: species ${RESPONSE_MESSAGE.INVALID}`);
     return {
       valid: false,

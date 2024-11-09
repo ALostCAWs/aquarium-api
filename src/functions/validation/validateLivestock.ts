@@ -1,7 +1,7 @@
-import LivestockService from "../services/livestockService";
-import { RESPONSE_MESSAGE } from "../constants/responseMessageEnum";
-import { checkStringValid } from "./validateInput";
-import { LivestockGenus, LivestockSpecies } from "../interfaces/livestockInterface";
+import LivestockService from "../../services/livestockService";
+import { RESPONSE_MESSAGE } from "../../constants/responseMessageEnum";
+import { validateString } from "./validateInput";
+import { LivestockGenus, LivestockSpecies } from "../../interfaces/livestockInterface";
 
 const livestockService = new LivestockService();
 
@@ -11,7 +11,7 @@ interface ValidityCheckResponse {
 }
 
 export const checkValidLivestockGenusToUse = async (genus: string): Promise<ValidityCheckResponse> => {
-  if (!checkStringValid(genus)) {
+  if (!validateString(genus)) {
     return {
       valid: false,
       message: RESPONSE_MESSAGE.INVALID
@@ -37,7 +37,7 @@ export const checkValidLivestockGenusToUse = async (genus: string): Promise<Vali
 export const checkValidLivestockGenusToCreate = async (livestockGenus: LivestockGenus): Promise<ValidityCheckResponse> => {
   const genus = livestockGenus.genus;
 
-  if (!checkStringValid(genus)) {
+  if (!validateString(genus)) {
     return {
       valid: false,
       message: RESPONSE_MESSAGE.INVALID
@@ -117,7 +117,7 @@ export const checkValidLivestockSpeciesToUse = async (livestockSpecies: Livestoc
   }
 
   // Check species is valid to use
-  if (!checkStringValid(species)) {
+  if (!validateString(species)) {
     return {
       valid: false,
       message: RESPONSE_MESSAGE.INVALID
@@ -162,7 +162,7 @@ export const checkValidLivestockSpeciesToCreate = async (livestockSpecies: Lives
   }
 
   // Check species is valid to create
-  if (!checkStringValid(species)) {
+  if (!validateString(species)) {
     console.error(`failed to create livestock ${genus} ${species}: species ${RESPONSE_MESSAGE.INVALID}`);
     return {
       valid: false,
