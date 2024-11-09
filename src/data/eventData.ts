@@ -13,7 +13,7 @@ const eventService = new EventService();
 
 function loadData() {
   const tank1_update1712110200000 = {
-    name: `Aquarium Co-Op Easy Green`,
+    product: `Aquarium Co-Op Easy Green`,
     dose: 1,
     unit: DOSE_UNIT.MILLILITER
   } as RecentProductEvent;
@@ -25,7 +25,7 @@ function loadData() {
     comments: undefined
   } as Event);
   const tank2_update1712110260000 = {
-    name: `Aquarium Co-Op Easy Green`,
+    product: `Aquarium Co-Op Easy Green`,
     dose: 0.6,
     unit: DOSE_UNIT.MILLILITER
   } as RecentProductEvent;
@@ -37,7 +37,7 @@ function loadData() {
     comments: undefined
   } as Event);
   const tank3_update1712110320000 = {
-    name: `Aquarium Co-Op Easy Green`,
+    product: `Aquarium Co-Op Easy Green`,
     dose: 0.25,
     unit: DOSE_UNIT.MILLILITER
   } as RecentProductEvent;
@@ -49,7 +49,7 @@ function loadData() {
     comments: undefined
   } as Event);
   const tank4_update1712110380000 = {
-    name: `Aquarium Co-Op Easy Green`,
+    product: `Aquarium Co-Op Easy Green`,
     dose: 0.6,
     unit: DOSE_UNIT.MILLILITER
   } as RecentProductEvent;
@@ -85,7 +85,7 @@ function loadData() {
   } as Event);
 
   const tank1_update1712695510000 = {
-    name: `Seachem Flourish Potassium`,
+    product: `Seachem Flourish Potassium`,
     dose: 1.6,
     unit: DOSE_UNIT.MILLILITER
   } as RecentProductEvent;
@@ -97,7 +97,7 @@ function loadData() {
     comments: undefined
   });
   const tank2_update1712695513000 = {
-    name: `Seachem Flourish Potassium`,
+    product: `Seachem Flourish Potassium`,
     dose: 0.75,
     unit: DOSE_UNIT.MILLILITER
   } as RecentProductEvent;
@@ -109,7 +109,7 @@ function loadData() {
     comments: undefined
   });
   const tank3_update1712695517000 = {
-    name: `Seachem Flourish Potassium`,
+    product: `Seachem Flourish Potassium`,
     dose: 0.5,
     unit: DOSE_UNIT.MILLILITER
   } as RecentProductEvent;
@@ -122,7 +122,7 @@ function loadData() {
   });
 
   const tank1_update1712585544000 = {
-    name: `Seachem Flourish Tabs`,
+    product: `Seachem Flourish Tabs`,
     dose: 3,
     unit: DOSE_UNIT.TABS
   } as RecentProductEvent;
@@ -134,7 +134,7 @@ function loadData() {
     comments: undefined
   });
   const tank2_update1712695930000 = {
-    name: `Seachem Flourish Tabs`,
+    product: `Seachem Flourish Tabs`,
     dose: 2,
     unit: DOSE_UNIT.TABS
   } as RecentProductEvent;
@@ -146,7 +146,7 @@ function loadData() {
     comments: undefined
   });
   const tank3_update1712739072000 = {
-    name: `Seachem Flourish Tabs`,
+    product: `Seachem Flourish Tabs`,
     dose: 2,
     unit: DOSE_UNIT.TABS
   } as RecentProductEvent;
